@@ -1,0 +1,13 @@
+@charset "utf-8";
+
+.cm-globalnav, .cm-header-nav, .pg-visitor-main p {
+  display: none;
+}
+
+.cm-main {
+  margin-top: 50px;
+}
+
+.pg-visitor-main {
+  width: auto;
+}

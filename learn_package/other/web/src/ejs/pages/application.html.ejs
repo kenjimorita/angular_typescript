@@ -1,0 +1,36 @@
+<% function pageStyles(buf){ %>
+  <link rel="stylesheet" href="<%- revAssets('stylesheets/stanby-applicant.css') %>">
+<% }; %>
+
+
+<% function pageScripts(buf){ %>
+  <script type="text/javascript" src="<%- revAssets('scripts/application-page.js') %>"></script>
+<% }; %>
+
+<% function pageContents(buf){ %>
+<ui-view></ui-view>
+
+<%include ../internal/controllers/applications/detail.ejs%>
+<%include ../internal/controllers/applications/detail-main-action.ejs%>
+<%include ../internal/controllers/applications/detail-nav.ejs%>
+<%include ../internal/controllers/applications/detail-summary.ejs%>
+<%include ../internal/controllers/applications/detail-timeline.ejs%>
+<%include ../internal/controllers/applications/detail-original.ejs%>
+
+
+<%include ../internal/directives/applications/st-interview-form-collapse.ejs%>
+<%include ../internal/directives/applications/st-docscreening-form-collapse.ejs%>
+<%include ../internal/directives/applications/st-feedback-form-collapse.ejs%>
+<%include ../internal/directives/applications/st-note-form-collapse.ejs%>
+
+<%include ../internal/parts/applications/file-upload-modal.ejs%>
+
+<%include ../internal/controllers/applications/edit.ejs%>
+<%include ../internal/controllers/applications/list.ejs%>
+<%include ../internal/controllers/applications/int_interviews.ejs%>
+<%include ../internal/controllers/applications/rec_interviews.ejs%>
+<%include ../internal/controllers/applications/print_interviews.ejs%>
+
+<% }; %>
+
+<% include ../layout/signedin/layout.ejs %>

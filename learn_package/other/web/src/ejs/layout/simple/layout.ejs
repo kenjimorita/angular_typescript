@@ -1,0 +1,24 @@
+<% function styles(buf){ %>
+  <link rel="stylesheet" href="<%- revAssets("stylesheets/stanby-visitor.css") %>">
+  <!--[if lt IE 9]>
+  <link rel="stylesheet" href="<%- revAssets('stylesheets/stanby-ie8.css') %>">
+  <![endif]-->
+  <% pageStyles(buf) %>
+<% }; %>
+
+<% function scripts(buf){ %>
+  <!--[if lt IE 9]>
+  <script src="<%- revAssets('scripts/vendor_js/respond.js') %>"></script>
+  <script src="<%- revAssets('scripts/vendor_js/es5-shim.js') %>"></script>
+  <![endif]-->
+  <script src="<%- revAssets("scripts/vendor_js/jquery.min.js") %>"></script>
+  <script src="<%- revAssets("scripts/static.js") %>"></script>
+  <% pageScripts(buf) %>
+<% }; %>
+
+<% function contents(buf){ %>
+  <% pageContents(buf) %>
+  <a href="javascript: void(0);" class="cm-totop" id="jsi-totop"></a>
+<% }; %>
+
+<% include ../common/base.ejs %>

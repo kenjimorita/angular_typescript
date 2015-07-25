@@ -1,0 +1,57 @@
+<div class="sg-modal-filter"></div>
+<div class="sg-modal-dropborder" ng-show="ipc.isDragging"></div>
+<div class="sg-imagemanager">
+  <p class="sg-imagemanager-head">画像の選択</p>
+  <ul class="sg-imagemanager-tab cf">
+    <li><a href="javascript: void(0);" ng-class="{current: ipc.actionMode == 'UPL'}" ng-click="ipc.switchToUploadMode()">新しく画像を登録</a></li>
+    <li><a href="javascript: void(0);" ng-class="{current: ipc.actionMode == 'SEL'}" ng-click="ipc.switchToSelectMode()">登録済み画像から選択</a></li>
+  </ul>
+
+  <div class="sg-imagemanager-content" ng-if="ipc.actionMode == 'UPL'">
+    <div class="sg-imagemanager-regist-drop"
+         ui-event="{
+           dragover: 'ipc.setDraggingStyle($event)',
+           dragenter: 'ipc.setDraggingStyle($event)',
+           dragleave: 'ipc.resetDraggingStyle($event)',
+           drop: 'ipc.dropImages($event)'
+           }">
+     ここにカバー画像をドラッグ
+     <ul>
+       <li>JPEG、PNG、GIFが登録可能な画像ファイルの形式です</li>
+       <li>画像ファイルの最大容量は5MBです</li>
+       <li>画像ファイルの最小サイズは横幅500px、縦幅200pxです</li>
+       <li>左下の「ファイルを選択」からも画像が選択できます</li>
+     </ul>
+     <div class="sg-imagemanager-regist-border" ng-show="ipc.isDragging"></div>
+    </div>
+  </div>
+  <div class="sg-imagemanager-content sg-imagemanager-select" ng-if="ipc.actionMode == 'SEL'">
+    <p class="sg-imagemanager-select-explain">カバー画像を1点選択してください。</p>
+    <ul class="sg-imagemanager-select-list cf">
+      <li ng-repeat="image in ipc.pooledImages" ng-class="{'checked': ipc.isSelectedImage(image.id)}">
+        <label>
+          <img ng-src="{% ipc.getThumbnailImageUrl(image.id, image.prefix) %}" alt="{% image.id %}">
+          <input type="radio" name="logo" ng-click="ipc.clickImage(image, $event)">
+        </label>
+      </li>
+    </ul>
+  </div>
+  <div class="sg-imagemanager-content" ng-if="ipc.actionMode == 'CRP'">
+    <div st-image-crop="ipc" st-crop-width="978" st-crop-height="398"></div>
+  </div>
+
+  <div class="sg-imagemanager-buttons-wrapper">
+    <div class="sg-imagemanager-buttons" ng-if="ipc.actionMode == 'UPL'">
+      <div class="sg-imagemanager-regist-input">
+        <button class="sg-button">ファイルを選択</button>
+        <input type="file" accept="jpg,jpeg,png,gif" ui-event="{change: 'ipc.selectUploadFile($event)'}">
+      </div>
+      <a href="javascript: void(0);" class="sg-button transparent" ng-click="ipc.cancel()">キャンセル</a>
+    </div>
+    <div class="sg-imagemanager-buttons" ng-if="ipc.actionMode == 'SEL'">
+      <button class="sg-button secondary" ng-click="ipc.ok()" ng-disabled="!ipc.initialImage && !ipc.selectedImage">{% ipc.buttonLabels.ok %}</button>
+      <button class="sg-button" ng-disabled="!ipc.isDeletable()" ng-click="ipc.deleteImage(ipc.selectedImage, $event)">画像を削除</a>
+      <button class="sg-button transparent" ng-click="ipc.cancel()">キャンセル</a>
+    </div>
+  </div>
+</div>

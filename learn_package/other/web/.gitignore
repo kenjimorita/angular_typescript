@@ -1,0 +1,15 @@
+/.idea
+/*.iml
+/out
+/.idea_modules
+/.classpath
+/.project
+/project/.idea
+/RUNNING_PID
+/.settings
+node_modules
+atlassian-ide-plugin.xml
+/bower_components
+*.log
+/artifact
+/api

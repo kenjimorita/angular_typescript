@@ -1,0 +1,90 @@
+<script type="text/ng-template" id="/internal/directives/applications/st-interview-form-collapse">
+
+  <div ng-init="c.init()" collapse="isCollapsed">
+
+    <div class="pg-timeline-form">
+      <!-- changed to form for submit events -->
+      <form name="c.interviewForm">
+        <p class="pg-timeline-form-box-name">面接の情報を入力してください</p>
+        <div class="pg-timeline-form-clickedit">
+          <input type="text" ng-model="c.interview.title" placeholder="無題の面接" required>
+        </div>
+        <p ng-show="!c.interview.title" class="sg-error">面接名を入力してください</p>
+
+        <table class="pg-timeline-form-interview-table">
+          <colgroup>
+            <col width="70">
+            <col width="auto">
+          </colgroup>
+          <tbody>
+
+          <tr>
+            <th>面接日時</th>
+            <td class="cf">
+                <span class="sg-input_checkbox">
+                  <input type="checkbox" ng-model="c.noInterviewTime">
+                  <label class="sg-button transparent" ng-click="c.noInterviewTime = !c.noInterviewTime">日時を指定しない</label>
+                </span>
+
+                <div ng-hide="c.noInterviewTime">
+                  <!-- from -->
+                  <div class="sg-bs-datepicker-group">
+                  <input type="button" datepicker-popup="yyyy/MM/dd" ng-model="c.startDate" show-button-bar="false"
+                           is-open="c.startAtOpened" ng-click="c.openStartPicker($event)"
+                           value="{% c.startDate | date: 'yyyy/MM/dd'%} {% c.startDate ? '' : '日付' %}" >
+                  <timepicker ng-model="c.startDate" show-meridian="ismeridian" minute-step="10"></timepicker>
+                  <span>〜</span>
+                  <!-- to -->
+                  <input type="button" datepicker-popup="yyyy/MM/dd" ng-model="c.endDate" show-button-bar="false"
+                         is-open="c.endAtOpened" ng-click="c.openEndPicker($event)"
+                         value="{% c.endDate | date: 'yyyy/MM/dd'%} {% c.endDate ? '' : '日付' %}" >
+                  <timepicker ng-model="c.endDate" show-meridian="ismeridian" minute-step="10"></timepicker>
+                  </div>
+                </div>
+            </td>
+          </tr>
+
+          <tr>
+            <th>面接官</th>
+            <td>
+              <div class="pg-incrementalsearch" ng-outerclick="c.isInterviewersListActive = false">
+                <div class="pg-incrementalsearch-inputwrapper">
+                  <input type="text" placeholder="面接官を選択"
+                         ng-model="c.interview.interviewer.name" ng-change="c.incrementalSearchInterviewers()"
+                         ng-focus="c.isInterviewersListActive = true" ng-keydown="c.selectSuggestedInterviewer($event)">
+                  <input type="hidden" ng-model="c.interview.interviewer.userId">
+                  <ul ng-show="c.isInterviewersListActive">
+                    <li ng-repeat="user in c.interviewers">
+                      <a href="javascript: void(0);" ng-click="c.setInterviewer(user)" ng-hide="user.__NonMatching">
+                        {% user.fullName %} &lt;{% user.email %}&gt;
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                <p ng-show="!c.interview.interviewer.name" class="sg-error">面接官を選択してください</p>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th>場所</th>
+            <td><input type="text" placeholder="例）会議室1004号室" ng-model="c.interview.place"></td>
+          </tr>
+          <tr>
+            <th>説明</th>
+            <td><textarea ng-model="c.interview.note"></textarea></td>
+          </tr>
+          <tr>
+            <th></th>
+            <td>
+              <button type="submit" class="sg-button secondary" ng-disabled="!c.checkFormValidity() || !c.interview.interviewer.name" ng-click="c.submitInterview()">保存</button>
+              <button type="button" class="sg-button transparent" ng-click="c.discardInterview()" >キャンセル</button>
+              <p class="pg-applicant-advice-text light">※この操作を行っても応募者には通知されません。必要に応じて直接応募者へご連絡ください。</p>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </form>
+    </div>
+  </div>
+
+</script>

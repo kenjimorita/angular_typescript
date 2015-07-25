@@ -1,0 +1,22 @@
+<div class="sg-imagemanager-crop jsc-crop">
+  <img ng-src="{%urlImage%}" alt="" class="jsc-crop-imageouter">
+  <div class="sg-imagemanager-crop-area jsc-crop-area">
+    <img ng-src="{%urlImage%}" alt="" class="jsc-crop-imageinner">
+  </div>
+  <div class="sg-imagemanager-crop-resizer jsc-crop-resizer" ng-show="isResizable">
+    <div class="sg-imagemanager-crop-resizer-righttop jsc-crop-resizer-righttop"></div>
+    <div class="sg-imagemanager-crop-resizer-rightbottom jsc-crop-resizer-rightbottom"></div>
+    <div class="sg-imagemanager-crop-resizer-leftbottom jsc-crop-resizer-leftbottom"></div>
+    <div class="sg-imagemanager-crop-resizer-lefttop jsc-crop-resizer-lefttop"></div>
+  </div>
+</div>
+<div class="sg-imagemanager-scale jsc-crop-scale">
+  <div class="sg-imagemanager-scale-knob jsc-crop-scale-knob"></div>
+</div>
+
+<div class="sg-imagemanager-buttons-wrapper">
+  <div class="sg-imagemanager-buttons">
+    <a href="javascript: void(0);" class="sg-button secondary" ng-click="saveCropImage()">登録</a>
+    <a href="javascript: void(0);" class="sg-button transparent" ng-click="ctrl.switchToUploadMode()">キャンセル</a>
+  </div>
+</div>

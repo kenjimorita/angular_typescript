@@ -1,0 +1,90 @@
+<% function categoryStyles(buf){ %>
+  <% pageStyles(buf) %>
+<% }; %>
+
+<% function categoryScripts(buf){ %>
+  <% pageScripts(buf) %>
+<% }; %>
+
+<% function categoryContents(buf){ %>
+
+<div id="jsi-wrapper" ng-controller="HeadMenuCtrl" class="cm-wrapper">
+  <header class="cm-header">
+    <ul class="cm-header-breadcrumbs" ng-controller="BreadCrumbsCtrl">
+      <li ng-repeat="breadcrumb in breadcrumbs" ng-class="{show: breadcrumbs.length}"><a href="{%breadcrumb.url%}" ng-if="breadcrumb.url">{%breadcrumb.text%}</a><span ng-if="!breadcrumb.url">{%breadcrumb.text%}</span></li>
+    </ul>
+    <ul class="cm-header-nav">
+      <li class="cm-header-nav-account" id="jsi-nav-account">
+        <a href="javascript: void(0);" ng-class="{show: 'accountName'}">{%accountName%}</a>
+        <ul>
+          <li><a href="/profile#/">あなたのアカウント設定</a></li>
+          <li class="cm-header-nav-account-logout"><a href ng-click="logout()">ログアウト</a></li>
+        </ul>
+      </li>
+    </ul>
+  </header>
+  <div class="cm-row-main">
+    <main class="cm-main">
+      <% pageContents(buf) %>
+      <!--[if lt IE 9]>
+        <div class="alert alert-danger"><span>現在使用中のInternet Explorerのバージョンはサポートされていません。</span></div>
+      <![endif]-->
+    </main>
+  </div>
+</div>
+<nav class="cm-globalnav" ng-controller="menuToggleCtrl" ng-hide="hideNav">
+  <ul>
+
+    <li>
+      <a href="/" class="sg-icon home">
+        <span class="cm-globalnav_title">ダッシュボード</span>
+      </a>
+    </li>
+
+    <li ng-show="isRecruiter">
+      <a href="/jobs#/" class="sg-icon recruit">
+        <span class="cm-globalnav_title">求人</span>
+      </a>
+    </li>
+
+    <li ng-show="isRecruiter">
+      <a href="/application#/" class="sg-icon candidate">
+        <span class="cm-globalnav_title">応募者</span>
+      </a>
+    </li>
+
+    <li ng-show="isRecruiter">
+      <a href="/application#/interviews" class="sg-icon interview">
+        <span class="cm-globalnav_title">選考</span>
+      </a>
+    </li>
+
+    <li ng-show="isInterviewer">
+      <a href="/application#/interviews/mine" class="sg-icon my-interview">
+        <span class="cm-globalnav_title">担当の選考</span>
+      </a>
+    </li>
+
+    <li ng-show="isRecruiter">
+      <a href="/corporate/public#/edit" class="sg-icon company">
+        <span class="cm-globalnav_title cm-globalnav-multirows">公開企業<br>プロフィール</span>
+      </a>
+    </li>
+
+    <li>
+      <a href="/users#/" class="sg-icon account" ng-show="isAdmin">
+        <span class="cm-globalnav_title">アカウント管理</span>
+      </a>
+    </li>
+
+    <li>
+      <a href="javascript://;" onclick="window.open('/documents/Stanby_Recruiting_企業様向け操作マニュアル.pdf', 'TextHelp', 'window.innerWidth, window.innerHeight,menubar=yes, toolbar=yes, scrollbars=yes, resizable=yes')" class="sg-icon manual">
+        <span class="cm-globalnav_title">PDFマニュアル</span>
+      </a>
+    </li>
+
+  </ul>
+</nav>
+<% }; %>
+
+<% include ../common/layout.ejs %>

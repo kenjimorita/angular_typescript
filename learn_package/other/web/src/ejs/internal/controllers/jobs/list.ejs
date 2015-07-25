@@ -1,0 +1,120 @@
+<script type="text/ng-template" id="/internal/controllers/jobs/list">
+
+<div class="cm-main_head st-with-button cf" ng-init="c.init()">
+  <h1>求人</h1>
+  <a ui-sref="add" class="sg-button sg-button-l secondary plus fr">新しい求人を作成</a>
+</div>
+
+<div class="cm-sub_head has-nav cf" ng-init="c.init()">
+  <ul class="pg-list-text fl">
+    <li class="pg-list-text-total">全<strong>{%c.jobs.length%}</strong>件</li>
+    <li><a href="/boards/{%c.account.corporateId%}/jobs" class="pg-button pg-button-active" target="_blank" ng-if="c.countPublishedJobs() > 0">求人ページの一覧</a></li>
+  </ul>
+  <div class="pg-searchform cm-main_nav-search cf" ng-class="{searching: isSearching}" ng-click="isSearching = true">
+    <a href="javascript: void(0);"></a>
+    <input type="text" placeholder="職種 / 募集ポジション名で検索" ng-model="c.searchParams.name">
+  </div>
+</div>
+
+<div class="cm-main_body">
+  <section class="sg-box">
+    <table class="cm-main_table pg-joblist-table">
+      <thead class="sg-box-header">
+      <tr>
+        <td class="pg-column-job-alias">
+          <a ng-click="c.sortDefault='jobIdAlias'; reverse=!reverse" class="sg-box-header-arrow-top sg-box-header-arrow-bottom">ID</a>
+        </td>
+        <td class="pg-column-job-name">職種 / 募集ポジション</td>
+        <td class="pg-column-job-applicant-count">
+          <a ng-click="c.sortDefault='countAll'; reverse=!reverse" class="sg-box-header-arrow-top sg-box-header-arrow-bottom">応募数</a>
+        </td>
+        <td class="pg-column-job-applicant-unactioned">
+          <a ng-click="c.sortDefault='countNoAction'; reverse=!reverse" class="sg-box-header-arrow-top sg-box-header-arrow-bottom pg-text-untouched">未対応</a>
+        </td>
+        <td class="pg-column-job-status">
+          <a ng-model="c.searchParams.jobStatus"
+             st-dd-select-nothing
+             st-dd-select-exclude="ARC"
+             st-dd-select="obj.code as obj.name for (key, obj) in $enums.jobStatus"
+             stb-tooltip="スタンバイ掲載とは独立して求人ページが即時生成されます<br/>貴社ウェブサイトの採用ページ等にご利用ください"
+             class="sg-box-header-arrow-top">求人ページ</a>
+        </td>
+        <td class="pg-column-job-published">
+          <a ng-model="c.searchParams.indexingStatus" st-dd-select-nothing
+             st-dd-select="key as enum.name for (key, enum) in $enums.indexingStatus"
+             stb-tooltip="内容確認を経て検索結果に含まれるようになります<br/>掲載までに最大3営業日かかります"
+             class="sg-box-header-arrow-top">スタンバイ求人検索</a>
+        </td>
+        <td class="pg-column-job-deadline">
+          <a stb-tooltip="募集終了日を過ぎると応募できなくなります。<br/>公開は継続されます"
+             ng-click="c.sortDefault='deadline'; reverse=!reverse"
+             class="sg-box-header-arrow-top sg-box-header-arrow-bottom">募集終了日</a>
+        </td>
+      </tr>
+      </thead>
+      <div loading="jsi-get-spinner"><img src="../../images/sg.icon.loading.gif"></div>
+      <tbody>
+        <tr ng-repeat="job in c.jobs | orderBy:c.sortDefault:reverse" ng-show="job.matchingSearchCond">
+          <td class="pg-column-job-alias ellipsis" ui-sref="edit({jobId: job.id})">
+            {% job.jobIdAlias %}
+          </td>
+          <td class="pg-column-job-name breakword" ui-sref="edit({jobId: job.id})">
+            {% job.name %}
+          </td>
+          <td class="pg-column-job-applicant-count" ui-sref="edit({jobId: job.id})">
+            {% job.countAll %}
+          </td>
+          <td class="pg-column-job-applicant-unactioned" ui-sref="edit({jobId: job.id})">
+            <strong ng-class="{'pg-text-untouched': job.countNoAction}">
+              {% job.countNoAction %}
+            </strong>
+          </td>
+
+          <td class="pg-column-job-status" ng-class="{'sg-job-public': job.jobStatus == 'PUB'}">
+            <% //作成済 %>
+            <a target="_blank"
+              ng-if="job.jobStatus == 'PUB'"
+              ng-href="/boards/{%c.account.corporateId%}/jobs/{%job.id%}">
+              <span class="pg-button pg-button-active" ng-bind="c.enums.jobStatus[job.jobStatus].name"></span>
+            </a>
+            <% //下書き %>
+            <span class="pg-joblist-table-notincluded" ng-if="job.jobStatus != 'PUB'" ng-bind="c.enums.jobStatus[job.jobStatus].name"></span>
+          </td>
+
+          <td class="pg-column-job-published" ng-class="{'sg-job-public': job.indexingStatus == c.enums.indexingStatus.PUB.code}">
+            <% //掲載中 %>
+            <a ng-href="{%job.jseJobPageUrl%}" target="_blank"
+               ng-if="job.indexingStatus == c.enums.indexingStatus.PUB.code">
+              <span class="pg-button pg-button-active" ng-bind="c.enums.indexingStatus[job.indexingStatus].name"></span>
+            </a>
+            <% //見合わせ %>
+            <a href="javascript: void(0);"
+               ng-if="job.indexingStatus == c.enums.indexingStatus.RJC.code"
+               ng-click="c.showReason(job.rejectReason, job.id)">
+              <span class="pg-button pg-button-rejected" ng-bind="c.enums.indexingStatus[job.indexingStatus].name"></span>
+            </a>
+            <% //掲載準備中 %>
+            <span class="pg-button pg-button-negative"
+              ng-if="job.jobStatus == c.enums.jobStatus.PUB.code && job.indexingStatus == c.enums.indexingStatus.NVR.code"
+              ng-bind="c.enums.indexingStatus[job.indexingStatus].name"></span>
+            <% //非公開 %>
+            <span class="pg-joblist-table-notincluded"
+              ng-if="job.jobStatus == c.enums.jobStatus.RDY.code && job.indexingStatus == c.enums.indexingStatus.NVR.code">
+              未掲載
+            </span>
+          </td>
+
+          <td class="pg-column-job-deadline pg-joblist-table-notincluded">
+            {% job.deadline %}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <section class="sg-box-empty" ng-if="!(c.getMatchingJobCount() > 0)">
+      <p>該当する求人はありません</p>
+    </section>
+  </section>
+</div>
+
+</script>

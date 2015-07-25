@@ -1,0 +1,30 @@
+<script type="text/ng-template" id="/internal/controllers/applications/detail-summary">
+
+<div class="pg-detail-base cf" id="basic">
+  <h2 class="pg-detail-name">{%asc.applicationPromise.profile.fullName%}</h2>
+  <p ng-if="asc.applicationPromise.applicationSource">{% asc.enums.applicationSource[asc.applicationPromise.applicationSource].name %}</p>
+</div>
+
+<div class="pg-detail-last">
+  <div ng-if="asc.applicationPromise.profile.lastOrganization">
+    <p>{%asc.applicationPromise.profile.lastOrganization%}</p>
+    <p ng-if="asc.applicationPromise.profile.lastTitle">{%asc.applicationPromise.profile.lastTitle%}</p>
+  </div>
+</div>
+
+<div class="pg-detail-address" ng-if="asc.hasRecruiterRole()">
+  <p ng-if="!asc.email"><a href="javascript: void(0);" ng-click="asc.fetchEmail()">メールアドレスを表示</a></p>
+  <p ng-if="asc.email" ng-bind="asc.email"></p>
+  <p ng-if="!asc.phone"><a href="javascript: void(0);" ng-click="asc.fetchPhone()">電話番号を表示</a></p>
+  <p ng-if="asc.phone" ng-bind="asc.phone"></p>
+  <p>
+    <span ng-if="asc.applicationPromise.profile.postalCode">〒{% asc.applicationPromise.profile.postalCode %}</span>
+    <span ng-if="asc.applicationPromise.profile.address1">{% asc.applicationPromise.profile.address1 %}</span>
+    <span ng-if="asc.applicationPromise.profile.address2">{% asc.applicationPromise.profile.address2 %}</span>
+  </p>
+  <p ng-if="asc.applicationPromise.profile.birthDate">
+    {% asc.applicationPromise.profile.birthDate | formatYearMonthDay %} ({%asc.applicationPromise.profile.birthDate | calculateAge %} 歳)
+  </p>
+</div>
+
+</script>

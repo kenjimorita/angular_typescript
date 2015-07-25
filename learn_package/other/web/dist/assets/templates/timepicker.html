@@ -1,0 +1,10 @@
+<div class="sg-timepicker">
+  <div class="sg-timepicker-child">
+    <input type="text" ng-focus="show()" ng-change="setTimeByInput()" ng-model="input">
+    <div class="sg-timepicker-element" ng-class="{init: isInit}" ng-show="isShowing" ng-outerclick="hide()">
+      <ul>
+        <li ng-repeat="time in times" ng-click="setTime($event)" ng-bind-html="time"></li>
+      </ul>
+    </div>
+  </div>
+</div>
