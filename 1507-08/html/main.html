@@ -9,8 +9,18 @@
 	</head>
 	<body>
 		<div ng-controller="myController">
-		<input type="text" name="name" value="" />
-		{{ name }}
-	</div>
+			<pre>
+				<ul>
+					<li ng-repeat="(key,val) in datas">{{ key }}{{ val }}</li>
+					<li ng-repeat="data in datas">{{ $index }}</li>
+					<li ng-repeat="data in datas">{{ data.name }}</li>
+					<li ng-repeat="data in datas">{{ ($first) ? '○' : '×' }}</li>
+					<li ng-repeat="data in datas">{{ ($even) ? '○' : '×' }}</li>
+					<li ng-repeat="data in datas">{{ ($middle) ? '○' : '×' }}</li>
+					<li ng-repeat="data in datas">{{ data.age | number}}</li>
+					<li>{{ datas | json}}</li>
+				</ul>
+			</pre>
+		</div>
 </body>
 </html>
