@@ -1,0 +1,112 @@
+<div class="cm-main_head st-with-button cf">
+  <h1>{%c.heading%}</h1>
+</div>
+
+<!--
+NOTE(JH): ng-init is discouraged for use unless it's for ngRepeat.
+See https://code.angularjs.org/1.3.14/docs/api/ng/directive/ngInit
+Initialization has moved to the Controller's constructor
+-->
+<form name="form1" novalidate st-editchecker ng-submit="form1.$valid && c.save(form1)">
+  <input style="display:none" type="password" name="fakepassword"/>
+  <!-- ^ chrome auto-complete workaround  -->
+  <div class="cm-main_body">
+    <section class="sg-box">
+      <div class="sg-form sg-form-user-edit bordered">
+        <!-- 名前 -->
+        <div class="sg-form_element">
+          <label class="sg-form_required">名前</label>
+          <div class="sg-form_element-right">
+            <input type="text" class="sg-form_element-xl" name="fullName"
+                   maxlength="50" placeholder="例）田中　太郎" required
+                   ng-model="c.model.fullName"
+                   stb-tooltip="{% $viewLength %}/50文字まで">
+            <span ng-class="{'sg-form_valid': form1.fullName.$valid}"></span>
+            <ul class="sg-error" ng-show="form1.fullName.$dirty">
+              <li ng-show="form1.fullName.$error.required">必須項目です</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="sg-form_element">
+          <label class="sg-form_required">メールアドレス</label>
+          <div class="sg-form_element-right">
+            <input type="email" class="sg-form_element-xl" name="email"
+                   placeholder="例）sample@stanby.com" autocomplete="off"
+                   maxlength="100" required
+                   ng-model="c.model.email"
+                   st-validate-email st-validate-email-duplicate-for-update="c.model.currentEmail"
+                   st-delayed-update
+                   stb-tooltip="{% $viewLength %}/100文字まで">
+            <span ng-class="{'sg-form_valid': form1.email.$valid}"></span>
+            <ul class="sg-error" ng-show="form1.email.$dirty">
+              <li ng-show="form1.email.$error.required">必須項目です</li>
+              <li ng-show="form1.email.$error.email || form1.email.$error.stEmail">メールアドレスの形式を確認してください</li>
+              <li ng-show="!form1.email.$error.required && form1.email.$error.stEmailDuplicate">既に使用されているメールアドレスです</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- パスワード -->
+        <div class="sg-form_element">
+          <label class="sg-form_required">パスワード</label>
+          <div class="sg-form_element-right">
+            <input type="password" class="sg-form_element-xl" ng-model="c.newPassword" name="newPassword"
+                   autocomplete="off" maxlength="40" minlength="8"
+                   placeholder="" required
+                   ng-pattern="/^(?=.*[a-z].*).{8,40}$/"
+                   st-delayed-update
+                   stb-tooltip="半角英字を１文字以上含む8-40文字にしてください<br>({% $viewLength %}/40文字まで)">
+            <span ng-class="{'sg-form_valid': form1.newPassword.$valid}"></span>
+            <ul class="sg-error" ng-show="form1.newPassword.$dirty">
+              <li ng-show="form1.newPassword.$error.required">必須項目です</li>
+              <li ng-show="form1.newPassword.$error.pattern">半角英字を１文字以上含む8-40文字にしてください</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 部署・役職 -->
+        <div class="sg-form_element">
+          <label>部署・役職</label>
+          <fieldset class="sg-form_element-right">
+            <input class="sg-form_element-xl" type="text" name="title"
+                   maxlength="50" placeholder="例）人事部"
+                   ng-model="c.model.title"
+                   stb-tooltip="{% $viewLength %}/50文字まで">
+          </fieldset>
+        </div>
+
+        <!-- 役割 -->
+        <div class="sg-form_element">
+          <label class="sg-form_required">役割</label>
+          <fieldset class="sg-form_element-right">
+            <div id="user-roles" class="sg-form_checkboxes" ng-required="!c.roles.length">
+              <span ng-repeat="r in c.allRoles">
+                <st-forms-roles-check-box role-name="r" all-roles="c.enums.userRole" user-roles="c.roles"
+                    update-function="c.updateRole(role, selected)"
+                    st-link-tooltip="{%c.tooltip(r)%}"></st-forms-roles-check-box>
+              </span>
+              <span ng-class="{'sg-form_valid': c.roles.length > 0}"></span>
+            </div>
+            <ul class="sg-error">
+              <li ng-show="c.roles.length == 0">必須項目です</li>
+            </ul>
+          </fieldset>
+        </div>
+      </div>
+    </section>
+
+    <section class="sg-centering">
+      <input type="submit" value="保存" class="sg-button sg-button-l sg-button-secondary"
+             ng-disabled="!form1.$valid || c.roles.length == 0 || c.disableButton">
+      <input type="button" value="{%c.statusButtonName%}"
+             class="sg-button sg-button-l" name="statusButton"
+             ng-show="c.display"
+             ng-class="{'sg-button-secondary': !c.isDisableStatusChange}"
+             ng-click="c.saveUserStatus(form1)"
+             ng-if="!c.isDisableStatusChange">
+      <a href="/users#/" class="sg-button sg-button-l">キャンセル</a>
+    </section>
+  </div>
+</form>

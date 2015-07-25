@@ -1,0 +1,111 @@
+<div class="cm-main_head st-with-button cf">
+  <h1>公開企業プロフィール</h1>
+</div>
+
+<st-signup-progress target="企業アカウント管理"></st-signup-progress>
+
+<form name="form1" ng-init="c.init()" novalidate st-editchecker>
+  <div class="cm-main_body">
+    <section class="sg-box">
+      <h2>会社概要</h2>
+      <section>
+        <table st-draggable-set="c.corporate.content.descriptions" class="sg-formtable">
+          <tbody>
+            <tr>
+              <th>会社名</th>
+              <td>
+                <p ng-bind="c.corporate.name"></p>
+                <p class="light">会社名は<a href="/users#/corpEdit" target="_blank">企業アカウント編集画面</a>にて変更可能です</p>
+              </td>
+            </tr>
+            <tr>
+              <th>企業ロゴ</th>
+              <td>
+                <a href="javascript: void(0);" class="sg-button" ng-click="c.showCorporateImagePopup()">画像を選択</a>
+                <a href="javascript: void(0);" class="sg-button transparent alignment" ng-click="c.showLogoInstruction()">企業ロゴとは？</a>
+                <input type="hidden" ng-model="c.logoImage.imageId">
+                <input type="hidden" ng-model="c.logoImage.prefix">
+                <figure class="sg-form-element-image" ng-if="c.corporate.logoImage.imageId"><img ng-src="{% c.stbImage.getThumbnailImageUrl(c.config, c.corporate.logoImage.imageId, c.corporate.logoImage.prefix) %}" alt="" id="jsi-logo"></figure>
+              </td>
+            </tr>
+            <tr>
+              <th>カバー画像</th>
+              <td>
+                <a href="javascript: void(0);" class="sg-button" ng-click="c.showCoverImagePopup()">画像を選択</a>
+                <a href="javascript: void(0);" class="sg-button transparent alignment" ng-click="c.showCoverInstruction()">カバー画像とは？</a>
+                <figure class="sg-form-element-image" ng-if="c.corporate.coverImage.imageId"><img ng-src="{% c.stbImage.getThumbnailImageUrl(c.config, c.corporate.coverImage.imageId, c.corporate.coverImage.prefix) %}" alt="" id="jsi-logo"></figure>
+                <input type="hidden" ng-model="c.coverImage.imageId">
+                <input type="hidden" ng-model="c.coverImage.prefix">
+              </td>
+            </tr>
+
+            <tr st-draggable st-droppable st-dodgeable ng-repeat="termDesc in c.corporate.content.descriptions">
+              <th>
+                <div class="sg-formtable-term-name">
+                  追加項目{%$index + 1%}
+                </div>
+                <div class="sg-formtable-term-text">
+                  <input
+                    type="text"
+                    name="termDescTerm"
+                    ng-model="termDesc.term"
+                    maxlength="50"
+                    stb-tooltip="{%$viewLength%}/50文字まで"
+                    ui-validate=" ' c.validateTerm(form1, $value, termDesc.description)' "
+                    ui-validate-watch=" 'termDesc.description' ">
+                </div>
+              </th>
+              <td>
+                <div class="sg-formtable-description-button">
+                  <a class="sg-button transparent" ng-click="c.deleteTdSet($index)">この項目を削除</a>
+                </div>
+                <div class="sg-formtable-description-text">
+                  <textarea 
+                    name="termDescDescription"
+                    ng-model="termDesc.description"
+                    maxlength="200"
+                    stb-tooltip="{%$viewLength%}/200文字まで"
+                    ui-validate=" ' c.validateTerm(form1, $value, termDesc.term)' "
+                    ui-validate-watch=" 'termDesc.term' "
+                    st-autoresize-textarea></textarea>
+                </div>
+              </td>
+            </tr>
+            <tr st-dodgeable ng-if="c.corporate.content.descriptions.length < c.stStaticConfig.terms.max">
+              <th>
+                <a class="sg-button sg-icon transparent plus" ng-click="c.addTdSet()">項目を追加</a>
+                <button type="button" class="sg-form-hint-txt" st-link-tooltip="基本情報を自由に追加することができます。 例）従業員数、公式ウェブサイトURL、FacebookページURLなど"></button>
+              </th>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      <section>
+        <div class="sg-box-head cf">
+          <h2>事業内容</h2>
+          <a href="javascript://;" onclick="window.open('/contents/markdown', 'TextHelp', 'window.innerWidth, window.innerHeight,menubar=yes, toolbar=yes, scrollbars=yes, resizable=yes')" class="sg-button transparent" st-link-tooltip="別ウィンドウで開く">テキスト整形ルール</a>
+        </div>
+        <div class="sg-form-markdown">
+          <div class="sg-form-markdown-html" ng-bind-html="c.corporate.htmlFreeText" ng-class="c.isPreviewingMarkdown ? 'sg-form-markdown-html-is-preview' : ''" ng-if="c.isPreviewingMarkdown" ng-click="c.editMarkdown()"></div>
+          <textarea name="markdownFreeText"
+                    class="sg-form-markdown-textarea"
+                    id="jsi-markdown-freetext"
+                    ng-model="c.corporate.content.markdownFreeText"
+                    st-inline-upload="{fn: c.uploadInlineImageToInsertText, this: c}"
+                    ng-if="!c.isPreviewingMarkdown"
+                    ng-focus="c.focusMarkdown()"
+                    maxlength="10000"
+                    st-autoresize-textarea></textarea>
+          <button type="button" class="sg-button" ng-click="c.editMarkdown()" ng-if="c.isPreviewingMarkdown">テキストを編集</button>
+          <button type="button" class="sg-button" ng-click="c.showInlineImagePopup('jsi-markdown-freetext')" ng-if="!c.isPreviewingMarkdown">画像を挿入する</button>
+          <button type="button" class="sg-button" ng-click="c.previewHTML(form)" ng-if="!c.isPreviewingMarkdown" ng-show="c.corporate.content.markdownFreeText.length > 0">テキストのプレビュー</button>
+        </div>
+      </section>
+      <section class="sg-centering">
+        <input type="submit" value="保存" class="sg-button sg-button-l sg-button-secondary" ng-click="c.saveDraft(form1)" ng-disabled="form1.$invalid" >
+        <a href="/" class="sg-button sg-button-l sg-button-gray">キャンセル</a>
+      </section>
+    </section>
+  </div>
+</form>

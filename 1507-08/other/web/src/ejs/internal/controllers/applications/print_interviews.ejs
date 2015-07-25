@@ -1,0 +1,39 @@
+<!-- -->
+<script type="text/ng-template" id="/internal/interview/print_list">
+<!-- -->
+	<a href="javascript: window.print()" class="sg-button hide-on-print">印刷</a>
+	
+  <div class="cf" ng-init="c.init()">
+    <h1>面接</h1>
+    
+    <dl class="conditions cf">
+        <dt>抽出条件</dt>
+        <dd>面接開始日時：{% interview.startAt %}</dd>
+        
+        <dt>並び順</dt>
+        <dd>面接開始日時の昇順</dd>
+    </dl>
+  </div>
+
+  <div>
+      <ul>
+          <li ng-repeat="interview in c.interviews" class="looper">
+              <ul>
+                  <li class="main-details">
+                      <ul class="cf">
+                          <li>{% interview.startAt | date:'yyyy/MM/dd HH:mm'  %}</li>
+                          <li>-</li>
+                          <li>{% interview.endAt | date:'HH:mm'  %}</li>
+                          <li>{% interview.place %} - </li>
+                          <li class=""><span class="interviewer">{% interview.interviewer.name %}</span></li>
+                      </ul>
+                  </li>
+                  <li>{% interview.title %}</li>
+                  <li class="interviewee-block"><span class="interviewee">{% interview.application.fullName %} ({% interview.application.fullNameKana %})</span></li>
+                  <li>{% intervew.lastOrganization %} {% interview.lastTitle %}</li>
+              </ul>
+          </li>
+      </ul>
+  </div>
+
+</script>

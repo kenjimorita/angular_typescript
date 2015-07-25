@@ -1,0 +1,38 @@
+<script type="text/ng-template" id="/internal/controllers/jobs/preview">
+
+<div class="pg-preview-cloak" ng-init="c.init()" ng-class="{'pg-preview-hide': c.hidePreviewBar, 'isMobile': !c.isPcMode}">
+
+  <section class="pg-preview-control cf">
+    
+    <div class="fl return">
+      <a ng-click="c.backToEdit()">編集画面に戻る</a>
+    </div>
+      
+    <ul class="mobile-button">
+      <li ng-click="c.switchToPcMode()">
+        <span class="pc" ng-class="{'active': c.isPcMode}">PC版</span>
+      </li>
+      <li ng-click="c.switchToMobileMode()">
+        <span class="mobile" ng-class="{'active': !c.isPcMode}">モバイル版</span>
+      </li>
+    </ul>
+    
+    <ul class="fr">
+      <li>
+        <button class="sg-button sg-button-secondary sg-button-l" ng-if="c.job.jobStatus=='PUB'" ng-click="c.confirmPublish()">この内容で保存</button>
+        <button class="sg-button sg-button-secondary sg-button-l" ng-if="c.job.jobStatus!='PUB'" ng-click="c.confirmPublish()">保存して公開</button>
+      </li>
+    </ul>
+    
+    <div class="hide-preview" ng-click="c.hidePreviewBar = !c.hidePreviewBar" ng-class="{'hide-preview-down': c.hidePreviewBar}">
+      <span></span>
+    </div>
+  </section>
+ 
+  <iframe class="pg-preview-iframe-pc" src="about:blank" scrolling="no" st-set-iframe-height st-iframe-post="c.postToPcPreviewApi()" ng-if="c.isPcMode"></iframe>
+  <div class="pg-preview-iframe-mobile-wrapper" ng-if="!c.isPcMode">
+    <iframe class="pg-preview-iframe-mobile" src="about:blank" st-iframe-post="c.postToMobilePreviewApi()"></iframe>
+  </div>
+</div>
+
+</script>

@@ -1,0 +1,17 @@
+<script type="text/ng-template" id="/internal/controllers/dashboard/base">
+  <section ng-init="c.init()">
+    <div ui-view="summary"></div>
+    <div class="pg-rowmain cf">
+      <div ui-view="side" class="pg-side"></div>
+      <div class="pg-main">
+        <div class="pg-sections">
+          <section ui-view="interviews-unrated" class="pg-section" ng-if="c.hasInterviewerRole"></section>
+          <section ui-view="docscreenings-unrated" class="pg-section" ng-if="c.hasInterviewerRole"></section>
+          <section ui-view="job-application-counts" class="pg-section" ng-if="c.hasRecruiterRole"></section>
+          <section ui-view="interviews-today" class="pg-section" ng-if="c.hasRecruiterRole"></section>
+        </div>
+        <section ui-view="account" class="pg-account" ng-if="c.hasAdminRole"></section>
+      </div>
+    </div>
+  </section>
+</script>

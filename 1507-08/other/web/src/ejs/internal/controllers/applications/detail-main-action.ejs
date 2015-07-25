@@ -1,0 +1,40 @@
+<script type="text/ng-template" id="/internal/controllers/applications/detail-main-action">
+
+<% /* NOTE(baba): 自分が編集できる場合 -> .pg-timeline-important */ %>
+<section class="cf" ng-init="aac.init()" ng-class="{'pg-timeline-important': aac.hasRecruiterRole() }">
+  <time>{% aac.nowDate | formatEventTimestamp %}</time>
+  <div class="pg-timeline-status">
+    <span>{% aac.accountInfoPromise.fullName | limitTo:1 %}</span>
+  </div>
+  <div class="pg-timeline-body">
+    <div class="pg-timeline-headgroup cf">
+      <h3>次のアクション<span>{% aac.accountInfoPromise.fullName %}</span></h3>
+      <p>前回のアクションから{% aac.latestItemCreatedAt | durationTillNow %}経過</p>
+    </div>
+    <div class="pg-timeline-select" ng-if="aac.hasRecruiterRole()">
+      <div class="pg-timeline-select-buttons" id="jsi-command-box">
+        <p>アクションを選択してください</p>
+        <a href="#jsi-command-box" class="sg-button sg-button-l"
+           st-autoscroll=""
+           st-docscreening-form-click="st-docscreening-create"
+           st-collapse-hide-target="jsi-command-box">書類選考を依頼</a>
+        <a href="#jsi-command-box" class="sg-button sg-button-l"
+           st-autoscroll=""
+           st-interview-form-click="st-interview-create"
+           st-collapse-hide-target="jsi-command-box">面接を登録</a>
+        <a href="#jsi-command-box" class="sg-button sg-button-l"
+           st-autoscroll=""
+           st-note-form-click="st-note-create"
+           st-collapse-hide-target="jsi-command-box">コメント</a>
+      </div>
+      <div st-create st-interview-form-collapse="st-interview-create"></div>
+      <div st-create st-docscreening-form-collapse="st-docscreening-create"></div>
+      <div st-create st-note-form-collapse="st-note-create"></div>
+      <div ng-if="!aac.hasRecruiterRole()">
+        <p>書類選考、面接、コメントは人事担当者権限が無いユーザーは登録できません。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</script>

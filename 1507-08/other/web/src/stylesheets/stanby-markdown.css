@@ -1,0 +1,132 @@
+@charset "utf-8";
+
+body {
+  padding-bottom: 0;
+}
+
+.pg-markdown-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  width: 100%;
+  padding: 20px;
+  background: #FFFFFF;
+  border-bottom: 1px solid #CBCBCB;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+.pg-markdown-detail > section {
+  clear: both;
+  margin-top: -34px;
+  padding-top: 114px;
+}
+.pg-markdown-wrapper > nav {
+  position: fixed;
+  top: 69px;
+  left: 0;
+  width: 180px;
+}
+.pg-markdown-wrapper > nav > ul {
+  padding: 40px 20px;
+}
+.pg-markdown-wrapper > nav > ul > li > a {
+  display: block;
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: 150ms ease-out;
+  transition-property: background opacity;
+}
+.pg-markdown-wrapper > nav > ul > li > a:hover {
+  background: #D6EEF8;
+  border-radius: 3px;
+}
+.pg-markdown-detail {
+  margin-left: 180px;
+  padding: 46px 20px;
+  border-left: 1px solid #CBCBCB;
+}
+.pg-markdown-detail h2 + * {
+  margin-top: 30px;
+}
+.pg-markdown-detail section > dl > dt,
+.pg-markdown-detail section > dl > dd {
+  box-sizing: border-box;
+}
+.pg-markdown-detail section > dl > dt {
+  float: left;
+  clear: both;
+  width: 48%;
+  margin: 20px 20px 20px 10px;
+  padding: 8px 10px;
+  background: #F2F2F2;
+  border: 1px solid #CCCCCC;
+  border-radius: 3px;
+}
+.pg-markdown-detail section > dl > dd {
+  padding: 30px 10px;
+  border-bottom: 1px solid #CBCBCB;
+}
+.pg-markdown-detail section > dl > dt:first-child,
+.pg-markdown-detail section > dl > dd:nth-child(2) {
+  margin: 0;
+  padding: 10px 6px;
+  background: none;
+  border: none;
+  color: #888888;
+  font-weight: bold;
+}
+.pg-markdown-detail section > dl > dt:first-child {
+  margin-right: 30px;
+}
+.pg-markdown-detail section > dl > dd:nth-child(2) {
+  border-bottom: 1px solid #323232;
+}
+.pg-markdown-detail a:hover {
+  text-decoration: underline;
+}
+.pg-markdown-table {
+  width: 47.5%;
+  margin-top: -14px;
+}
+.pg-markdown-table thead {
+  border-bottom: 1px solid #333333;
+}
+.pg-markdown-table tr:hover {
+  background: transparent;
+}
+.pg-markdown-table th {
+  padding: 0 10px;
+  text-align: left;
+  font-weight: bold;
+  color: #888888;
+}
+.pg-markdown-table td {
+  padding: 12px 10px;
+}
+.pg-markdown-table tbody tr {
+  border-bottom: 1px solid #CBCBCB;
+}
+
+/* markdown sample page */
+.pg-sample-detail {
+  margin-left: 0;
+}
+.pg-sample-code-copy-btn {
+  float: right;
+  margin: 0 25px 4px 0 !important;
+}
+.pg-sample-code {
+  display: block;
+  width: 100%;
+  margin: 18px 0 0;
+  padding: 8px 10px;
+  clear: both;
+  background: #F2F2F2;
+  border: 1px solid #CCCCCC;
+  border-radius: 3px;
+  box-sizing: border-box;
+}
+.pg-sample-code pre {
+  word-break: break-all;
+}

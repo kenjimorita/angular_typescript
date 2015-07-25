@@ -1,0 +1,15 @@
+<% function categoryStyles(buf){ %>
+<link rel="stylesheet" href="<%- revAssets('stylesheets/stanby-common-sp.css') %>" media="screen and (max-width:768px)">
+<link rel="stylesheet" href="<%- revAssets('stylesheets/stanby-styleguide-sp.css') %>" media="screen and (max-width:768px)">
+<link rel="stylesheet" href="<%- revAssets('stylesheets/stanby-visitor-sp.css') %>" media="screen and (max-width:768px)">
+<% }; %>
+
+<% function categoryScripts(buf){ %>
+<script src="<%- revAssets('scripts/verify-page.js') %>"></script>
+<% }; %>
+
+<% function categoryContents(buf){ %>
+  <ui-view></ui-view>
+<% }; %>
+
+<% include ../layout/common/layout.ejs %>

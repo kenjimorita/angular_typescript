@@ -1,0 +1,209 @@
+@charset "utf-8";
+
+/* Main logo styles
+ * ======================================================= */
+.cm-main {
+  padding-left: 0;
+}
+.pg-signup-thankyou {
+  padding: 0;
+  text-align: center;
+}
+.pg-signup-thankyou > sg-box{
+  display: table;
+  margin: 0 auto;
+}
+.pg-visitor-logo {
+  margin-right: auto;
+  margin-left: auto;
+}
+.pg-visitor-logo.sg-logo.sg-logo-site {
+  width: 288px;
+  height: 45px;
+  background-size: 288px 45px;
+}
+.pg-visitor-logo + * {
+  margin-top: 45px;
+}
+
+/* Main box styles
+ * ======================================================= */
+.pg-visitor-main {
+  width: 420px;
+  margin-right: auto;
+  margin-left: auto;
+  padding-top: 100px;
+}
+.pg-signup-main {
+  width: 650px;
+  margin-right: auto;
+  margin-left: auto;
+  padding-top: 60px;
+}
+
+/* Elements styles
+ * ======================================================= */
+
+.pg-signup-main > h1 {
+  font-size: 24px;
+  text-align: center;
+}
+.pg-signup-main > h1 + p {
+  font-size: 14px;
+  text-align: center;
+  color: #888888;
+}
+.pg-visitor-box + * {
+  margin-top: 40px;
+}
+.pg-visitor-box {
+  margin-top: 18px;
+  background: #FFFFFF;
+  padding: 36px 36px 54px;
+  box-shadow: 0 1.2px 4.8px rgba(0, 0, 0, 0.36);
+}
+.pg-visitor-box > h1 {
+  font-size: 18px;
+  text-align: center;
+}
+.pg-visitor-box > h1 + * {
+  margin-top: 23.4px;
+}
+.pg-visitor-box .sg-form_element + .sg-form_element {
+  margin-top: 9px;
+}
+.pg-visitor-box .sg-form_element > input[type=text],
+.pg-visitor-box .sg-form_element > input[type=email],
+.pg-visitor-box .sg-form_element > input[type=password] {
+  width: 100%;
+  font-size: 18px;
+}
+.pg-visitor-box .sg-form_element .sg-form_element-right > input[type=text],
+.pg-visitor-box .sg-form_element .sg-form_element-right > input[type=email],
+.pg-visitor-box .sg-form_element .sg-form_element-right > input[type=password] {
+  width: 395px;
+  font-size: 18px;
+}
+.pg-visitor-box .sg-form_element input + input {
+  margin-top: 5px;
+}
+.pg-visitor-box .sg-form_element-s,
+.pg-visitor-box .sg-form_element-xs {
+  font-size: 18px;
+}
+.pg-visitor-box .sg-form_next {
+  text-align: center;
+}
+.pg-visitor-box .sg-form_element + .sg-form_next.sg-form_element {
+  margin-top: 18px;
+}
+.pg-visitor-box .sg-form_element > label {
+  display: block;
+  width: 100px;
+  float: left;
+  font-size: 14px;
+  padding-top: 6px;
+  margin-right: 20px;
+  text-align: right;
+}
+.pg-visitor-box .sg-form_element-right {
+  margin-left: 130px;
+}
+.pg-verify-box {
+  margin-top: 18px; 
+}
+.pg-reset-box p + p,
+.pg-verify-box p + p {
+  margin-top: 12px;
+}
+.pg-verify-box a {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.sg-form > label + h2,
+.sg-form > .sg-form_half + h2 {
+  margin-top: 15px;
+}
+.sg-form {
+  display: block;
+}
+.sg-form + * {
+  margin-top: 20px;
+}
+.sg-form label {
+  display: block;
+}
+.sg-form label + label {
+  margin-top: 10px;
+}
+.sg-form > .sg-form_half {
+  font-size: 0;
+}
+.sg-toast {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  left: 0;
+  width: 360px;
+  margin: auto;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+  color: #FFFFFF;
+  font-size: 14px;
+}
+.sg-toast.ng-hide-remove,
+.sg-toast.ng-hide-add {
+  transition: opacity 150ms ease-out;
+}
+.sg-toast.ng-hide-remove,
+.sg-toast.ng-animate.ng-hide-add-active {
+  opacity: 0;
+}
+.sg-toast.ng-animate.ng-hide-remove-active,
+.sg-toast.ng-hide-add {
+  opacity: 1;
+}
+.sg-tooltip-explain {
+  z-index: 9999;
+  position: absolute;
+  display: none;
+  padding: 5px 15px;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  filter: alpha(opacity=0);
+}
+.sg-tooltip-error {
+  z-index: 9999;
+  position: absolute;
+  display: none;
+  padding: 5px 15px;
+  background: rgba(0, 0, 0, 0.8);
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  filter: alpha(opacity=0);
+  color: #FFFFFF;
+}
+
+.pg-register_form {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: none;
+  opacity: 0;
+  filter: alpha(opacity=0);
+}
+.pg-register_form.st-visible {
+  position: relative;
+  display: block;
+  opacity: 1;
+  filter: alpha(opacity=100);
+}
+.pg-register_form-head {
+  text-align: center;
+}
+.pg-register_form-head + * {
+  margin-top: 10px;
+}

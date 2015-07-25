@@ -1,0 +1,175 @@
+<script type="text/ng-template" id="/internal/controllers/applications/detail-timeline">
+<div ng-init="atc.init()">
+
+  <% /* NOTE(baba):
+  自分が自分以外の誰かにアサインしたもの -> .pg-timeline-delegated
+  自分が担当のもの -> .pg-timeline-important */ %>
+  <section class="cf"
+    ng-repeat="t in atc.timeline"
+    ng-if="t.content && t.timelineType !== 'message'"
+    ng-class="{'pg-timeline-delegated': (accountName !== t.content.interviewer.name) && (accountName === t.content.updatedBy.name) && t.content.interviewer.name,'pg-timeline-important': (accountName === t.content.interviewer.name) && t.content.interviewer.name  }">
+
+    <time>{% t.content.updatedAt | formatEventTimestamp %}</time>
+    <div class="pg-timeline-status"><span>{% t.content.updatedBy.name | limitTo:1 %}</span></div>
+
+    <% /* ステータス変更履歴 */ %>
+    <div class="pg-timeline-body" ng-if="t.timelineType === 'stage'">
+      <div class="pg-timeline-headgroup cf">
+        <h3>ステータス変更<span>{% t.content.updatedBy.name %}</span></h3>
+      </div>
+      <div>
+        <p>ステータスが<span class="sg-users_role">{% atc.enums.selectionStage[t.content.selectionStage] %}</span>に変更されました。</p>
+      </div>
+    </div>
+
+    <% /* 応募ノート */ %>
+    <div class="pg-timeline-body" ng-if="t.timelineType === 'note'">
+      <div class="pg-timeline-headgroup cf">
+        <h3>{% t.content.updatedBy.name %} がコメントを書きました</h3>
+        <p class="pg-timeline-edit-link">{% t.content.updatedBy.name %}により{%t.content.updatedAt | date:'M月d日 H:mm'%}に編集済み
+          <a href="#jsi-note-edit-{% $index %}"
+             ng-show="atc.isUpdatableNote(t.content)"
+             st-autoscroll=""
+             st-note-form-click="st-note-edit-{% $index %}">
+             編集
+          </a>
+        </p>
+      </div>
+      <ul>
+        <li ng-show="t.content.isRecOnly" class="pg-timeline-is-rec-only">このコメントは人事担当者以外には非表示に設定されています。</li>
+      </ul>
+      <div class="pg-timeline-comment-preview">
+        <pre ng-show="t.content.isRecOnly && atc.hasRecruiterRole()">{% t.content.note %}</pre>
+        <pre ng-show="!t.content.isRecOnly">{% t.content.note %}</pre>
+      </div>
+      <div id="jsi-note-edit-{% $index %}" class="pg-feedback-form-instigator"
+           st-note-form-collapse="st-note-edit-{% $index %}"
+           st-update ng-model="t.content"></div>
+    </div>
+
+    <% /* 面接 */ %>
+    <div class="pg-timeline-body" ng-if="t.timelineType === 'interview'">
+      <div class="pg-timeline-headgroup cf">
+        <h3>{% t.content.title %}<span>{% t.content.updatedBy.name %}</span></h3>
+        <p class="pg-timeline-edit-link">{% t.content.updatedBy.name %}により{%t.content.updatedAt | date:'M月d日 H:mm'%}に編集済み
+          <a href="#jsi-interview-update-{% $index %}"
+             ng-show="atc.hasRecruiterRole()"
+             st-autoscroll=""
+             st-collapse-hide-target="jsi-interview-action-box-{% $index %}"
+             st-interview-form-click="st-interview-update-{% $index %}">
+             編集
+          </a>
+        </p>
+      </div>
+      <div ng-if="!t.iEditForm.isEditInterview">
+
+        <dl class="pg-timeline-interview-detail">
+          <dt class="date" ng-if="t.content.startAt">日付</dt>
+          <dd ng-if="t.content.startAt">{% t.content.startAt | date:'yyyy年M月d日' %}</dd>
+          <dt class="time" ng-if="t.content.startAt">時間</dt>
+          <dd ng-if="t.content.startAt">{% t.content.startAt | date:'H:mm' %} - {% t.content.endAt | date:'H:mm' %}</dd>
+          <dt class="location" ng-if="t.content.place">場所</dt>
+          <dd ng-if="t.content.place">{% t.content.place %}</dd>
+          <dt class="interviewer" ng-if="t.content.interviewer">面接官</dt>
+          <dd ng-if="t.content.interviewer">{% t.content.interviewer.name %}</dd>
+        </dl>
+
+        <div><pre>{% t.content.note %}</pre></div>
+
+        <div id="jsi-interview-action-box-{% $index %}">
+
+          <% /* NOTE(baba): isEvaluatable && 自分が担当者のときのみ評価ボタンを表示 */ %>
+          <a href="#jsi-interview-action-box-{% $index %}" class="sg-button sg-button-l sg-button-primary"
+             ng-show="atc.isEvaluatableInterview(t.content) && (accountName === t.content.interviewer.name)"
+             st-autoscroll=""
+             st-collapse-hide-target="jsi-interview-action-box-{% $index %}"
+             st-feedback-form-click="st-feedback-add-{% $index %}">評価を入力</a>
+
+        </div>
+        <div class="pg-feedback-form-instigator"
+             st-feedback-form-collapse="st-feedback-add-{% $index %}"
+             st-create st-resolve="{interviewId: t.content.id, interviewType: t.content.interviewType, interviewTitle: t.content.title}"></div>
+        <div id="jsi-interview-update-{% $index %}" class="pg-feedback-form-instigator"
+             st-interview-form-collapse="st-interview-update-{% $index %}"
+             st-update ng-model="t.content" ></div>
+      </div>
+    </div>
+
+    <% /* 書類審査 */ %>
+    <div class="pg-timeline-body" ng-if="t.timelineType === 'docscreening'">
+      <div class="pg-timeline-headgroup cf">
+        <h3>{% t.content.title %}<span>{% t.content.updatedBy.name %}</span></h3>
+        <p class="pg-timeline-edit-link">{% t.content.updatedBy.name %}により{% t.content.updatedAt | date: 'M月d日 H:mm' %}に編集済み
+          <a href="#jsi-docscreening-update-{% $index %}"
+             ng-show="atc.hasRecruiterRole()"
+             st-autoscroll=""
+             st-collapse-hide-target="jsi-docscreening-action-box-{% $index %}"
+             st-docscreening-form-click="st-docscreening-update-{% $index %}">
+             編集
+          </a>
+        </p>
+      </div>
+      <div ng-if="!t.iEditForm.isEditInterview">
+
+        <dl class="pg-timeline-interview-detail">
+          <dt class="interviewer">面接官</dt>
+          <dd>{% t.content.interviewer.name %}</dd>
+        </dl>
+
+        <div><pre>{% t.content.note %}</pre></div>
+
+        <div id="jsi-docscreening-action-box-{% $index %}">
+        
+          <% /* NOTE(baba): isEvaluatable && 自分が担当者のときのみ評価ボタンを表示 */ %>
+          <a href="#jsi-docscreening-action-box-{% $index %}" class="sg-button sg-button-l sg-button-primary"
+             ng-show="atc.isEvaluatableInterview(t.content) && (accountName === t.content.interviewer.name)"
+             st-autoscroll=""
+             st-collapse-hide-target="jsi-interview-action-box-{% $index %}"
+             st-feedback-form-click="st-feedback-add-{% $index %}">評価を入力</a>
+
+        </div>
+        <div class="pg-feedback-form-instigator"
+             st-feedback-form-collapse="st-feedback-add-{% $index %}"
+             st-create st-resolve="{interviewId: t.content.id, interviewType: t.content.interviewType, interviewTitle: t.content.title}"></div>
+        <div id="jsi-docscreening-update-{% $index %}" class="pg-feedback-form-instigator"
+             st-docscreening-form-collapse="st-docscreening-update-{% $index %}"
+             st-update ng-model="t.content"></div>
+      </div>
+    </div>
+
+    <% /* 面接 & 書類選考 評価 */ %>
+    <div class="pg-timeline-body" ng-if="t.timelineType === 'feedback'">
+      <div class="pg-timeline-result pg-timeline-headgroup cf">
+        <h3>
+          {% t.content.interviewTitle %} - 評価
+
+          <strong class="pg-timeline-grade grade-{% g.value %}"
+                  ng-repeat="g in atc.enums.interviewFeedbackGrade"
+                  ng-if="g.value == t.content.grade">
+                  {% g.shortName %}
+          </strong>
+
+          <span>{% t.content.updatedBy.name %}</span>
+        </h3>
+        <p class="pg-timeline-edit-link">{% t.content.updatedBy.name %}により{% t.content.updatedAt | date:'M月d日 H:mm' %}に編集済み
+          <a href="#jsi-feedback-update-{% $index %}"
+             ng-show="atc.hasRecruiterRole()"
+             st-autoscroll=""
+             st-collapse-hide-target="jsi-interview-action-box-{% $index %}"
+             st-feedback-form-click="st-feedback-update-{% $index %}">
+             編集
+          </a>
+        </p>
+      </div>
+      <pre>{%t.content.summary%}</pre>
+      <div id="jsi-feedback-update-{% $index %}" class="pg-feedback-form-instigator"
+           st-feedback-form-collapse="st-feedback-update-{% $index %}"
+           st-update ng-model="t.content"
+           st-resolve="{interviewType: t.content.interviewType, interviewTitle: t.content.title}"
+           ></div>
+    </div>
+
+  </section>
+</div>
+
+</script>

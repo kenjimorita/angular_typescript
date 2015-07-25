@@ -1,0 +1,25 @@
+<script type="text/ng-template" id="/internal/directives/applications/st-note-form-collapse">
+
+  <div ng-init="c.init()" collapse="isCollapsed" class="pg-add-note-form">
+    <div class="pg-timeline-form">
+      <ng-form name="addNoteForm">
+        <p class="pg-timeline-form-box-name">コメント</p>
+        <section class="sg-form-element">
+          <textarea class="sg-form_element-xl" st-autoresize-textarea ng-model="c.note.note" required st-allow-pattern="/^(.|\n){0,1000}$/" stb-tooltip="{% $viewLength %}/1,000文字まで"></textarea>
+        </section>
+        <ul>
+          <li>
+            <span class="sg-input_checkbox">
+              <input type="checkbox" ng-model="c.note.isRecOnly" ng-checked="c.isRecOnly() > -1">
+              <label class="sg-button transparent" ng-click="c.note.isRecOnly = !c.note.isRecOnly">人事担当者以外には非表示にする</label>
+            </span>
+          </li>
+        </ul>
+        <button class="sg-button secondary" ng-disabled="addNoteForm.$invalid" ng-click="c.submitNote()">保存</button>
+        <button class="sg-button transparent" ng-click="c.discardNote()" >キャンセル</button>
+        <p class="pg-applicant-advice-text light">※この操作を行っても応募者には通知されません。必要に応じて直接応募者へご連絡ください。</p>
+      </ng-form>
+    </div>
+  </div>
+
+</script>

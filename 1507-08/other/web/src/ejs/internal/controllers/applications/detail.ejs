@@ -1,0 +1,32 @@
+<script type="text/ng-template" id="/internal/controllers/applications/detail">
+
+<div class="cm-main_head">
+  <h1>{%c.applicationPromise.job.jobName%}</h1>
+</div>
+
+<div ng-init="c.init()">
+
+  <div class="cm-sub_head has-nav cf">
+    <nav class="cm-sub_head-nav">
+      <ul>
+        <li class="active">応募者</li>
+        <li ng-show="c.hasRecruiterRole()"><a href="/jobs#/{%c.application.job.jobId%}/edit/{%c.application.id%}">求人情報</a></li>
+      </ul>
+    </nav>
+    <div class="sg-navpanel pg-applicant-detail" ui-view="applicationNav"></div>
+  </div>
+
+  <section class="pg-detail">
+    <div class="pg-main">
+      <div ui-view="summaryView"></div>
+      <div class="pg-timeline">
+        <div ui-view="mainAction"></div>
+        <div ui-view="applicationTimeline"></div>
+        <div ui-view="applicationOriginal"></div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+</script>
