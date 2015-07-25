@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ja" ng-app="stanby">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Stanby Recruiting</title>
+  <link rel="stylesheet" href="<%- revAssets('stylesheets/stanby-common.css') %>">
+  <link rel="stylesheet" href="<%- revAssets('stylesheets/stanby-styleguide.css') %>">
+  <% styles(buf) %>
+  <link rel="shortcut icon" href="<%- revAssets('favicon.ico') %>">
+  <!--[if lt IE 9]>
+  <script src="<%- revAssets('scripts/vendor_js/html5shiv.js') %>"></script>
+  <![endif]-->
+  <script src="<%- revAssets('scripts/vendor_js/modernizr.custom.js') %>"></script>
+</head>
+<body>
+
+  <% contents(buf) %>
+
+  <% scripts(buf) %>
+
+  <noscript>
+    <iframe src="//www.googletagmanager.com/ns.html?id=GTM-T5GK3V" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+  </noscript>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-T5GK3V');</script>
+</body>
+</html>

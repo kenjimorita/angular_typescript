@@ -1,0 +1,34 @@
+@charset 'utf-8';
+
+.pg-visitor-main {
+  width: auto;
+  padding: 100px 12px 0;
+}
+.pg-visitor-box {
+  box-shadow: none;
+  padding: 0;
+}
+.pg-signup-main {
+  width: auto;
+  padding: 30px 12px 40px;
+}
+.pg-signup-main {
+  margin-top: 20px;
+}
+.pg-register_form .sg-form_element > label {
+  float: none;
+  width: auto;  
+  margin-top: 0;
+  margin-right: 0;
+  text-align: left;  
+  font-size: 14px;
+}
+.pg-register_form .sg-form_element-right {
+  margin-left: 0;
+}
+.pg-register_form .sg-form_element .sg-form_element-right > input[type=text],
+.pg-register_form .sg-form_element .sg-form_element-right > input[type=email],
+.pg-register_form .sg-form_element .sg-form_element-right > input[type=password] {
+  width: 100%;
+  font-size: 14px;
+}

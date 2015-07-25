@@ -1,0 +1,34 @@
+<div class="sg-datepicker">
+  <input type="text" ng-focus="show()" ng-keyup="setDate()">
+  <div class="sg-datepicker-element jsc-datepicker-element init" ng-show="isDatepickerShowing" ng-outerclick="hide()">
+    <div class="sg-datepicker-head">
+      <p>{{temporaryYear}}/{{temporaryMonth}}</p>
+      <a href="javascript: void(0);" class="sg-datepicker-head-prev" ng-click="prevMonth()" ng-if="hasPrev"></a>
+      <a href="javascript: void(0);" class="sg-datepicker-head-next" ng-click="nextMonth()"></a>
+    </div>
+    <div class="sg-datepicker-weekday">
+      <table>
+        <thead>
+          <tr>
+            <td>月</td>
+            <td>火</td>
+            <td>水</td>
+            <td>木</td>
+            <td>金</td>
+            <td>土</td>
+            <td>日</td>
+          </tr>
+        </thead>
+      </table>
+    </div>
+    <div class="sg-datepicker-body">
+      <table>
+        <tbody class="jsc-datepicker-body">
+          <tr ng-repeat="row in cells">
+            <td ng-repeat="col in row" ng-class="{selected: col.selected, past: col.past, today: col.today}" ng-click="decideDate(col.text, $event)">{{col.text}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

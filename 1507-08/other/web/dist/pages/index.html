@@ -1,0 +1,696 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ja" ng-app="stanby">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Stanby Recruiting</title>
+  <link rel="stylesheet" href="/stylesheets/stanby-common.css">
+  <link rel="stylesheet" href="/stylesheets/stanby-styleguide.css">
+  
+  <!--[if lt IE 9]>
+  <link rel="stylesheet" href="/stylesheets/stanby-ie8.css">
+  <![endif]-->
+  
+  
+<link rel="stylesheet" href="/stylesheets/stanby-dashboard.css">
+
+
+
+  <link rel="shortcut icon" href="/favicon.ico">
+  <!--[if lt IE 9]>
+  <script src="/scripts/vendor_js/html5shiv.js"></script>
+  <![endif]-->
+  <script src="/scripts/vendor_js/modernizr.custom.js"></script>
+</head>
+<body>
+
+  
+  
+
+<div id="jsi-wrapper" ng-controller="HeadMenuCtrl" class="cm-wrapper">
+  <header class="cm-header">
+    <ul class="cm-header-breadcrumbs" ng-controller="BreadCrumbsCtrl">
+      <li ng-repeat="breadcrumb in breadcrumbs" ng-class="{show: breadcrumbs.length}"><a href="{%breadcrumb.url%}" ng-if="breadcrumb.url">{%breadcrumb.text%}</a><span ng-if="!breadcrumb.url">{%breadcrumb.text%}</span></li>
+    </ul>
+    <ul class="cm-header-nav">
+      <li class="cm-header-nav-account" id="jsi-nav-account">
+        <a href="javascript: void(0);" ng-class="{show: 'accountName'}">{%accountName%}</a>
+        <ul>
+          <li><a href="/profile#/">あなたのアカウント設定</a></li>
+          <li class="cm-header-nav-account-logout"><a href ng-click="logout()">ログアウト</a></li>
+        </ul>
+      </li>
+    </ul>
+  </header>
+  <div class="cm-row-main">
+    <main class="cm-main">
+      
+<ui-view></ui-view>
+
+<script type="text/ng-template" id="/internal/controllers/dashboard/base">
+  <section ng-init="c.init()">
+    <div ui-view="summary"></div>
+    <div class="pg-rowmain cf">
+      <div ui-view="side" class="pg-side"></div>
+      <div class="pg-main">
+        <div class="pg-sections">
+          <section ui-view="interviews-unrated" class="pg-section" ng-if="c.hasInterviewerRole"></section>
+          <section ui-view="docscreenings-unrated" class="pg-section" ng-if="c.hasInterviewerRole"></section>
+          <section ui-view="job-application-counts" class="pg-section" ng-if="c.hasRecruiterRole"></section>
+          <section ui-view="interviews-today" class="pg-section" ng-if="c.hasRecruiterRole"></section>
+        </div>
+        <section ui-view="account" class="pg-account" ng-if="c.hasAdminRole"></section>
+      </div>
+    </div>
+  </section>
+</script>
+
+<script type="text/ng-template" id="/internal/controllers/dashboard/summary">
+  <div ng-init="smc.init()" class="pg-summary">
+    <a href="/jobs#/add" class="pg-summary-newjob sg-button sg-button-l secondary plus" ng-if="smc.hasRecruiterRole">新しい求人を作成</a>
+    <div class="pg-summary-data cf">
+      <h1 class="pg-summary-company">{%smc.corporate.name%}</h1>
+      <div class="pg-summary-counts cf">
+        <div class="pg-summary-count" ng-if="smc.hasRecruiterRole">
+          <a href="/jobs" class="cf">
+            <span class="pg-summary-count-number">{%smc.numOfNoActionApplications%}</span>
+            <span class="pg-summary-count-text">
+              <span class="pg-summary-count-status">未対応</span>
+              <span>全{%smc.numOfJobsWithNoActionApplications%}求人</span>
+            </span>
+          </a>
+        </div>
+        <div class="pg-summary-count" ng-if="smc.hasRecruiterRole">
+          <a href="/application#/interviews{%smc.getTodayParams()%}" class="cf">
+            <span class="pg-summary-count-number">{%smc.interviewsTodayCount%}</span>
+            <span class="pg-summary-count-text">
+              <span class="pg-summary-count-status">今日の面接</span>
+              <span>{%smc.isoDateNow | date: 'MM/dd'%}（{%smc.getWeekdayByDate(smc.isoDateNow)%}）</span>
+            </span>
+          </a>
+        </div>
+        <div class="pg-summary-count" ng-if="smc.hasInterviewerRole">
+          <a href="/application#/interviews/mine?limit=20&interviewType=INT&feedback=N" class="cf">
+            <span class="pg-summary-count-number">{%smc.interviewsUnratedCount%}</span>
+            <span class="pg-summary-count-text">
+              <span class="pg-summary-count-status">
+                未評価の<br>
+                担当面接
+              </span>
+            </span>
+          </a>
+        </div>
+        <div class="pg-summary-count" ng-if="smc.hasInterviewerRole">
+          <a href="/application#/interviews/mine?limit=20&interviewType=DOC&feedback=N" class="cf">
+            <span class="pg-summary-count-number">{%smc.docscreeningsUnratedCount%}</span>
+            <span class="pg-summary-count-text">
+              <span class="pg-summary-count-status">
+                未評価の<br>
+                書類選考
+              </span>
+            </span>
+          </a>
+        </div>
+        <a href="/boards/{%smc.account.corporateId%}/jobs" class="pg-publishedlist" target="_blank" ng-if="smc.jobsRecruiting.length">公開中の一覧表示</a>
+      </div>
+    </div>
+  </div>
+</script>
+
+<script type="text/ng-template" id="/internal/controllers/dashboard/interviews-unrated">
+  <div ng-init="iuc.init()">
+    <h2 class="pg-section-head">
+      <a href="/application#/interviews/mine?limit=20&interviewType=INT&feedback=N">未評価の面接
+        <span class="pg-section-head-all" ng-if="iuc.interviewsUnratedCount > 5">全
+          <span>{%iuc.interviewsUnratedCount%}</span>
+          件
+        </span>
+      </a>
+    </h2>
+    <div class="pg-section-body" ng-if="iuc.interviewsUnrated.length > 0">
+      <table class="cm-main_table pg-section-table">
+        <colgroup>
+          <col width="150">
+          <col width="180">
+          <col width="180">
+          <col width="auto">
+        </colgroup>
+        <thead>
+          <tr>
+            <td>時間</td>
+            <td>場所</td>
+            <td>応募者</td>
+            <td>応募職種</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="interview in iuc.interviewsUnrated" ng-if="$index < 5">
+            <td>
+              <a href="/application#/{%interview.application.applicationId%}">
+                <span ng-if="interview.startAt && interview.endAt">
+                  {%interview.startAt | date: 'yyyy年M月d日'%}<br>
+                  {%interview.startAt | date: 'HH:mm'%} - {%interview.endAt | date: 'HH:mm'%}
+                </span>
+                <span ng-if="!interview.startAt && !interview.endAt" class="sg-column-empty">未設定</span>
+              </a>
+            </td>
+            <td>
+              <a href="/application#/{%interview.application.applicationId%}">
+                <span ng-if="interview.place">{%interview.place%}</span>
+                <span ng-if="!interview.place" class="sg-column-empty">未設定</span>
+              </a>
+            </td>
+            <td>
+              <a href="/application#/{%interview.application.applicationId%}">
+                <span>{%interview.application.fullName%}</span>
+                <span class="pg-section-table-explain">
+                  <span ng-if="interview.application.lastOrganization">{%interview.application.lastOrganization%}</span>
+                  <span ng-if="interview.application.lastTitle">{%interview.application.lastTitle%}</span>
+                </span>
+              </a>
+            </td>
+            <td>
+              <a class="breakword" href="/application#/{%interview.application.applicationId%}">
+                {%interview.job.jobName%}
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <a href="/application#/interviews/mine?limit=20&interviewType=INT&feedback=N" class="pg-section-continue sg-button sg-button-l" ng-if="iuc.interviewsUnrated.length > 0">すべての担当面接</a>
+    <div class="pg-section-body" ng-if="iuc.interviewsUnratedCount == 0">
+      <p class="pg-section-empty">未評価の面接はありません</p>
+    </div>
+  </div>
+</script>
+
+<script type="text/ng-template" id="/internal/controllers/dashboard/docscreenings-unrated">
+  <div ng-init="duc.init()">
+    <h2 class="pg-section-head">
+      <a href="/application#/interviews/mine?limit=20&interviewType=DOC&feedback=N">未評価の書類選考
+        <span class="pg-section-head-all" ng-if="duc.docscreeningsUnratedCount > 5">全
+          <span>{%duc.docscreeningsUnratedCount%}</span>
+          件
+        </span>
+      </a>
+    </h2>
+    <div class="pg-section-body" ng-if="duc.docscreeningsUnrated.length > 0">
+      <table class="cm-main_table pg-section-table">
+        <colgroup>
+          <col width="270">
+          <col width="auto">
+          <col width="180">
+        </colgroup>
+        <thead>
+          <tr>
+            <td>応募者</td>
+            <td>応募職種</td>
+            <td>書類選考依頼日</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="docscreening in duc.docscreeningsUnrated" ng-if="$index < 5">
+            <td>
+              <a href="/application#/{%docscreening.application.applicationId%}">
+                <span>{%docscreening.application.fullName%}</span>
+                <span class="pg-section-table-explain">
+                  <span ng-if="docscreening.application.lastOrganization">{% docscreening.application.lastOrganization %}</span>
+                  <span ng-if="docscreening.application.lastTitle">{%docscreening.application.lastTitle%}</span>
+                </span>
+              </a>
+            </td>
+            <td>
+              <a class="breakword" href="/application#/{%docscreening.application.applicationId%}">
+                {%docscreening.job.jobName%}
+              </a>
+            </td>
+            <td>
+              <a href="/application#/{%docscreening.application.applicationId%}">
+                
+                {%docscreening.updatedAt | date: "yyyy年M月d日" %}
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <a href="/application#/interviews/mine?limit=20&interviewType=DOC&feedback=N" class="pg-section-continue sg-button sg-button-l" ng-if="duc.docscreenings.length > 0">すべての書類選考</a>
+    <div class="pg-section-body" ng-if="duc.docscreenings.length == 0">
+      <p class="pg-section-empty">未評価の書類選考はありません</p>
+    </div>
+  </div>
+</script>
+
+<script type="text/ng-template" id="/internal/controllers/dashboard/job-application-counts">
+  <div ng-init="jac.init()">
+    <h2 class="pg-section-head">
+      <a href="/jobs#/">応募受付中の求人
+        <span class="pg-section-head-all">全
+          <span>{%jac.jobsRecruiting.length%}</span>
+          件
+        </span>
+      </a>
+    </h2>
+    <div class="pg-section-body" ng-if="jac.jobsRecruiting.length > 0">
+      <table class="cm-main_table pg-section-table">
+        <colgroup>
+          <col width="auto">
+          <col width="72">
+          <col width="72">
+          <col width="86">
+          <col width="58">
+          <col width="58">
+          <col width="72">
+          <col width="58">
+        </colgroup>
+        <thead>
+          <tr>
+            <td>職種 / 募集ポジション</td>
+            <td class="count">応募数</td>
+            <td class="count">未対応</td>
+            <td class="count">書類選考</td>
+            <td class="count">面接</td>
+            <td class="count">内定</td>
+            <td class="count">不合格</td>
+            <td class="count">辞退</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="job in jac.jobsRecruiting" ng-if="$index < 5">
+            <td>
+              <a class="breakword" ng-href="/application#/?jobId={%job.id%}">
+                {%job.name%}
+              </a>
+            </td>
+            <td class="count">
+              <a ng-href="/application#/?jobId={%job.id%}">
+                {%job.countAll %}
+              </a>
+            </td>
+            <td class="attention count">
+              <a ng-href="/application#/?jobId={%job.id%}&statuses=NOA">
+                {%job.byStage.NOA %}
+              </a>
+            </td>
+            <td class="count">
+              <a ng-href="/application#/?jobId={%job.id%}&statuses=SCR">
+                {%job.byStage.SCR %}
+              </a>
+            </td>
+            <td class="count">
+              <a ng-href="/application#/?jobId={%job.id%}&statuses=PRG">
+                {%job.byStage.PRG %}
+              </a>
+            </td>
+            <td class="count">
+              <a ng-href="/application#/?jobId={%job.id%}&statuses=OFR">
+                {%job.byStage.OFR %}
+              </a>
+            </td>
+            <td class="count">
+              <a ng-href="/application#/?jobId={%job.id%}&statuses=RJC">
+                {%job.byStage.RJC %}
+              </a>
+            </td>
+            <td class="count">
+              <a ng-href="/application#/?jobId={%job.id%}&statuses=DEC">
+                {%job.byStage.DEC %}
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <a href="/jobs" class="pg-section-continue sg-button sg-button-l" ng-if="jac.jobsRecruiting.length > 0">すべての求人</a>
+    <div class="pg-section-body" ng-if="jac.jobsRecruiting.length == 0">
+      <p class="pg-section-empty">
+        応募受付中の求人はありません<br>
+        <a href="/jobs#/add">求人を作成して応募受付を開始する</a>
+      </p>
+    </div>
+  </div>
+</script>
+
+<script type="text/ng-template" id="/internal/controllers/dashboard/interviews-today">
+  <div ng-init="itc.init()">
+    <h2 class="pg-section-head">
+      <a href="/application#/interviews{%itc.getTodayParams()%}">今日の面接
+        <span class="pg-section-head-all" ng-if="itc.interviewsTodayCount > 5">全
+          <span>{%itc.interviewsTodayCount%}</span>
+          件
+        </span>
+      </a>
+    </h2>
+    <div class="pg-section-body" ng-if="itc.interviewsToday.length > 0">
+      <table class="cm-main_table pg-section-table">
+        <colgroup>
+          <col width="125">
+          <col width="145">
+          <col width="180">
+          <col width="auto">
+        </colgroup>
+        <thead>
+          <tr>
+            <td>時間</td>
+            <td>場所</td>
+            <td>応募者</td>
+            <td>応募職種</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="interview in itc.interviewsToday" ng-if="$index < 5">
+            <td>
+              <a href="/application#/{%interview.application.applicationId%}">
+                <span ng-if="interview.startAt && interview.endAt">
+                  {%interview.startAt | date: 'HH:mm'%} - {%interview.endAt | date: 'HH:mm'%}
+                </span>
+              </a>
+            </td>
+            <td>
+              <a href="/application#/{%interview.application.applicationId%}">
+                <span ng-if="interview.place">{%interview.place%}</span>
+                <span ng-if="!interview.place" class="sg-column-empty">未設定</span>
+              </a>
+            </td>
+            <td>
+              <a href="/application#/{%interview.application.applicationId%}">
+                <span>{%interview.application.fullName%}</span>
+                <span class="pg-section-table-explain">
+                  <span ng-if="interview.application.lastOrganization">{%interview.application.lastOrganization%}</span>
+                  <span ng-if="interview.application.lastTitle">{%interview.application.lastTitle%}</span>
+                </span>
+              </a>
+            </td>
+            <td>
+              <a class="breakword" href="/application#/{%interview.application.applicationId%}">
+                {%interview.job.jobName%}
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <a href="/application#/interviews{%itc.getTodayParams()%}" class="pg-section-continue sg-button sg-button-l" ng-if="itc.interviews.length > 0">すべての面接</a>
+    <div class="pg-section-body" ng-if="itc.interviewsToday.length == 0">
+      <p class="pg-section-empty">今日の面接はありません</p>
+    </div>
+  </div>
+</script>
+
+<script type="text/ng-template" id="/internal/controllers/dashboard/account">
+  <div ng-init="acc.init()">
+    <h2 class="pg-account-head">アカウント管理</h2>
+    <div class="pg-account-row cf">
+      <section class="pg-account-users">
+        <h3 class="pg-section-head"><a href="/users">ユーザー<span class="pg-section-head-all">全<span>{%acc.users.length%}</span>ユーザー</span></a></h3>
+        <p class="pg-account-explain">管理者、採用担当者、面接官のアカウント作成・編集</p>
+        <a href="/users" class="pg-section-continue sg-button sg-button-l">すべてのユーザーアカウント</a>
+      </section>
+      <section class="pg-account-corporate">
+        <h3 class="pg-section-head"><a href="/users#/corpInfo">企業</a></h3>
+        <p class="pg-account-explain">企業アカウントの作成・編集</p>
+        <a href="/users#/corpEdit" class="pg-section-continue sg-button sg-button-l">企業アカウントを編集</a>
+      </section>
+    </div>
+  </div>
+</script>
+
+<script type="text/ng-template" id="/internal/controllers/dashboard/side">
+  <div ng-init="sdc.init()">
+    <div class="pg-side-beginner" ng-if="sdc.hasRecruiterRole">
+      <p class="pg-side-beginner-head">初めてご利用する方へ</p>
+      <ul>
+        
+        <li><a href="/corporate/public#/edit">公開企業プロフィールを作成</a></li>
+        <li><a href="/corporate/public#/edit">企業ロゴをアップロード</a></li>        
+        <li><a href="/jobs#/add">最初の求人ページを作成</a></li>
+      </ul>
+    </div>
+    <div class="pg-side-section" ng-if="sdc.hasAdminRole">
+      <p class="pg-side-section-head">お問い合わせ</p>
+      <p><a href="/contact">Stanby Recruiting へのお問い合わせ</a></p>
+    </div>
+    <div class="pg-side-section" ng-if="sdc.hasRecruiterRole && sdc.jobsReady.length > 0">
+      <p class="pg-side-section-head">下書き求人（{%sdc.jobsReady.length%}）</p>
+      <ul>
+        <li ng-repeat="job in sdc.jobsReady">
+          <a href="/jobs#/{%job.id%}/edit/">{%job.name%}</a>
+        </li>
+      </ul>
+    </div>
+    <div class="pg-side-section">
+      <p class="pg-side-section-head">採用担当者へのお問い合わせ</p>
+      <ul class="pg-side-contactmembers">
+        <li ng-repeat="user in sdc.usersRecruiter | filter:'INT'">
+          {%user.fullName%}
+          <span>{%user.email%}</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</script>
+
+
+      <!--[if lt IE 9]>
+        <div class="alert alert-danger"><span>現在使用中のInternet Explorerのバージョンはサポートされていません。</span></div>
+      <![endif]-->
+    </main>
+  </div>
+</div>
+<nav class="cm-globalnav" ng-controller="menuToggleCtrl" ng-hide="hideNav">
+  <ul>
+
+    <li>
+      <a href="/" class="sg-icon home">
+        <span class="cm-globalnav_title">ダッシュボード</span>
+      </a>
+    </li>
+
+    <li ng-show="isRecruiter">
+      <a href="/jobs#/" class="sg-icon recruit">
+        <span class="cm-globalnav_title">求人</span>
+      </a>
+    </li>
+
+    <li ng-show="isRecruiter">
+      <a href="/application#/" class="sg-icon candidate">
+        <span class="cm-globalnav_title">応募者</span>
+      </a>
+    </li>
+
+    <li ng-show="isRecruiter">
+      <a href="/application#/interviews" class="sg-icon interview">
+        <span class="cm-globalnav_title">選考</span>
+      </a>
+    </li>
+
+    <li ng-show="isInterviewer">
+      <a href="/application#/interviews/mine" class="sg-icon my-interview">
+        <span class="cm-globalnav_title">担当の選考</span>
+      </a>
+    </li>
+
+    <li ng-show="isRecruiter">
+      <a href="/corporate/public#/edit" class="sg-icon company">
+        <span class="cm-globalnav_title cm-globalnav-multirows">公開企業<br>プロフィール</span>
+      </a>
+    </li>
+
+    <li>
+      <a href="/users#/" class="sg-icon account" ng-show="isAdmin">
+        <span class="cm-globalnav_title">アカウント管理</span>
+      </a>
+    </li>
+
+    <li>
+      <a href="javascript://;" onclick="window.open('/documents/Stanby_Recruiting_企業様向け操作マニュアル.pdf', 'TextHelp', 'window.innerWidth, window.innerHeight,menubar=yes, toolbar=yes, scrollbars=yes, resizable=yes')" class="sg-icon manual">
+        <span class="cm-globalnav_title">PDFマニュアル</span>
+      </a>
+    </li>
+
+  </ul>
+</nav>
+
+
+  <footer class="cm-last-footer">
+    <ul>
+      <li><a href="/contents/terms">利用規約</a></li>
+      <li><a href="/contents/privacy">プライバシーポリシー</a></li>
+      <li><a href="/contents/guideline">掲載ガイドライン</a></li>
+      <li><a href="/contact">お問い合わせ</a></li>
+    </ul>
+    <small>Copyright &copy; BizReach, Inc. All Rights Reserved.</small>
+  </footer>
+
+  <div id="jsi-main-spinner" class="cm-spinner-overlay"></div>
+  <toast></toast>
+  <script type="text/ng-template" id="template/timepicker/timepicker.html">
+
+  <div class="sg-bs-timepicker">
+    <input type="text" ng-model="hours" ng-change="updateHours()" ng-readonly="readonlyInput" maxlength="2">
+    <span>:</span>
+    <input type="text" ng-model="minutes" ng-change="updateMinutes()" ng-readonly="readonlyInput" maxlength="2">
+    <span ng-if="invalidHours || invalidMinutes" class="sg-error">無効な時間です</span>
+  </div>
+
+</script>
+
+
+<!-- NOTE(kitaly) 元のテンプレートに独自の　クラスを付与しただけ -->
+<script type="text/ng-template" id="template/datepicker/popup.html">
+
+<ul class="sg-bs-datepicker" ng-style="{display: (isOpen && 'block') || 'none', top: position.top+'px', left: position.left+'px'}" ng-keydown="keydown($event)">
+  <li ng-transclude></li>
+    <li ng-if="showButtonBar" class="sg-bs-datepicker-popup-control">
+      <a class="btn btn-sm btn-info" ng-click="select('today')">{{ getText('current') }}</a>
+      &nbsp;-&nbsp;
+      <a class="btn btn-sm btn-danger" ng-click="select(null)">{{ getText('clear') }}</a>
+      <!--&nbsp;-&nbsp;-->
+      <!--<a class="btn btn-sm btn-success pull-right" ng-click="close()">{{ getText('close') }}</a>-->
+    </li>
+</ul>
+
+</script>
+
+
+<!-- NOTE(kitaly) 元のテンプレートに独自の　クラスを付与しただけ -->
+<script type="text/ng-template" id="template/datepicker/day.html">
+
+<table role="grid" aria-labelledby="{{uniqueId}}-title" aria-activedescendant="{{activeDateId}}">
+  <thead>
+    <tr class="sg-bs-datepicker-head">
+      <th colspan="2" class="sg-bs-datepicker-head-prev" ng-click="move(-1)">
+        <!--<button type="button" class="btn btn-default btn-sm pull-left" ng-click="move(-1)" tabindex="-1">-->
+          <!--<i class="glyphicon glyphicon-chevron-left"></i>-->
+        <!--</button>-->
+      </th>
+      <th colspan="{{5 + showWeeks}}" id="{{uniqueId}}-title">
+        <!--<button id="{{uniqueId}}-title" role="heading" aria-live="assertive" aria-atomic="true" type="button" class="btn btn-default btn-sm" ng-click="toggleMode()" ng-disabled="datepickerMode === maxMode" tabindex="-1" style="width:100%;">-->
+          <strong>{{title}}</strong>
+        <!--</button>-->
+      </th>
+      <th colspan="2" class="sg-bs-datepicker-head-next" ng-click="move(1)">
+        <!--<button type="button" class="btn btn-default btn-sm pull-right" ng-click="move(1)" tabindex="-1">-->
+          <!--<i class="glyphicon glyphicon-chevron-right"></i>-->
+        <!--</button>-->
+      </th>
+    </tr>
+    <tr class="sg-bs-datepicker-weekday">
+      <th></th>
+      <th ng-show="showWeeks" class="text-center"></th>
+      <th ng-repeat="label in labels track by $index" class="text-center"><small aria-label="{{label.full}}">{{label.abbr}}</small></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody class="sg-bs-datepicker-body">
+    <tr ng-repeat="row in rows track by $index">
+      <td></td>
+      <td ng-show="showWeeks" class="text-center h6"><em>{{ weekNumbers[$index] }}</em></td>
+      <td ng-repeat="dt in row track by dt.date" class="text-center" role="gridcell" id="{{dt.uid}}" aria-disabled="{{!!dt.disabled}}"
+          ng-class="{'btn-info': dt.selected, active: isActive(dt), 'selected': dt.selected }" ng-click="select(dt.date)" ng-disabled="dt.disabled">
+        <!--<button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt), selected: dt.selected}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1">-->
+          <span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}">{{dt.label}}</span>
+        <!--</button>-->
+      </td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+
+</script>
+
+
+<script type="text/ng-template" id="template/pagination/pagination.html">
+<div class="sg-pager">
+
+  <span ng-if="directionLinks" class="sg-pager-prev" ng-class="{hidden: noPrevious()}">
+    <a href ng-click="selectPage(page - 1, $event)">{{getText('previous')}}</a>
+  </span>
+
+  <span ng-if="directionLinks" class="sg-pager-next" ng-class="{hidden: noNext()}">
+    <a href ng-click="selectPage(page + 1, $event)">{{getText('next')}}</a>
+  </span>
+
+  <div class="sg-pager-list" ng-class="{alignleft: noPrevious() && !noNext(),alignright: noNext() && !noPrevious()}">
+
+    <ul>
+      <!--<li ng-if="boundaryLinks && !noPrevious()">-->
+        <!--<a href ng-click="selectPage(1, $event)">1</a>-->
+      <!--</li>-->
+
+      <li ng-repeat="page in pages track by $index" ng-class="{active: page.active}">
+        <a href ng-click="selectPage(page.number, $event)" ng-if="!page.active">{{page.text}}</a>
+        <a ng-if="page.active">{{page.text}}</a>
+      </li>
+
+      <!--<li ng-if="boundaryLinks && !noNext()">-->
+        <!--<a href ng-click="selectPage(totalPages, $event)">{{totalPages}}</a>-->
+      <!--</li>-->
+    </ul>
+
+    <p class="sg-pager-guide">
+      <span><strong> {{page}} </strong></span>/ 全 {{totalPages}} ページ
+    </p>
+  </div>
+
+
+</div>
+</script>
+
+  <st-totop></st-totop>
+
+
+  
+  <!--[if lt IE 9]>
+  <script src="/scripts/vendor_js/respond.js"></script>
+  <script src="/scripts/vendor_js/es5-shim.js"></script>
+  <![endif]-->
+  <script src="/scripts/vendor_js/startWithShim.js"></script>
+  <script src="/scripts/vendor_js/lodash.js"></script>
+  <script src="/scripts/vendor_js/jquery.js"></script>
+  <script src="/scripts/vendor_js/jquery.easing.min.js"></script>
+  <script src="/scripts/vendor_js/jquery.imgcentering.min.js"></script>
+  <script src="/scripts/vendor_js/angular.js"></script>
+  <script src="/scripts/vendor_js/angular-animate.js"></script>
+  <script src="/scripts/vendor_js/angular-sanitize.js"></script>
+  <script src="/scripts/vendor_js/angular-locale_ja-jp.js"></script>
+  <script src="/scripts/vendor_js/angular-ui-router.js"></script>
+  <script src="/scripts/vendor_js/ui-utils.js"></script>
+  <script src="/scripts/vendor_js/ui-bootstrap-tpls.js"></script>
+  <script src="/scripts/vendor_js/ngToast.js"></script>
+  <script src="/scripts/stanby-utils.js"></script>
+  <script src="/scripts/stanby-app.js"></script>
+  
+  
+<script type="text/javascript" src="/scripts/dashboard-page.js"></script>
+
+
+
+
+  <noscript>
+    <iframe src="//www.googletagmanager.com/ns.html?id=GTM-T5GK3V" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+  </noscript>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-T5GK3V');</script>
+</body>
+</html>
+
+
+

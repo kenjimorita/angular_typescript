@@ -1,0 +1,247 @@
+<script type="text/ng-template" id="/internal/controllers/applications/edit">
+
+<div class="cm-main_head st-with-button cf">
+  <h1 ng-if="acc.isEdit">応募者情報編集</h1>
+  <h1 ng-if="!acc.isEdit">応募者情報入力</h1>
+</div>
+
+<form name="appForm" ng-init="acc.init()" novalidate st-editchecker>
+  <div class="cm-main_body">
+    <section class="sg-box detail">
+      <h3>基本情報</h3>
+      <div class="sg-form bordered">
+
+        <% /* 求人選択 */ %>
+        <div class="sg-form_element">
+          <label class="sg-form_required">求人選択</label>
+          <div class="sg-form_element-right">
+            <span class="sg-select"><select class="sg-form_element sg-form_element-xl"
+                    required
+                    name="jobId"
+                    ng-model="acc.jobId"
+                    ng-options="job.id as (job.jobIdAlias + ' - ' +  job.name) for job in acc.jobList | orderBy:'+jobIdAlias'"></select></span>
+            <span ng-class="{'sg-form_valid': appForm.jobId.$valid}"></span>
+            <ul class="sg-error" ng-if="appForm.jobId.$dirty">
+              <li ng-if="appForm.jobId.$error.required">必須項目です</li>
+            </ul>
+          </div>
+        </div>
+
+        <% /*  選考ステータス */ %>
+        <div class="sg-form_element" ng-if="!acc.isEdit">
+          <label class="sg-form_required">選考ステータス</label>
+          <div class="sg-form_element-right">
+            <span class="sg-select"><select class="sg-form_element-s"
+                    required
+                    name="selectionStage"
+                    ng-model="acc.model.selectionStage"
+                    ng-options="su.code as su.name for su in acc.enums.selectionStageOptions | orderBy:'+sortNo'"></select></span>
+            <span ng-class="{'sg-form_valid': appForm.selectionStage.$valid}"></span>
+            <ul class="sg-error" ng-if="appForm.selectionStage.$dirty">
+              <li ng-if="appForm.selectionStage.$error.required">必須項目です</li>
+            </ul>
+          </div>
+        </div>
+
+        <% /*  氏名 */ %>
+        <div class="sg-form_element">
+          <label class="sg-form_required">氏名</label>
+          <div class="sg-form_element-right">
+            <input type="text" class="full" required
+                   name="fullName" ng-model="acc.model.profile.fullName"
+                   maxlength="100" stb-tooltip="{% $viewLength %}/100文字まで" placeholder="例）田中　一郎">
+            <span ng-class="{'sg-form_valid': appForm.fullName.$valid}"></span>
+            <ul class="sg-error" ng-if="appForm.fullName.$dirty">
+              <li ng-if="appForm.fullName.$error.required">必須項目です</li>
+            </ul>
+          </div>
+        </div>
+
+        <% /*  氏名(かな) */ %>
+        <div class="sg-form_element">
+          <label class="sg-form">氏名(かな)</label>
+          <div class="sg-form_element-right">
+            <input type="text" class="full"
+                   name="fullNameKana" ng-model="acc.model.profile.fullNameKana"
+                   maxlength="100" stb-tooltip="{% $viewLength %}/100文字まで" placeholder="例）たなか　たろう">
+          </div>
+        </div>
+
+        <% /*  生年月日 */ %>
+        <div class="sg-form_element">
+          <label class="sg-form">生年月日</label>
+          <div class="sg-form_element-right">
+            <span class="sg-select"><select class="sg-form_element-s" name="birthDateYear" ng-model="acc.birthDateYear"
+                    ng-options="years.value as years.name for years in acc.years"></select></span>
+            <span class="sg-select"><select class="sg-form_element-xs" ng-model="acc.birthDateMonth">
+              <option value=""></option>
+              <option value="1">1月</option>
+              <option value="2">2月</option>
+              <option value="3">3月</option>
+              <option value="4">4月</option>
+              <option value="5">5月</option>
+              <option value="6">6月</option>
+              <option value="7">7月</option>
+              <option value="8">8月</option>
+              <option value="9">9月</option>
+              <option value="10">10月</option>
+              <option value="11">11月</option>
+              <option value="12">12月</option>
+            </select></span>
+            <span class="sg-select"><select class="sg-form_element-xs" ng-model="acc.birthDateDay">
+              <option value=""></option>
+              <option value="1">1日</option>
+              <option value="2">2日</option>
+              <option value="3">3日</option>
+              <option value="4">4日</option>
+              <option value="5">5日</option>
+              <option value="6">6日</option>
+              <option value="7">7日</option>
+              <option value="8">8日</option>
+              <option value="9">9日</option>
+              <option value="10">10日</option>
+              <option value="11">11日</option>
+              <option value="12">12日</option>
+              <option value="13">13日</option>
+              <option value="14">14日</option>
+              <option value="15">15日</option>
+              <option value="16">16日</option>
+              <option value="17">17日</option>
+              <option value="18">18日</option>
+              <option value="19">19日</option>
+              <option value="20">20日</option>
+              <option value="21">21日</option>
+              <option value="22">22日</option>
+              <option value="23">23日</option>
+              <option value="24">24日</option>
+              <option value="25">25日</option>
+              <option value="26">26日</option>
+              <option value="27">27日</option>
+              <option value="28">28日</option>
+              <option value="29">29日</option>
+              <option value="30">30日</option>
+              <option value="31">31日</option>
+            </select></span>
+          </div>
+        </div>
+
+        <% /*  電話番号 */ %>
+        <div class="sg-form_element">
+          <label class="sg-form_required">電話番号</label>
+          <div class="sg-form_element-right">
+            <input type="text"
+                   name="phone" ng-model="acc.model.profile.phone"
+                   st-validate-phone ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0}}"
+                   maxlength="25" stb-tooltip="電話番号かメールアドレスのどちらかを入力してください\n({% $viewLength %}/25文字まで)"
+                   ui-validate="{compare: '$value || acc.model.profile.email'}"
+                   ui-validate-watch="{compare: 'acc.model.profile.email'}" placeholder="例）03-XXXX-XXXX">
+            <span ng-class="{'sg-form_valid': appForm.phone.$valid}"></span>
+            <ul class="sg-error" ng-show="appForm.phone.$dirty">
+              <li ng-show="appForm.phone.$error.compare">電話番号かメールアドレスのどちらかは必須項目です</li>
+              <li ng-show="appForm.phone.$error.phone">電話番号の形式を確認してください</li>
+            </ul>
+          </div>
+        </div>
+
+        <% /*  メールアドレス */ %>
+        <div class="sg-form_element">
+          <label class="sg-form_required">メールアドレス</label>
+          <div class="sg-form_element-right">
+            <input type="text"
+                   name="email" ng-model="acc.model.profile.email"
+                   st-validate-email ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0}}"
+                   maxlength="100" stb-tooltip="電話番号かメールアドレスのどちらかを入力してください\n({% $viewLength %}/100文字まで)"
+                   ui-validate="{compare: '$value || acc.model.profile.phone'}"
+                   ui-validate-watch="{compare: 'acc.model.profile.phone'}" placeholder="例）sample@stanby.com">
+            <span ng-class="{'sg-form_valid': appForm.email.$valid}"></span>
+            <ul class="sg-error" ng-show="appForm.email.$dirty">
+              <li ng-show="appForm.email.$error.compare">電話番号かメールアドレスのどちらかは必須項目です</li>
+              <li ng-show="appForm.email.$error.stEmail">メールアドレスの形式を確認してください</li>
+            </ul>
+          </div>
+        </div>
+
+        <% /*  所属組織 */ %>
+        <div class="sg-form_element">
+          <label class="sg-form">会社・学校名</label>
+          <div class="sg-form_element-right">
+            <input type="text"
+                   name="lastOrganization" ng-model="acc.model.profile.lastOrganization"
+                   maxlength="50" stb-tooltip="{% $viewLength %}/50文字まで" placeholder="例）株式会社ビズリーチ">
+          </div>
+        </div>
+
+        <% /*  部署・役職・学部など */ %>
+        <div class="sg-form_element">
+          <label class="sg-form">部署・役職・学部</label>
+          <div class="sg-form_element-right">
+            <input type="text"
+                   name="lastTitle" ng-model="acc.model.profile.lastTitle"
+                   maxlength="50" stb-tooltip="{% $viewLength %}/50文字まで" placeholder="例）人事部">
+          </div>
+        </div>
+
+      </div>
+    </section>
+    <section class="sg-box detail">
+      <div class="sg-box-head cf">
+        <h3>自由記入欄</h3>
+        <a href="javascript://;" onclick="window.open('/contents/markdown', 'TextHelp', 'window.innerWidth, window.innerHeight,menubar=yes, toolbar=yes, scrollbars=yes, resizable=yes')" class="sg-button transparent" st-link-tooltip="別ウィンドウで開く">テキスト整形ルール</a>
+      </div>
+      <div class="sg-form-markdown">
+        <div class="sg-form-markdown-html" ng-bind-html="acc.htmlMessage" ng-class="'acc.isEditMessageMD' ? 'sg-form-markdown-html-is-preview' : ''" ng-if="!acc.isEditMessageMD" ng-click="acc.editMarkdown('message')"></div>
+        <textarea name="message"
+                  class="sg-form-markdown-textarea"
+                  ng-model="acc.model.message"
+                  st-autoresize-textarea
+                  maxlength="10000"
+                  ng-if="acc.isEditMessageMD"></textarea>
+        <button type="button" class="sg-button" ng-click="acc.editMarkdown('message')" ng-if="!acc.isEditMessageMD">テキストを編集</button>
+        <button type="button" class="sg-button" ng-click="acc.previewHTML('message')" ng-if="acc.isEditMessageMD" ng-show="acc.model.message.length > 0">テキストのプレビュー</button>
+      </div>
+     </section>
+     <section class="sg-box detail">
+      <div class="sg-box-head cf">
+        <h3>レジュメ</h3>
+        <a href="javascript://;" onclick="window.open('/contents/markdown', 'TextHelp', 'window.innerWidth, window.innerHeight,menubar=yes, toolbar=yes, scrollbars=yes, resizable=yes')" class="sg-button transparent" st-link-tooltip="別ウィンドウで開く">テキスト整形ルール</a>
+      </div>
+      <div class="sg-form-markdown">
+        <div class="sg-form-markdown-html" ng-bind-html="acc.htmlResumeFreeText" ng-class="'acc.isEditResumeFreeTextMD' ? 'sg-form-markdown-html-is-preview' : ''" ng-if="!acc.isEditResumeFreeTextMD" ng-click="acc.editMarkdown('resumeFreeText')"></div>
+        <textarea name="resumeFreeText"
+                  class="sg-form-markdown-textarea"
+                  ng-model="acc.model.resumeFreeText"
+                  maxlength="10000"
+                  ng-if="acc.isEditResumeFreeTextMD"
+                  st-autoresize-textarea></textarea>
+        <button type="button" class="sg-button" ng-click="acc.editMarkdown('resumeFreeText')" ng-if="!acc.isEditResumeFreeTextMD">テキストを編集</button>
+        <button type="button" class="sg-button" ng-click="acc.previewHTML('resumeFreeText')" ng-if="acc.isEditResumeFreeTextMD" ng-show="acc.model.resumeFreeText.length > 0">テキストのプレビュー</button>
+      </div>
+     </section>
+
+      <section class="sg-box detail">
+        <div class="sg-box-head cf">
+          <h3>添付ファイル</h3>
+        </div>
+        <div>
+          <% /*  Existing */ %>
+          <ul ng-repeat="attachment in acc.model.attachments">
+            <li>{% attachment.fileName | ellipsis : 60 %}<a ng-click="acc.unselectAttachment($index)" style="margin-left: 20px;">&#10005;</a></li>
+          </ul>
+          <% /*  Newly Added */ %>
+          <ul ng-repeat="attachment in acc.newAttachments">
+            <li>{% attachment.fileName | ellipsis : 60 %}<a ng-click="acc.removeNewAttachment($index)" style="margin-left: 20px;">&#10005;</a></li>
+          </ul>
+          <span class="sg-button" ng-click="acc.turnOnFileAttachmentModal()">添付ファイルを追加する</span>
+        </div>
+      </section>
+  </div>
+  <section class="sg-centering">
+    <input type="submit" value="保存する" ng-click="acc.save(appForm)" class="sg-button sg-button-l sg-button-secondary" ng-disabled="!(appForm.$valid && appForm.phone.$valid && appForm.email.$valid)" />
+    <a href="/application#/{%acc.model.id%}" class="sg-button sg-button-l sg-button-gray" ng-if="acc.isEdit">キャンセル</a>
+    <a href="/application#/" class="sg-button sg-button-l sg-button-gray" ng-if="!acc.isEdit">キャンセル</a>
+  </section>
+
+</form>
+
+
+</script>

@@ -1,0 +1,289 @@
+<script type="text/ng-template" id="/internal/parts/jobs/edit-form">
+
+<form role="form" name="form" novalidate
+  ng-init="c.init()"  st-editchecker
+  st-show-form>
+  <div class="cm-main_body cm-main_body-form">
+    <section class="sg-box">
+      <section class="pg-jobs-add-form">
+        <div class="sg-box-head cf">
+          <h3>基本情報</h3>
+        </div>
+        <table class="sg-formtable">
+          <tbody>
+           <tr>
+              <th class="required">
+                求人ID
+                <button type="button" class="sg-form-hint-txt" st-link-tooltip="求人情報の識別のために指定するIDです。特に希望が無い場合は変更する必要はありません"></button>
+              </th>
+              <td>
+                <input type="text" name="jobIdAlias" required
+                       class="full" placeholder="自社の管理IDを入力または自動挿入ボタンをクリック"
+                       ng-model="c.model.job.jobIdAlias"
+                       ng-blur="c.jobValidator.validateJobIdAlias(form.jobIdAlias, c.model.job.id)"
+                       st-allow-pattern="/^[A-Za-z0-9][\w\-\.\_]{0,29}$/"
+                       stb-tooltip="[半角英数字] [-] [.] [_] が使用可\n({{ $viewLength }}/30文字まで)">
+                <a class="sg-button transparent" ng-click="c.getJobIdAlias()">求人IDを自動入力</a>
+                <ul class="sg-error" ng-if="form.jobIdAlias.$dirty">
+                  <li ng-if="form.jobIdAlias.$error.aliasDuplidate">既に他の求人に設定されているIDです</li>
+                </ul>
+              </td>
+            </tr>
+            <tr >
+              <th class="required">職種 / 募集ポジション</th>
+              <td>
+                <input type="text" name="jobName" ng-model="c.model.job.name" required
+                       st-allow-pattern="/^.{0,100}$/" stb-tooltip="{{ $viewLength }}/100文字まで" class="full" placeholder="例）営業アシスタント">
+                <ul class="sg-error" ng-if="form.jobName.$dirty">
+                  <li ng-if="form.jobName.$error.required">必須項目です</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                求人タイトル
+                <button type="button" class="sg-form-hint-txt" st-link-tooltip="この項目は求職者の検索結果に見出しとして利用されます。Stanby Recruiting上のプレビュー画面では表示されません"></button>
+              </th>
+              <td>
+                <input type="text" class="full" name="jobAdTitle" ng-model="c.model.job.content.jobAdTitle" st-allow-pattern="/^.{0,100}$/" stb-tooltip="{{ $viewLength }}/100文字まで" placeholder="例）産休からの復帰率97%！女性が活躍しやすい環境の営業アシスタント">
+              </td>
+            </tr>
+            <tr>
+              <th>募集終了日の設定</th>
+              <td>
+                <ul class="sg-form_checkboxes">
+                  <li ng-click="c.model.job.noEndDate=true" ng-class="{'selected': c.model.job.noEndDate,'deselected': !c.model.job.noEndDate}">
+                    <input type="radio" name="closeDate" id="unlimited" ng-checked="c.model.job.noEndDate">
+                    <label for="unlimited">無期限</label>
+                  </li>
+                  <li ng-click="c.model.job.noEndDate=false" ng-class="{'selected': !c.model.job.noEndDate,'deselected': c.model.job.noEndDate}">
+                    <input type="radio" name="closeDate" id="closeDate" ng-checked="!c.model.job.noEndDate">
+                    <label for="closeDate">募集終了日を設定する</label>
+                    <input class="sg-button sg-bs-datepicker-button-wide"
+                           type="button"
+                           datepicker-popup="yyyy/MM/dd"
+                           ng-show="!c.model.job.noEndDate"
+                           ng-model="c.model.closeAt"
+                           show-button-bar="false"
+                           is-open="c.model.datePickerOpen"
+                           ng-class="{'ng-invalid': c.isInvalidCloseDate()}"
+                           ng-click="c.model.datePickerOpen = true"
+                           value="{% c.model.closeAt | date: 'yyyy/MM/dd' %}">
+                    <p class="sg-error" ng-if="c.isInvalidCloseDate()">募集終了日は本日以降に設定してください</p>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <th class="required">雇用形態</th>
+              <td>
+                <ul class="sg-typeselector cf">
+                  <li ng-repeat="jobType in c.enums.jobTypeRadio | orderBy: '+sortNo'">
+                    <label class="sg-radio">
+                      <input type="radio" name="jobTypeRadio" ng-model="c.model.job.jobType" required value="{%jobType.code%}">
+                      <span>{%jobType.name%}</span>
+                    </label>
+                  </li>
+                </ul>
+                <ul class="sg-error" ng-if="form.jobTypeRadio.$dirty">
+                  <li ng-if="form.jobTypeRadio.$error.required">必須項目です</li>
+                </ul>
+                <p class="light">※派遣社員の募集をご希望の場合は<a href="/contact">お問い合わせ</a>ください。</p>
+              </td>
+            </tr>
+            <tr>
+              <th class="required">
+                給与
+                <button type="button" class="sg-form-hint-txt" st-link-tooltip="募集時の賃金（給与）は労働基準法や各都道府県・市区町村の条例に準ずるようご注意ください（東京都では時給888円）"></button>
+              </th>
+              <td>
+                <st-job-salary-form ng-model="c.model.job.content.salary" required></st-job-salary-form>
+              </td>
+            </tr>
+            <tr>
+              <th>給与備考</th>
+              <td>
+                <textarea class="sg-form_element-l" ng-model="c.model.job.content.salary.supplement" name="bonus" st-allow-pattern="/^(.|\n){0,200}$/" stb-tooltip="{{ $viewLength }}/200文字まで" placeholder="例) 業績によりボーナス年2回支給"></textarea>
+              </td>
+            </tr>
+            <tr>
+              <th>勤務地</th>
+              <td>
+                <div class="sg-form-address" ng-repeat="location in c.model.job.content.locations">
+                  <ng-form name="locForm" novalidate>
+                    <div class="sg-form-address-head cf">
+                      <p>勤務地{%$index + 1%}</p>
+                      <a href="javascript: void(0);" class="sg-button transparent" ng-click="c.model.deleteLocation($index)" ng-if="$index > 0">この項目を削除</a>
+                    </div>
+                    <div class="sg-form-address-body">
+                      <div class="sg-form-address-postal">
+                        <input type="text" name="postalCode" class="sg-form_element-s"
+                               maxlength="8"
+                               ng-model="location.postalCode"
+                               st-validate-postal
+                               stb-tooltip="[半角数字] [-] のみ使用可\n({{ $viewLength }}/8文字まで)"
+                               placeholder="例）150-0002">
+                        <button type="button"
+                               class="sg-button transparent"
+                               ng-mousedown="c.model.getAddress($index)"
+                               ng-click="c.model.getAddress($index)"
+                               ng-disabled="!c.jobValidator.validZipcode(location.postalCode)">
+                          郵便番号から住所を入力
+                        </button>
+                        <ul class="sg-error" ng-if="locForm.postalCode.$dirty">
+                          <li ng-if="locForm.postalCode.$error.postal">郵便番号を確認してください</li>
+                        </ul>
+                      </div>
+                      <input type="text" name="address" ng-model="location.address"
+                             st-allow-pattern="/^.{0,50}$/" stb-tooltip="{{ $viewLength }}/50文字まで"
+                             placeholder="例）東京都渋谷区渋谷2-15-1 渋谷クロスタワー12F" class="full">
+                      <p class="sg-error" ng-if="locForm.$dirty && locForm.address.$error.required">必須項目です</p>
+                    </div>
+                  </ng-form>
+                </div>
+                <div class="sg-form-address-add" ng-if="c.model.job.content.locations.length < c.stStaticConfig.locations.max">
+                  <a href="javascript: void(0);" ng-click="c.model.addLocation()">勤務地を追加</a>
+                </div>
+                <div class="sg-form-address-option">
+                  <p>勤務地に関する備考</p>
+                  <textarea ng-model="c.model.job.content.locationSupplement" name="locationSupplement"
+                            st-allow-pattern="/^(.|\n){0,200}$/" stb-tooltip="{{ $viewLength }}/200文字まで" st-autoresize-textarea placeholder="例）東京、渋谷、新宿など全国56箇所の営業所で登録できます"></textarea>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <th>カバー画像</th>
+              <td>
+                <div class="sg-formtable-coverimage-preview">
+                  <img ng-src="{% c.stbImage.getThumbnailImageUrl(c.config, c.model.job.coverImage.imageId, c.model.job.coverImage.prefix) %}" alt="" ng-if="c.model.job.coverImage.imageId">
+                </div>
+                <div class="sg-formtable-coverimage-action">
+                  <a href="javascript: void(0);" ng-click="c.showCoverImagePopup()">カバー画像を変更する</a>
+                  <a href="javascript: void(0);" class="sg-button transparent" ng-click="c.showCoverInstruction()">カバー画像とは？</a>
+                </div>
+                <input type="hidden" ng-model="c.model.job.coverImage.imageId">
+              </td>
+            </tr>
+            </tr>
+          </tbody>
+        </table>
+
+        <table class="sg-formtable" ng-form name="termDescForm" st-draggable-set="c.model.job.content.descriptions">
+          <tbody>
+            <tr ng-repeat="termDesc in c.model.job.content.descriptions" st-draggable st-droppable st-dodgeable>
+              <th>
+                <div class="sg-formtable-term-name">
+                  追加項目{%$index + 1%}
+                </div>
+                <div class="sg-formtable-term-text">
+                  <input
+                    type="text"
+                    name="termDescTerm"
+                    ng-model="termDesc.term"
+                    ng-maxlength="c.stStaticConfig.terms.termsLength"
+                    st-allow-pattern="/^(.|\n){0,50}$/"
+                    stb-tooltip="{% $viewLength %}/50文字まで"
+                    ui-validate=" ' c.jobValidator.validateTerm(termDescForm, $value, termDesc.description)' "
+                    ui-validate-watch=" 'termDesc.description' "
+                    placeholder="例）待遇・福利厚生">
+                </div>
+              </th>
+              <td>
+                <div class="sg-formtable-description-button">
+                  <a href="javascript: void(0);" class="sg-button transparent" ng-click="c.deleteTdSet($index)">この項目を削除</a>
+                </div>
+                <div class="sg-formtable-description-text">
+                  <textarea
+                    name="termDescDescription"
+                    ng-model="termDesc.description"
+                    st-allow-pattern="/^(.|\n){0,200}$/"
+                    stb-tooltip="{% $viewLength %}/200文字まで"
+                    placeholder="例）社会保険完備、交通費全額支給、社員旅行（海外）"
+                    ui-validate=" ' c.jobValidator.validateTerm(termDescForm, $value, termDesc.term)' "
+                    ui-validate-watch=" 'termDesc.term' "
+                    st-autoresize-textarea></textarea>
+                </div>
+              </td>
+            </tr>
+            <tr st-dodgeable ng-if="!(c.model.job.content.descriptions.length == c.stStaticConfig.terms.max)">
+              <th>
+                <a class="sg-button sg-icon transparent plus" ng-click="c.model.addTdSet()">項目を追加</a>
+                <button type="button" class="sg-form-hint-txt" st-link-tooltip="基本情報を自由に追加することができます。 例）休日数、待遇・福利厚生など"></button>
+              </th>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+
+      </section>
+      <section class="pg-jobs-add-form-markdown-box">
+        <div class="sg-box-head cf">
+          <h3>仕事内容</h3>
+          <a href="javascript://;" onclick="window.open('/contents/markdown', 'TextHelp', 'window.innerWidth, window.innerHeight,menubar=yes, toolbar=yes, scrollbars=yes, resizable=yes')" class="sg-button transparent" st-link-tooltip="別ウィンドウで開く">テキスト整形ルール</a>
+          <a href="javascript://;" onclick="window.open('/contents/sample', '', 'window.innerWidth, window.innerHeight,menubar=yes, toolbar=yes, scrollbars=yes, resizable=yes')" class="sg-button transparent" st-link-tooltip="別ウィンドウで開く">仕事内容 入力サンプル</a>
+        </div>
+        <div class="sg-form-markdown">
+          <div class="sg-has-broken-placeholder">
+            <textarea name="markdownFreeText"
+                      class="sg-form-markdown-textarea"
+                      id="jsi-markdown-freetext"
+                      ng-model="c.model.job.content.markdownFreeText"
+                      ng-if="!c.isPreviewingMarkdown"
+                      ng-focus="c.focusMarkdown()"
+                      ng-class="{'sg-has-broken-placeholder-valued': c.model.job.content.markdownFreeText != ''}"
+                      st-allow-pattern="/^(.|\n){0,10000}$/"
+                      st-inline-upload="{fn: c.uploadInlineImageToInsertText, this: c}"
+                      st-autoresize-textarea></textarea>
+            <pre class="sg-has-broken-placeholder-text" ng-hide="c.isPreviewingMarkdown">※ ここに、詳しい仕事内容の紹介や募集要項を記載してください。
+
+※ 仕事内容 を入力する際は、以下の注意事項にご注意ください。
+
+========== 仕事内容 入力時の注意事項 ==========
+* 募集対象者の性別を限定することは認められません。
+* 募集対象者に年齢制限を設けることは、一部の例外を除き認められません。
+* 募集対象者本人に責任のない事項、または本来自由であるべき事項（本籍、家族、生活環境や思想・宗教など）を採用の条件とする、または応募時に関連する書類等の提出を求めることは推奨されません。
+* 労働時間・休日数などは、労働基準法や各都道府県・市区町村の条例に準ずるようご注意ください。</pre>
+          </div>
+          <div class="sg-form-markdown-html" ng-bind-html="c.model.job.htmlFreeText" ng-click="c.editMarkdown()" ng-if="c.isPreviewingMarkdown" ng-class="c.isPreviewingMarkdown ? 'sg-form-markdown-html-is-preview' : ''" ng-if="c.isPreviewingMarkdown"></div>
+
+          <button type="button" class="sg-button" ng-click="c.isPreviewingMarkdown = false" ng-if="c.isPreviewingMarkdown">テキストを編集</button>
+          <button type="button" class="sg-button" ng-click="c.showInlineImagePopup('jsi-markdown-freetext')" ng-if="!c.isPreviewingMarkdown">画像を挿入する</button>
+          <button type="button" class="sg-button" ng-click="c.previewHTML(form)" ng-if="!c.isPreviewingMarkdown" ng-show="c.model.job.content.markdownFreeText.length > 0">テキストのプレビュー</button>
+        </div>
+      </section>
+    </section>
+    <section class="sg-centering">
+
+      <button
+        type="button"
+        class="sg-button sg-button-l sg-button-secondary"
+        
+        ng-click="c.confirmPublish(form)"
+        ng-disabled="form.$invalid || c.isInvalidCloseDate()">
+        <span ng-if="c.model.job.jobStatus !== 'PUB'">保存して公開</span>
+        <span ng-if="c.model.job.jobStatus === 'PUB'">この内容で保存</span>
+      </button>
+
+      <button
+        type="button"
+        class="sg-button sg-button-l"
+        ng-click="c.switchToPreview()"
+        ng-disabled="form.$invalid || c.isInvalidCloseDate()">プレビュー</button>
+
+      <button
+        type="button"
+        class="sg-button sg-button-l"
+        ng-click="c.saveDraft(form)"
+        ng-if="c.model.job.jobStatus !== 'PUB'"
+        ng-disabled="!c.model.job.jobIdAlias || !c.model.job.name || !c.model.job.jobType || termDescForm.$error.validator">下書き保存</button>
+      <button
+        type="button"
+        class="sg-button sg-button-warning"
+        ng-if="c.model.job.jobStatus === 'PUB'"
+        ng-click="c.withdraw()">公開停止</button>
+
+    </section>
+  </div>
+</form>
+
+</script>

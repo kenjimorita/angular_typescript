@@ -1,0 +1,30 @@
+{
+  "id": "Number:18",
+  "jobIdAlias": "String:20",
+  "name": "String:10",
+  "closeAt": "2016-04-16T23:59:59.999Z",
+  "jobType": "FULL",
+  "versionNo": "Number:1",
+  "updatedBy": "String:10",
+  "updatedAt": "2015-04-15T00:12:34.567Z",
+  "content": {
+    "jobAdTitle": "String:40",
+    "salary": {
+      "unit": "MNT",
+      "amountFrom": "Number:4",
+      "amountTo": "Number:5",
+      "supplement": "String:10"
+    },
+    "locations|2": {
+      "postalCode": "Number:7|xxx-xxxx",
+      "address": "String:30"
+    },
+    "locationSupplement": "String:10",
+    "descriptions|3": {
+      "term": "String:10",
+      "description": "String:100"
+    },
+    "markdownFreeText": "# Mock TEST\nUsing gulp mock"
+  },
+  "htmlFreeText": "<h1>Mock TEST</h1>\n<p>Using gulp mock</p>"
+}

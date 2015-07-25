@@ -1,0 +1,57 @@
+@charset "utf-8";
+
+body {
+  padding-bottom: 0;
+}
+
+.pg-privacy h1 { height:80px; line-height:80px; border-bottom:solid 1px #CCCCCC;}
+.pg-privacy h1 {margin-bottom: 2em;}
+.pg-privacy h3 + p{margin-top:0.5em;}
+.pg-privacy ul,
+.pg-privacy ol {margin-top: 1em;}
+
+.pg-privacy > section > h2 + * {margin-top: 2em;}
+.pg-privacy > section + section { margin-top:6em;}
+.pg-privacy > section > section + section  { margin-top:4em;}
+.pg-privacy > section > section > section + section  { margin-top:1em;}
+.pg-privacy > section > section > ol > li { list-style: decimal; margin-left: 1.5em;}
+.pg-privacy > section > section > ol > li + li { margin-top: 1em;}
+.pg-privacy > section > section > p + p,
+.pg-privacy > section > p + section { margin-top: 1em;}
+
+.pg-privacy-desk { margin-top: 2em; }
+.pg-privacy-desk-tel dt,
+.pg-privacy-desk-tel dd,
+.pg-privacy-desk-address dt,
+.pg-privacy-desk-address dd,
+.pg-privacy-admin-div dt,
+.pg-privacy-admin-div dd,
+.pg-privacy-admin-tel dt,
+.pg-privacy-admin-tel dd,
+.pg-privacy-pmarkcenter-address dt,
+.pg-privacy-pmarkcenter-address dd,
+.pg-privacy-pmarkcenter-tel dt,
+.pg-privacy-pmarkcenter-tel dd
+{display: inline-block;}
+
+.pg-privacy-desk-tel dt:after,
+.pg-privacy-desk-address dt:after,
+.pg-privacy-admin-div dt:after,
+.pg-privacy-admin-tel dt:after,
+.pg-privacy-pmarkcenter-address dt:after,
+.pg-privacy-pmarkcenter-tel dt:after {
+  content: ":";
+  padding-left:2px;
+  padding-right:2px;
+}
+
+.pg-privacy-desk,
+.pg-privacy-jipdec,
+.pg-privacy-pmarkcenter {margin-top: 1em;}
+
+.pg-list-decimal {list-style: decimal; margin-left: 1.5em;}
+.pg-list-decimal li + li {margin-top: 7px;}
+
+.cm-last-footer {
+  position: static;
+}

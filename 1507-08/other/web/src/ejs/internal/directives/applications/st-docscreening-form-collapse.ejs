@@ -1,0 +1,32 @@
+<script type="text/ng-template" id="/internal/directives/applications/st-docscreening-form-collapse">
+
+  <div ng-init="c.init()" collapse="isCollapsed">
+
+    <div class="pg-timeline-form">
+      <ng-form name="docscreeningForm">
+        <p class="pg-timeline-form-box-name">書類審査の担当者を設定してください</p>
+        <div class="pg-incrementalsearch" ng-outerclick="c.isInterviewersListActive = false">
+          <div class="pg-incrementalsearch-inputwrapper">
+            <input type="text" placeholder="担当者を選択"
+                   ng-model="c.docScreening.interviewer.name" ng-change="c.incrementalSearchInterviewers()"
+                  ng-focus="c.isInterviewersListActive = true" ng-keydown="c.selectSuggestedInterviewer($event)">
+            <input type="hidden" ng-model="c.docScreening.interviewer.userId">
+            <ul ng-show="c.isInterviewersListActive">
+              <li ng-repeat="user in c.interviewers">
+                <a href="javascript: void(0);" ng-click="c.setInterviewer(user)" ng-hide="user.__NonMatching">
+                  {% user.fullName %} &lt;{% user.email %}&gt;
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <button class="sg-button secondary" ng-class="{disabled: '!c.docScreening.interviewer.userId'}" ng-disabled="!c.docScreening.interviewer.userId" ng-click="c.submitDocScreening()">保存</button>
+            <button class="sg-button transparent" ng-click="c.discardDocScreening()" >キャンセル</button>
+            <p class="pg-applicant-advice-text light">※この操作を行っても応募者には通知されません。必要に応じて直接応募者へご連絡ください。</p>
+          </div>
+        </div>
+      </ng-form>
+    </div>
+  </div>
+
+</script>

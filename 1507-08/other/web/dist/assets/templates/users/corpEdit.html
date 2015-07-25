@@ -1,0 +1,78 @@
+<div class="cm-main_head st-with-button cf">
+  <h1>企業アカウントの編集</h1>
+</div>
+<div class="cm-main_nav hasborder">
+  <ul class="cm-main_nav-tab cf">
+    <li><a href="/users#/">ユーザーアカウント管理</a></li>
+    <li class="current"><a href="javascript: void(0);">企業アカウント管理</a></li>
+  </ul>
+</div>
+<div class="cm-main_body">
+ <form name="form" ng-init="c.init()" novalidate st-editchecker>
+   <section class="sg-box detail">
+    <h3>基本情報</h3>
+    <div class="sg-form corpForm bordered">
+      <div class="sg-form_element">
+        <label class="sg-form_required">企業名</label>
+        <input type="text" ng-model="c.corpInfo.name" name="name" required maxlength="100" stb-tooltip="{% $viewLength %}/100文字まで" placeholder="例）株式会社ビズリーチ"><span ng-class="{'sg-form_valid': form.name.$valid}"></span>
+      </div>
+      <div class="sg-form_element">
+        <label>企業名（よみがな）</label>
+        <input type="text" ng-model="c.corpInfo.nameKana" name="nameKana" maxlength="100" stb-tooltip="{% $viewLength %}/100文字まで" placeholder="例）かぶしきがいしゃびずりーち">
+      </div>
+      <div class="sg-form_element">
+        <label>代表電話番号</label>
+        <input type="text" ng-model="c.corpInfo.phone" name="phone" st-validate-phone ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0}}" maxlength="25" stb-tooltip="[半角数字] [-] のみ使用可<br>({% $viewLength %}/25文字まで)" placeholder="例）03-6450-5166">
+      </div>
+      <div class="sg-form_element">
+        <label>郵便番号</label>
+        <input type="text" ng-model="c.corpInfo.postalCode" name="postalCode" st-validate-postal maxlength="8" stb-tooltip="[半角数字] [-] のみ使用可<br>({% $viewLength %}/8文字まで)" placeholder="例）150-0002">
+      </div>
+      <div class="sg-form_element">
+        <label>住所</label>
+        <input type="text" ng-model="c.corpInfo.address" name="address" maxlength="300" stb-tooltip="{% $viewLength %}/300文字まで" placeholder="例）東京都渋谷区渋谷2-15-1 渋谷クロスタワー12F">
+      </div>
+      <div class="sg-form_element">
+        <label>設立年月</label>
+        <p>
+          <input type="number" min="1" max="2100" ng-model="c.corpInfo.details.establishedAt.year" placeholder="例) 2000" name="details.establishedAt.year" st-allow-pattern="/^[0-9]{0,4}$/"> 年
+          <input type="number" min="1" max="12" ng-model="c.corpInfo.details.establishedAt.month" placeholder="例) 1" name="details.establishedAt.month" st-allow-pattern="/^[0-9]{0,2}$/"> 月
+        </p>
+      </div>
+      <div class="sg-form_element">
+        <label>代表者名</label>
+        <input type="text" ng-model="c.corpInfo.details.president" name="details.president" maxlength="50" stb-tooltip="{% $viewLength %}/50文字まで" placeholder="例）田中　太郎">
+      </div>
+      <div class="sg-form_element">
+        <label>ウェブサイト URL</label>
+        <input type="text" ng-model="c.corpInfo.details.websiteUrl" name="details.websiteUrl" maxlength="200" stb-tooltip="{% $viewLength %}/200文字まで" placeholder="例）http://www.bizreach.co.jp">
+      </div>
+      <div class="sg-form_element">
+        <label>Facebook URL</label>
+        <input type="text" ng-model="c.corpInfo.details.facebookUrl" name="details.facebookUrl" maxlength="200" stb-tooltip="{% $viewLength %}/200文字まで" placeholder="例）https://facebook.com/bizreach">
+      </div>
+    </div>
+  </section>
+   <section class="sg-box detail">
+    <h3>担当情報</h3>
+    <div class="sg-form corpForm bordered">
+     <div class="sg-form_element">
+        <label class="sg-form_required">担当者名・部署名</label>
+        <input type="text" ng-model="c.corpInfo.details.contact.name" name="contactName" required maxlength="50" stb-tooltip="{% $viewLength %}/50文字まで" placeholder="例）田中　太郎"><span ng-class="{'sg-form_valid': form.contactName.$valid}"></span>
+      </div>
+      <div class="sg-form_element">
+        <label class="sg-form_required">メールアドレス</label>
+        <input type="email" ng-model="c.corpInfo.details.contact.email" name="contactEmail" required st-validate-email ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0}}" maxlength="100" stb-tooltip="半角英字を１文字以上含む8-40文字にしてください<br>({% $viewLength %}/100文字まで)" placeholder="例）sample@stanby.com"><span ng-class="{'sg-form_valid': form.contactEmail.$valid}"></span>
+      </div>
+      <div class="sg-form_element">
+        <label class="sg-form_required">電話番号</label>
+        <input type="text" ng-model="c.corpInfo.details.contact.phone" name="contactPhone" required st-validate-phone ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0}}" maxlength="25" stb-tooltip="[半角英字] [-] のみ使用可<br>({% $viewLength %}/25文字まで)" placeholder="例）03-6450-5166"><span ng-class="{'sg-form_valid': form.contactPhone.$valid}"></span>
+      </div>
+    </div>
+  </section>
+  <section class="sg-centering">
+    <input type="submit" value="保存" class="sg-button sg-button-l sg-button-secondary" ng-click="c.updateInfo()" ng-disabled="!form.$valid">
+    <a href="/users#/corpInfo" class="sg-button sg-button-l">キャンセル</a>
+  </section>
+ </form>
+</div>

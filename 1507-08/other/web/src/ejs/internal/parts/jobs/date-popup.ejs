@@ -1,0 +1,32 @@
+<script type="text/ng-template" id="/internal/parts/jobs/date-popup">
+
+<div class="date-wrap">
+  
+  <form class="sg-popup">
+    <span>募集終了日の設定</span>
+    <ul>
+      <li ng-click="dateCtrl.noEndDate=true" ng-class="{'selected': dateCtrl.noEndDate}">
+        <input type="radio" name="closeDate" id="unlimited" ng-checked="dateCtrl.noEndDate">
+        <label class="radio" for="unlimited">無期限</label>
+      </li>
+      <li ng-click="dateCtrl.noEndDate=false" ng-class="{'selected': !dateCtrl.noEndDate}">
+        <input type="radio" name="closeDate" id="closeDate" ng-checked="!dateCtrl.noEndDate">
+        <label class="radio" for="closeDate">終了日を設定する</label>
+      </li>
+      <li ng-show="!dateCtrl.noEndDate">
+        <input class="sg-bs-datepicker-button-wide" type="button"
+               datepicker-popup="yyyy/MM/dd" ng-model="dateCtrl.closeAt" show-button-bar="false"
+               is-open="dateCtrl.datePickerOpen" ng-click="dateCtrl.datePickerOpen = true"
+               value="{% dateCtrl.closeAt | date: 'yyyy/MM/dd' %}">
+      <p class="sg-error" ng-if="dateCtrl.noTimeTravel()">募集終了日は本日以降に設定してください</p>
+      </li>
+      <li class="buttons">
+        <button class="sg-button" ng-click="dateCtrl.$modalInstance.close([dateCtrl.noEndDate, dateCtrl.closeAt])" ng-disabled="dateCtrl.noTimeTravel()">公開</button>
+        <button class="sg-button transparent" ng-click="dateCtrl.$modalInstance.dismiss()">キャンセル</button>
+        <button class="sg-button sg-button-warning" ng-click="dateCtrl.$modalInstance.close('withdraw')" ng-if="dateCtrl.pubStatus">公開停止</button>
+      </li>
+    </ul>
+  </form>
+</div>
+
+</script>

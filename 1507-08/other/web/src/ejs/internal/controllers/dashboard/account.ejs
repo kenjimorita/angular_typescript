@@ -1,0 +1,17 @@
+<script type="text/ng-template" id="/internal/controllers/dashboard/account">
+  <div ng-init="acc.init()">
+    <h2 class="pg-account-head">アカウント管理</h2>
+    <div class="pg-account-row cf">
+      <section class="pg-account-users">
+        <h3 class="pg-section-head"><a href="/users">ユーザー<span class="pg-section-head-all">全<span>{%acc.users.length%}</span>ユーザー</span></a></h3>
+        <p class="pg-account-explain">管理者、採用担当者、面接官のアカウント作成・編集</p>
+        <a href="/users" class="pg-section-continue sg-button sg-button-l">すべてのユーザーアカウント</a>
+      </section>
+      <section class="pg-account-corporate">
+        <h3 class="pg-section-head"><a href="/users#/corpInfo">企業</a></h3>
+        <p class="pg-account-explain">企業アカウントの作成・編集</p>
+        <a href="/users#/corpEdit" class="pg-section-continue sg-button sg-button-l">企業アカウントを編集</a>
+      </section>
+    </div>
+  </div>
+</script>

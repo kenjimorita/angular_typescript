@@ -1,0 +1,21 @@
+<% function pageStyles(buf){ %>
+<link rel="stylesheet" href="<%- revAssets('stylesheets/stanby-jobs.css') %>">
+<% }; %>
+
+<% function pageScripts(buf){ %>
+<script src="<%- revAssets('scripts/job-page.js') %>"></script>
+<% }; %>
+
+<% function pageContents(buf){ %>
+  <ui-view></ui-view>
+
+  <%include ../internal/controllers/jobs/list.ejs%>
+  <%include ../internal/controllers/jobs/edit.ejs%>
+  <%include ../internal/controllers/jobs/add.ejs%>
+  <%include ../internal/controllers/jobs/preview.ejs%>
+  <%include ../internal/parts/jobs/date-popup.ejs%>
+  <%include ../internal/parts/jobs/edit-form.ejs%>
+  <%include ../internal/parts/jobs/salary-form.ejs%>
+<% }; %>
+
+<% include ../layout/signedin/layout.ejs %>
