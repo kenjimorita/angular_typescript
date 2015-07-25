@@ -1,0 +1,56 @@
+<script type="text/ng-template" id="/internal/controllers/applications/list">
+
+<div class="cm-main_head switch st-with-button cf" ng-init="c.init()">
+  <h1 ng-show="!c.jobId">応募者</h1>
+  <h1 ng-show="c.jobId && c.applications[0]">{%c.applications[0].job.jobName%}</h1>
+  <h1 ng-show="c.jobId && !c.applications[0]">応募はまだありません</h1>
+  <a ui-sref="add()" class="sg-button sg-button-l sg-button-secondary plus fr">応募者を追加</a>
+</div>
+
+<div class="sg-controlpanel cf" ng-if="c.jobId">
+  <nav class="cm-sub_head-nav">
+    <ul>
+      <li><a href="/jobs#/{%c.jobId%}/edit/">求人情報</a></li>
+    </ul>
+  </nav>
+</div>
+
+<div class="cm-main_nav">
+  <div class="cm-main_nav-bar cf">
+    <p class="cm-main_nav-count">全<span>{%c.getTotalHits()%}</span>件</p>
+    <a onclick="location.reload()" class="sg-reload-icon fr"></a>
+  </div>
+</div>
+
+<div class="cm-main_body">
+  <section class="sg-box pg-candidates-list">
+    <table class="cm-main_table">
+      <thead class="sg-box-header">
+      <tr>
+        <td class="pg-candidates-apply-date">応募日</td>
+        <td class="pg-candidates-update">更新日</td>
+        <td class="pg-candidates-job-title">職種 / 募集ポジション</td>
+        <td class="pg-candidates-applicant">応募者名</td>
+        <td class="pg-candidates-status">選考状況</td>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="app in c.applications track by app.id" ng-click="c.moveToDetail(app.id, $index)">
+        <td class="pg-candidates-apply-date" ng-bind="app.appliedAt | date:'yyyy年M月d日'"></td>
+        <td class="pg-candidates-update" ng-bind="app.updatedAt | date:'yyyy年M月d日'"></td>
+        <td class="pg-candidates-job-title"><span class="breakword" ng-bind="app.job.jobName"></span></td>
+        <td class="pg-candidates-applicant" ng-bind="app.profile.fullName"></td>
+        <td class="pg-candidates-status" ng-bind="c.enums.selectionStage[app.selectionStage]"></td>
+      </tr>
+      </tbody>
+    </table>
+    <section class="sg-box-empty" ng-if="!(c.applications.length > 0)">
+      <p>該当する応募はありません</p>
+    </section>
+  </section>
+  <section class="sg-box">
+    <pagination total-items="c.bsPage.totalItems" items-per-page="c.bsPage.itemsPerPage" ng-model="c.bsPage.currentPage"></pagination>
+  </section>
+</div>
+
+</script>

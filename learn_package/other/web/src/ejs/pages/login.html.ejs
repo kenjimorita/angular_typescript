@@ -1,0 +1,51 @@
+<% function pageStyles(buf){ %>
+<% }; %>
+
+<% function pageScripts(buf){ %>
+  <script src="<%- revAssets('scripts/login-page.js') %>"></script>
+<% }; %>
+
+<% function pageContents(buf){ %>
+
+<header class="cm-header">
+  <p class="cm-header_logo"><a href="/" class="sg-logo sg-logo-site">Stanby</a></p>
+</header>
+<div id="jsi-wrapper" class="cm-wrapper">
+  <div class="cm-row-main">
+    <main class="cm-main pg-visitor-main">
+      <!--[if lt IE 9]>
+        <div class="alert alert-danger"><span>現在使用中のInternet Explorerのバージョンはサポートされていません。</span></div>
+      <![endif]-->
+      <div class="pg-visitor-box login" ui-view></div>
+      <p><a href="/forgot-password">パスワードを忘れた方はこちら</a></p>
+      <p><a href="/signup">新規アカウント作成はこちら</a></p>
+    </main>
+  </div>
+</div>
+
+<script type="text/ng-template" id="/templates/login/index.html">
+  <h1>法人会員向けログイン</h1>
+
+  <form name="form" novalidate>
+    <section class="sg-form">
+      <div class="sg-form_element">
+        <input type="email" placeholder="メールアドレス" autofocus
+           name="email" ng-model="c.email" st-validate-email required>
+      </div>
+      <div class="sg-form_element">
+        <input type="password" placeholder="パスワード"
+          name="password" ng-model="c.password" required>
+      </div>
+      <div class="sg-form_next sg-form_element sg-form_element-center" ng-show="form.$invalid" >
+        <input type="submit" value="ログイン" class="sg-button sg-button-l sg-button-disabled" ng-click="c.login(form)">
+      </div>
+      <div class="sg-form_next sg-form_element sg-form_element-center" ng-show="!form.$invalid" >
+        <input type="submit" value="ログイン" class="sg-button sg-button-l sg-button-secondary" ng-click="c.login(form)">
+      </div>
+    </section>
+  </form>
+</script>
+
+<% }; %>
+
+<% include ../layout/visitor/layout.ejs %>

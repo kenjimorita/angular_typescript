@@ -1,0 +1,178 @@
+<% function pageStyles(buf){ %>
+<% }; %>
+
+<% function pageScripts(buf){ %>
+<script src="<%- revAssets('scripts/profile-page.js') %>"></script>
+<% }; %>
+
+<% function pageContents(buf){ %>
+  <div ui-view></div>
+
+  <script type="text/ng-template" id="/internal/profile/show.html">
+    <div class="row" ng-init="init()">
+      <div class="cm-main_head st-with-button cf">
+        <h1>アカウント設定</h1>
+        <a ui-sref="profile_change_basic({ppp:profile})" class="sg-button sg-button-l sg-button-secondary fr">アカウント情報の編集</a>
+      </div>
+      <div class="cm-main_body cm-main_body-form pg-profile-body">
+        <section class="sg-box">
+          <h2>基本情報</h2>
+          <div class="sg-form">
+            <div class="sg-form_element">
+              <label>氏名</label>
+              <p ng-bind="profile.fullName"></p>
+            </div>
+            <div class="sg-form_element">
+              <label>権限</label>
+              <span ng-repeat="role in roles" ng-bind="enums.userRole[role].name" class="sg-userrole enable"></span>
+            </div>
+            <div class="sg-form_element">
+              <label>メールアドレス</label>
+              <span ng-bind="profile.email"></span>
+              <a ui-sref="profile_change_email()" class="sg-button sg-form_example sg-button-light">メールアドレスの変更はこちら</a>
+              <a href="javascript: void(0);" class="sg-button" ng-click="resendConfirmation()" ng-if="profile.status.code === 'REG'">認証メールを再送</a>
+            </div>
+            <div class="sg-form_element">
+              <label>パスワード</label>
+              <span>********</span>
+              <a ui-sref="profile_change_password()" class="sg-button sg-form_example sg-button-light">パスワードの変更はこちら</a>
+            </div>
+            <div class="sg-form_element">
+              <label>部署・役職</label>
+              <p ng-bind="profile.title"></p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </script>
+
+<script type="text/ng-template" id="/internal/profile/edit.html">
+  <form class="row" name="form" role="form" ng-init="init()" ng-submit="update(form)" st-editchecker>
+    <div class="cm-main_head st-with-button cf">
+      <h1>アカウント情報の編集</h1>
+    </div>
+    <div class="cm-main_body cm-main_body-form pg-profile-body pg-basic">
+      <section class="sg-box">
+        <h2>名前、部署・役職を入力して「保存」ボタンを押してください</h2>
+
+        <div class="sg-form">
+          <!-- 名前 -->
+          <div class="sg-form_element">
+            <label class="sg-form_required">名前</label>
+            <div class="sg-form_element-right">
+              <input type="text" ng-model="profile.fullName" name="fullName"
+                     required st-allow-pattern="/^.{0,50}$/"
+                     stb-tooltip="{% $viewLength %}/50文字まで" placeholder="例）田中　太郎">
+              <span ng-class="{'sg-form_valid': form.fullName.$valid}"></span>
+              <ul class="sg-error" ng-show="form.fullName.$dirty">
+                <li ng-show="form.fullName.$error.required">必須項目です</li>
+              </ul>
+            </div>
+          </div>
+          <!-- 部署・役職 -->
+          <div class="sg-form_element">
+            <label>部署・役職</label>
+            <fieldset class="sg-form_element-right">
+              <input class="sg-form_element-xl" type="text" ng-model="profile.title" name="title"
+                     st-allow-pattern="/^.{0,50}$/" stb-tooltip="{% $viewLength %}/50文字まで"
+                     placeholder="例）人事部">
+            </fieldset>
+          </div>
+        </div>
+        <p>このページでは、権限はご変更いただけません。権限については<a href="/users">アカウント管理</a>のページからご変更ください。</p>
+      </section>
+    </div>
+
+    <div class="sg-centering cm-main_foot cm-main_foot-form">
+      <!--
+      must set type="button", otherwise 'enter' key will trigger first button on the form.
+      See https://docs.angularjs.org/api/ng/directive/form#submitting-a-form-and-preventing-the-default-action for more information
+      -->
+      <a href="/profile#/" class="sg-button sg-button-l sg-button-gray">キャンセル</a>
+      <button type="submit" class="sg-button sg-button-l sg-button-secondary" ng-disabled="!(form.$valid && form.$dirty)">保存</button>
+    </div>
+  </form>
+</script>
+
+  <script type="text/ng-template" id="/internal/profile/password.html">
+    <form class="row" name="form" role="form" ng-init="init()" novalidate ng-submit="update(form)">
+      <div class="cm-main_head st-with-button cf">
+        <h1>パスワードの変更</h1>
+      </div>
+      <div class="cm-main_body cm-main_body-form pg-profile-body pg-password">
+        <div class="sg-form">
+        <h2>現在のパスワード、新しいパスワードを入力し「パスワードを変更する」ボタンを押してください</h2>
+          <div class="sg-form_element">
+            <label>現在のパスワード</label>
+            <div class="sg-form_element-right">
+              <input type="password" name="password" ng-model="password.password" required autocomplete="off">
+              <ul class="sg-error" ng-show="form.password.$dirty">
+                <li ng-show="form.password.$error.required">必須項目です</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="sg-form_element">
+            <label>新しいパスワード</label>
+            <div class="sg-form_element-right">
+              <input type="password" name="newPassword" ng-model="password.newPassword" stb-tooltip="半角英字を１文字以上含む8-40文字にしてください<br>({% $viewLength %}/40文字まで)" ng-pattern="/^(?=\S+$)[a-zA-Z0-9 -/:-@\[-\`\{-\~]{8,40}$/" required autocomplete="off">
+              <ul class="sg-error" ng-show="form.newPassword.$dirty">
+                <li ng-show="form.newPassword.$error.required">必須項目です</li>
+                <li ng-show="form.newPassword.$error.pattern">半角英字を１文字以上含む8-40文字にしてください</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="sg-form_element">
+            <label>新しいパスワード(確認)</label>
+            <div class="sg-form_element-right">
+              <input type="password" name="newPasswordConfirm" stb-tooltip="確認のため新しいパスワードを再度入力してください" ng-model="password.newPasswordConfirm" required ui-validate="{sameValue : '$value == password.newPassword'}" autocomplete="off">
+              <ul class="sg-error" ng-show="form.newPasswordConfirm.$dirty && form.newPassword.$valid">
+                <li ng-show="form.newPasswordConfirm.$error.required">必須項目です</li>
+                <li ng-show="!form.newPasswordConfirm.$error.required && form.newPasswordConfirm.$error.sameValue">確認用パスワードが一致しません</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="cm-main_foot cm-main_foot-form">
+        <input type="submit" value="パスワード変更" class="sg-button sg-button-l sg-button-secondary" ng-disabled="!(form.$valid && form.$dirty)">
+        <a href="/profile#/" class="sg-button sg-button-l sg-button-gray">キャンセル</a>
+      </div>
+    </form>
+  </script>
+
+  <script type="text/ng-template" id="/internal/profile/email.html">
+    <form class="row" name="form" role="form" ng-init="init()" novalidate ng-submit="update(form)">
+      <div class="cm-main_head st-with-button cf">
+        <h1>メールアドレスの変更</h1>
+      </div>
+      <div class="cm-main_body cm-main_body-form pg-profile-body pg-password">
+        <section class="sg-box">
+        <h2>新しいメールアドレスを入力して「変更確認メールを送る」ボタンを押してください</h2>
+        <div class="sg-form">
+          <div class="sg-form_element">
+            <label>新しいメールアドレス</label>
+            <div class="sg-form_element-right">
+              <input type="email" name="email" ng-model="email" stb-tooltip="{%$viewLength%}/100文字まで" required ng-maxlength="100" placeholder="例）sample@stanby.com">
+              <ul class="sg-error" ng-show="form.$dirty && form.$invalid">
+                <li ng-show="form.email.$error.email">メールアドレスの形式が正しくありません</li>
+                <li ng-show="form.email.$error.maxlength">100文字以内で入力してください</li>
+                <li ng-show="form.email.$error.required">必須項目です</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+      </div>
+      <div class="cm-main_foot cm-main_foot-form">
+        <input type="submit" value="変更確認メールを送る" class="sg-button sg-button-l sg-button-secondary" ng-disabled="!(form.$valid && form.$dirty)">
+        <a href="/profile#/" class="sg-button sg-button-l sg-button-gray">キャンセル</a>
+      </div>
+    </form>
+  </script>
+<% }; %>
+
+<% include ../layout/signedin/layout.ejs %>

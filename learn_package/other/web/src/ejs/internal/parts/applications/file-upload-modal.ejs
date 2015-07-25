@@ -1,0 +1,34 @@
+<script type="text/ng-template" id="/internal/parts/applications/file-upload-modal">
+<div class="sg-modal-filter"></div>
+<div class="sg-modal-dropborder" ng-show="isDragging"></div>
+<div class="sg-imagemanager">
+  <p class="sg-imagemanager-head">添付ファイルのアップロード</p>
+  <div class="sg-imagemanager-content">
+    <div class="sg-imagemanager-regist-drop"
+         ui-event="{
+           drop: 'setDropped($event)',
+           dragover: 'setDraggingStyle($event)',
+           dragenter: 'setDraggingStyle($event)',
+           dragleave: 'resetDraggingStyle($event)'
+         }">
+     ここに添付したいファイルをドラッグ
+     <ul>
+       <li>PDF形式のファイルのみアップロードできます</li>
+       <li>ファイルの最大容量は5MBです</li>
+       <li>左下の「ファイルを選択」からもファイルが選択できます</li>
+     </ul>
+     <div class="sg-imagemanager-regist-border" ng-show="isDragging"></div>
+    </div>
+  </div>
+</div>
+
+<div class="sg-imagemanager-buttons-wrapper">
+  <div class="sg-imagemanager-buttons">
+    <div class="sg-imagemanager-regist-input">
+      <button class="sg-button">ファイルを選択</button>
+      <input type="file" accept="pdf" ui-event="{change: 'selectUploadFile($event)'}">
+    </div>
+    <a href="javascript: void(0);" class="sg-button transparent" ng-click="cancel()">キャンセル</a>
+  </div>
+</div>
+</script>

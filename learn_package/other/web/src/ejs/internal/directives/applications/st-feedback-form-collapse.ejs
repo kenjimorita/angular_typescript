@@ -1,0 +1,32 @@
+<script type="text/ng-template" id="/internal/directives/applications/st-feedback-form-collapse">
+
+  <div ng-init="c.init()" collapse="isCollapsed">
+    <div class="pg-timeline-form">
+      <ng-form>
+        <p class="pg-timeline-form-explain" ng-if="c.feedback.interviewType == 'DOC'">書類選考の評価を入力してください</p>
+        <p class="pg-timeline-form-explain" ng-if="c.feedback.interviewType == 'INT'">{% c.feedback.interviewTitle %}の評価を入力してください</p>
+        <div class="pg-timeline-form-box">
+          <p class="pg-timeline-form-box-name">評価</p>
+          <ul class="pg-timeline-form-radios">
+            <li ng-repeat="grade in c.feedbackGrade">
+              <input type="radio" name="grade" ng-model="c.feedback.grade" ng-value="grade.value">
+              <label ng-click="c.feedback.grade = grade.value">{{grade.name}}</label>
+            </li>
+          </ul>
+          <p ng-show="!c.feedback.grade" class="sg-error">評価を選択してください</p>
+        </div>
+        <div class="pg-timeline-form-box">
+          <p class="pg-timeline-form-box-name">コメント</p>
+          <textarea ng-model="c.feedback.summary" placeholder="評価の理由や面接時への申し送り事項を記入してください。選考できない場合は、理由を記入してください。" ></textarea>
+          <p ng-show="!c.feedback.summary" class="sg-error">コメントを入力してください</p>
+        </div>
+        <div class="pg-timeline-form-foot">
+          <button class="sg-button secondary" ng-disabled="!c.feedback.grade || !c.feedback.summary" ng-click="c.submitFeedback()">保存</button>
+          <button class="sg-button transparent" ng-click="c.discard()" >キャンセル</button>
+          <p class="pg-applicant-advice-text light">※この操作を行っても応募者には通知されません。必要に応じて直接応募者へご連絡ください。</p>
+        </div>
+      </ng-form>
+    </div>
+  </div>
+
+</script>

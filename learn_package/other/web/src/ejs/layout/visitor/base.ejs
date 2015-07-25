@@ -1,0 +1,16 @@
+<% function styles(buf) { %>
+  <link rel="stylesheet" href="<%- revAssets('stylesheets/stanby-visitor.css') %>">
+  <link rel="stylesheet" href="<%- revAssets('stylesheets/stanby-common-sp.css') %>" media="screen and (max-width: 768px)">
+  <link rel="stylesheet" href="<%- revAssets('stylesheets/stanby-styleguide-sp.css') %>" media="screen and (max-width: 768px)">
+  <link rel="stylesheet" href="<%- revAssets('stylesheets/stanby-visitor-sp.css') %>" media="screen and (max-width: 768px)">
+  <% innerStyles(buf) %>
+<% } %>
+<% function scripts(buf) { %>
+  <% innerScripts(buf) %>
+<% } %>
+
+<% function contents(buf) { %>
+  <% innerContents(buf) %>
+<% } %>
+
+<% include ../common/layout.ejs %>

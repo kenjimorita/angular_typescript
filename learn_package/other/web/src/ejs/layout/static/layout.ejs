@@ -1,0 +1,22 @@
+<% function categoryStyles(buf) { %>
+  <link rel="stylesheet" href="<%- revAssets('stylesheets/stanby-common-sp.css') %>" media="screen and (max-width: 768px)">
+  <link rel="stylesheet" href="<%- revAssets('stylesheets/stanby-styleguide-sp.css') %>" media="screen and (max-width: 768px)">
+  <link rel="stylesheet" href="<%- revAssets('stylesheets/stanby-visitor.css') %>">
+  <% pageStyles(buf) %>
+<% } %>
+<% function categoryScripts(buf) { %>
+  <% pageScripts(buf) %>
+<% } %>
+
+<% function categoryContents(buf) { %>
+<div id="jsi-wrapper" class="cm-wrapper">
+  <header class="cm-header">
+    <p class="cm-header_logo"><a href="/" class="sg-logo sg-logo-site">Stanby</a></p>
+  </header>
+  <div class="cm-row-main">
+    <% pageContents(buf) %>
+  </div>
+</div>
+<% } %>
+
+<% include ../../layout/common/layout.ejs %>

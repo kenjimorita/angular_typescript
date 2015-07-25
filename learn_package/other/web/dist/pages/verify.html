@@ -1,0 +1,203 @@
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ja" ng-app="stanby">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Stanby Recruiting</title>
+  <link rel="stylesheet" href="/stylesheets/stanby-common.css">
+  <link rel="stylesheet" href="/stylesheets/stanby-styleguide.css">
+  
+  <!--[if lt IE 9]>
+  <link rel="stylesheet" href="/stylesheets/stanby-ie8.css">
+  <![endif]-->
+  
+<link rel="stylesheet" href="/stylesheets/stanby-common-sp.css" media="screen and (max-width:768px)">
+<link rel="stylesheet" href="/stylesheets/stanby-styleguide-sp.css" media="screen and (max-width:768px)">
+<link rel="stylesheet" href="/stylesheets/stanby-visitor-sp.css" media="screen and (max-width:768px)">
+
+
+  <link rel="shortcut icon" href="/favicon.ico">
+  <!--[if lt IE 9]>
+  <script src="/scripts/vendor_js/html5shiv.js"></script>
+  <![endif]-->
+  <script src="/scripts/vendor_js/modernizr.custom.js"></script>
+</head>
+<body>
+
+  
+  
+  <ui-view></ui-view>
+
+
+  <footer class="cm-last-footer">
+    <ul>
+      <li><a href="/contents/terms">利用規約</a></li>
+      <li><a href="/contents/privacy">プライバシーポリシー</a></li>
+      <li><a href="/contents/guideline">掲載ガイドライン</a></li>
+      <li><a href="/contact">お問い合わせ</a></li>
+    </ul>
+    <small>Copyright &copy; BizReach, Inc. All Rights Reserved.</small>
+  </footer>
+
+  <div id="jsi-main-spinner" class="cm-spinner-overlay"></div>
+  <toast></toast>
+  <script type="text/ng-template" id="template/timepicker/timepicker.html">
+
+  <div class="sg-bs-timepicker">
+    <input type="text" ng-model="hours" ng-change="updateHours()" ng-readonly="readonlyInput" maxlength="2">
+    <span>:</span>
+    <input type="text" ng-model="minutes" ng-change="updateMinutes()" ng-readonly="readonlyInput" maxlength="2">
+    <span ng-if="invalidHours || invalidMinutes" class="sg-error">無効な時間です</span>
+  </div>
+
+</script>
+
+
+<!-- NOTE(kitaly) 元のテンプレートに独自の　クラスを付与しただけ -->
+<script type="text/ng-template" id="template/datepicker/popup.html">
+
+<ul class="sg-bs-datepicker" ng-style="{display: (isOpen && 'block') || 'none', top: position.top+'px', left: position.left+'px'}" ng-keydown="keydown($event)">
+  <li ng-transclude></li>
+    <li ng-if="showButtonBar" class="sg-bs-datepicker-popup-control">
+      <a class="btn btn-sm btn-info" ng-click="select('today')">{{ getText('current') }}</a>
+      &nbsp;-&nbsp;
+      <a class="btn btn-sm btn-danger" ng-click="select(null)">{{ getText('clear') }}</a>
+      <!--&nbsp;-&nbsp;-->
+      <!--<a class="btn btn-sm btn-success pull-right" ng-click="close()">{{ getText('close') }}</a>-->
+    </li>
+</ul>
+
+</script>
+
+
+<!-- NOTE(kitaly) 元のテンプレートに独自の　クラスを付与しただけ -->
+<script type="text/ng-template" id="template/datepicker/day.html">
+
+<table role="grid" aria-labelledby="{{uniqueId}}-title" aria-activedescendant="{{activeDateId}}">
+  <thead>
+    <tr class="sg-bs-datepicker-head">
+      <th colspan="2" class="sg-bs-datepicker-head-prev" ng-click="move(-1)">
+        <!--<button type="button" class="btn btn-default btn-sm pull-left" ng-click="move(-1)" tabindex="-1">-->
+          <!--<i class="glyphicon glyphicon-chevron-left"></i>-->
+        <!--</button>-->
+      </th>
+      <th colspan="{{5 + showWeeks}}" id="{{uniqueId}}-title">
+        <!--<button id="{{uniqueId}}-title" role="heading" aria-live="assertive" aria-atomic="true" type="button" class="btn btn-default btn-sm" ng-click="toggleMode()" ng-disabled="datepickerMode === maxMode" tabindex="-1" style="width:100%;">-->
+          <strong>{{title}}</strong>
+        <!--</button>-->
+      </th>
+      <th colspan="2" class="sg-bs-datepicker-head-next" ng-click="move(1)">
+        <!--<button type="button" class="btn btn-default btn-sm pull-right" ng-click="move(1)" tabindex="-1">-->
+          <!--<i class="glyphicon glyphicon-chevron-right"></i>-->
+        <!--</button>-->
+      </th>
+    </tr>
+    <tr class="sg-bs-datepicker-weekday">
+      <th></th>
+      <th ng-show="showWeeks" class="text-center"></th>
+      <th ng-repeat="label in labels track by $index" class="text-center"><small aria-label="{{label.full}}">{{label.abbr}}</small></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody class="sg-bs-datepicker-body">
+    <tr ng-repeat="row in rows track by $index">
+      <td></td>
+      <td ng-show="showWeeks" class="text-center h6"><em>{{ weekNumbers[$index] }}</em></td>
+      <td ng-repeat="dt in row track by dt.date" class="text-center" role="gridcell" id="{{dt.uid}}" aria-disabled="{{!!dt.disabled}}"
+          ng-class="{'btn-info': dt.selected, active: isActive(dt), 'selected': dt.selected }" ng-click="select(dt.date)" ng-disabled="dt.disabled">
+        <!--<button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt), selected: dt.selected}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1">-->
+          <span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}">{{dt.label}}</span>
+        <!--</button>-->
+      </td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+
+</script>
+
+
+<script type="text/ng-template" id="template/pagination/pagination.html">
+<div class="sg-pager">
+
+  <span ng-if="directionLinks" class="sg-pager-prev" ng-class="{hidden: noPrevious()}">
+    <a href ng-click="selectPage(page - 1, $event)">{{getText('previous')}}</a>
+  </span>
+
+  <span ng-if="directionLinks" class="sg-pager-next" ng-class="{hidden: noNext()}">
+    <a href ng-click="selectPage(page + 1, $event)">{{getText('next')}}</a>
+  </span>
+
+  <div class="sg-pager-list" ng-class="{alignleft: noPrevious() && !noNext(),alignright: noNext() && !noPrevious()}">
+
+    <ul>
+      <!--<li ng-if="boundaryLinks && !noPrevious()">-->
+        <!--<a href ng-click="selectPage(1, $event)">1</a>-->
+      <!--</li>-->
+
+      <li ng-repeat="page in pages track by $index" ng-class="{active: page.active}">
+        <a href ng-click="selectPage(page.number, $event)" ng-if="!page.active">{{page.text}}</a>
+        <a ng-if="page.active">{{page.text}}</a>
+      </li>
+
+      <!--<li ng-if="boundaryLinks && !noNext()">-->
+        <!--<a href ng-click="selectPage(totalPages, $event)">{{totalPages}}</a>-->
+      <!--</li>-->
+    </ul>
+
+    <p class="sg-pager-guide">
+      <span><strong> {{page}} </strong></span>/ 全 {{totalPages}} ページ
+    </p>
+  </div>
+
+
+</div>
+</script>
+
+  <st-totop></st-totop>
+
+
+  
+  <!--[if lt IE 9]>
+  <script src="/scripts/vendor_js/respond.js"></script>
+  <script src="/scripts/vendor_js/es5-shim.js"></script>
+  <![endif]-->
+  <script src="/scripts/vendor_js/startWithShim.js"></script>
+  <script src="/scripts/vendor_js/lodash.js"></script>
+  <script src="/scripts/vendor_js/jquery.js"></script>
+  <script src="/scripts/vendor_js/jquery.easing.min.js"></script>
+  <script src="/scripts/vendor_js/jquery.imgcentering.min.js"></script>
+  <script src="/scripts/vendor_js/angular.js"></script>
+  <script src="/scripts/vendor_js/angular-animate.js"></script>
+  <script src="/scripts/vendor_js/angular-sanitize.js"></script>
+  <script src="/scripts/vendor_js/angular-locale_ja-jp.js"></script>
+  <script src="/scripts/vendor_js/angular-ui-router.js"></script>
+  <script src="/scripts/vendor_js/ui-utils.js"></script>
+  <script src="/scripts/vendor_js/ui-bootstrap-tpls.js"></script>
+  <script src="/scripts/vendor_js/ngToast.js"></script>
+  <script src="/scripts/stanby-utils.js"></script>
+  <script src="/scripts/stanby-app.js"></script>
+  
+<script src="/scripts/verify-page.js"></script>
+
+
+
+  <noscript>
+    <iframe src="//www.googletagmanager.com/ns.html?id=GTM-T5GK3V" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+  </noscript>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-T5GK3V');</script>
+</body>
+</html>
+
+

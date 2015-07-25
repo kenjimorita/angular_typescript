@@ -1,0 +1,114 @@
+<% function pageStyles(buf) { %>
+<% } %>
+<% function pageScripts(buf) { %>
+  <script src="<%- revAssets('scripts/signup-page.js') %>"></script>
+<% } %>
+
+<% function pageContents(buf) { %>
+  <div id="jsi-wrapper" class="cm-wrapper">
+    <header class="cm-header">
+      <p class="cm-header_logo"><a href="/" class="sg-logo sg-logo-site">Stanby</a></p>
+    </header>
+    <div class="cm-row-main">
+      <main class="cm-main pg-signup-main">
+        <h1>アカウント作成</h1>
+        <p>アカウントを作成して無料で求人掲載</p>
+        <div ui-view></div>
+      </main>
+    </div>
+  </div>
+
+  <script type="text/ng-template" id="/templates/signup/index.html">
+    <div class="pg-visitor-box" id="jsi-register-forms">
+      <form method="post" name="signupForm" ng-submit="signupForm.$valid && c.submit(register)" novalidate>
+        <input style="display:none" type="password" name="fakepassword"/>
+        <!-- ^ chrome auto-complete workaround  -->
+        <section class="pg-register_form sg-form jsc-register-form st-visible">
+          <div class="sg-form_element">
+            <label>氏名</label>
+            <div class="sg-form_element-right">
+              <input type="text" name="fullName" placeholder="例）田中　太郎"
+                     required autofocus maxlength="50" 
+                     ng-model="c.model.fullName"
+                     stb-tooltip="{% $viewLength %}/50文字まで">
+              <span ng-class="{'sg-form_valid': signupForm.fullName.$valid}"></span>
+              <ul class="sg-error" ng-show="signupForm.fullName.$dirty">
+                <li ng-show="signupForm.fullName.$error.required">必須項目です</li>
+              </ul>
+            </div>
+          </div>
+          <div class="sg-form_element">
+            <label>メールアドレス</label>
+            <div class="sg-form_element-right">
+              <input type="email" name="email"  placeholder="例）sample@stanby.com" autocomplete="off"
+                     required maxlength="100"
+                     ng-model="c.model.email"
+                     st-validate-email st-validate-email-duplicate
+                     stb-tooltip="{% $viewLength %}/100文字まで"
+                     st-delayed-update>
+              <span ng-class="{'sg-form_valid': signupForm.email.$valid}"></span>
+              <ul class="sg-error" ng-show="signupForm.email.$dirty">
+                <li ng-show="signupForm.email.$error.required">必須項目です</li>
+                <li ng-show="signupForm.email.$error.email || signupForm.email.$error.stEmail">正しいメールアドレスか確認してください</li>
+                <li ng-show="!signupForm.email.$error.required && signupForm.email.$error.stEmailDuplicate">既に使用されているメールアドレスです</li>
+              </ul>
+            </div>
+          </div>
+          <div class="sg-form_element">
+            <label>パスワード</label>
+            <div class="sg-form_element-right">
+              <input type="password" name="password" autocomplete="off"
+                     required minlength="8" maxlength="40"
+                     ng-model="c.model.password"
+                     ng-pattern="/^(?=.*[a-z].*).{8,40}$/"
+                     st-delayed-update
+                     stb-tooltip="半角英字を１文字以上含む8-40文字にしてください<br>({% $viewLength %}/40文字まで)">
+              <span ng-class="{'sg-form_valid': signupForm.password.$valid}"></span>
+              <ul class="sg-error" ng-show="signupForm.password.$dirty">
+                <li ng-show="signupForm.password.$error.required">必須項目です</li>
+                <li ng-show="signupForm.password.$error.pattern">半角英字を１文字以上含む8-40文字にしてください</li>
+              </ul>
+            </div>
+          </div>
+          <div class="sg-form_element">
+            <label>会社名</label>
+            <div class="sg-form_element-right">
+              <input type="text" name="companyName" id="companyName"
+                     required maxlength="100" placeholder="例）株式会社ビズリーチ"
+                     ng-model="c.model.companyName"
+                     stb-tooltip="{% $viewLength %}/100文字まで">
+              <span ng-class="{'sg-form_valid': signupForm.companyName.$valid}"></span>
+              <ul class="sg-error" ng-show="signupForm.companyName.$dirty">
+                <li ng-show="signupForm.companyName.$error.required">必須項目です</li>
+              </ul>
+            </div>
+          </div>
+          <div class="sg-form_element">
+            <label>電話番号</label>
+            <div class="sg-form_element-right" >
+              <input type="text" name="phone" required 
+                     maxlength="25" placeholder="例）03-6450-5166"
+                     ng-model="c.model.phone"
+                     st-validate-phone
+                     st-delayed-update
+                     stb-tooltip="[半角数字] [-] のみ使用可<br>({% $viewLength %}/25文字まで)">
+              <span ng-class="{'sg-form_valid': signupForm.phone.$valid}"></span>
+              <ul class="sg-error" ng-show="signupForm.phone.$dirty">
+                <li ng-show="signupForm.phone.$error.required">必須項目です</li>
+                <li ng-show="signupForm.phone.$error.phone">正しい電話番号か確認してください</li>
+              </ul>
+            </div>
+          </div>
+          <div class="sg-form_next sg-form_element">
+            <p><a href="/contents/terms" target="_blank" class="sg-form_next-newwindow">利用規約</a>・<a href="/contents/privacy" target="_blank" class="sg-form_next-newwindow">プライバシーポリシー</a>に</p>
+            <button type="submit" value="同意してアカウント作成" class="sg-button sg-button-l sg-button-secondary"
+                    ng-disabled="signupForm.$invalid">同意してアカウント作成</button>
+          </div>
+        </section>
+      </form>
+    </div>
+    <p class="sg-centering">すでにアカウントをお持ちですか？ <a href="/login">ログイン</a></p>
+  </script>
+<% } %>
+
+<% include ../layout/visitor/layout.ejs %>

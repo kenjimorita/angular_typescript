@@ -1,0 +1,1439 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ja" ng-app="stanby">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Stanby Recruiting</title>
+  <link rel="stylesheet" href="/stylesheets/stanby-common.css">
+  <link rel="stylesheet" href="/stylesheets/stanby-styleguide.css">
+  
+  <!--[if lt IE 9]>
+  <link rel="stylesheet" href="/stylesheets/stanby-ie8.css">
+  <![endif]-->
+  
+  
+  <link rel="stylesheet" href="/stylesheets/stanby-applicant.css">
+
+
+
+  <link rel="shortcut icon" href="/favicon.ico">
+  <!--[if lt IE 9]>
+  <script src="/scripts/vendor_js/html5shiv.js"></script>
+  <![endif]-->
+  <script src="/scripts/vendor_js/modernizr.custom.js"></script>
+</head>
+<body>
+
+  
+  
+
+<div id="jsi-wrapper" ng-controller="HeadMenuCtrl" class="cm-wrapper">
+  <header class="cm-header">
+    <ul class="cm-header-breadcrumbs" ng-controller="BreadCrumbsCtrl">
+      <li ng-repeat="breadcrumb in breadcrumbs" ng-class="{show: breadcrumbs.length}"><a href="{%breadcrumb.url%}" ng-if="breadcrumb.url">{%breadcrumb.text%}</a><span ng-if="!breadcrumb.url">{%breadcrumb.text%}</span></li>
+    </ul>
+    <ul class="cm-header-nav">
+      <li class="cm-header-nav-account" id="jsi-nav-account">
+        <a href="javascript: void(0);" ng-class="{show: 'accountName'}">{%accountName%}</a>
+        <ul>
+          <li><a href="/profile#/">あなたのアカウント設定</a></li>
+          <li class="cm-header-nav-account-logout"><a href ng-click="logout()">ログアウト</a></li>
+        </ul>
+      </li>
+    </ul>
+  </header>
+  <div class="cm-row-main">
+    <main class="cm-main">
+      
+<ui-view></ui-view>
+
+<script type="text/ng-template" id="/internal/controllers/applications/detail">
+
+<div class="cm-main_head">
+  <h1>{%c.applicationPromise.job.jobName%}</h1>
+</div>
+
+<div ng-init="c.init()">
+
+  <div class="cm-sub_head has-nav cf">
+    <nav class="cm-sub_head-nav">
+      <ul>
+        <li class="active">応募者</li>
+        <li ng-show="c.hasRecruiterRole()"><a href="/jobs#/{%c.application.job.jobId%}/edit/{%c.application.id%}">求人情報</a></li>
+      </ul>
+    </nav>
+    <div class="sg-navpanel pg-applicant-detail" ui-view="applicationNav"></div>
+  </div>
+
+  <section class="pg-detail">
+    <div class="pg-main">
+      <div ui-view="summaryView"></div>
+      <div class="pg-timeline">
+        <div ui-view="mainAction"></div>
+        <div ui-view="applicationTimeline"></div>
+        <div ui-view="applicationOriginal"></div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+</script>
+
+<script type="text/ng-template" id="/internal/controllers/applications/detail-main-action">
+
+
+<section class="cf" ng-init="aac.init()" ng-class="{'pg-timeline-important': aac.hasRecruiterRole() }">
+  <time>{% aac.nowDate | formatEventTimestamp %}</time>
+  <div class="pg-timeline-status">
+    <span>{% aac.accountInfoPromise.fullName | limitTo:1 %}</span>
+  </div>
+  <div class="pg-timeline-body">
+    <div class="pg-timeline-headgroup cf">
+      <h3>次のアクション<span>{% aac.accountInfoPromise.fullName %}</span></h3>
+      <p>前回のアクションから{% aac.latestItemCreatedAt | durationTillNow %}経過</p>
+    </div>
+    <div class="pg-timeline-select" ng-if="aac.hasRecruiterRole()">
+      <div class="pg-timeline-select-buttons" id="jsi-command-box">
+        <p>アクションを選択してください</p>
+        <a href="#jsi-command-box" class="sg-button sg-button-l"
+           st-autoscroll=""
+           st-docscreening-form-click="st-docscreening-create"
+           st-collapse-hide-target="jsi-command-box">書類選考を依頼</a>
+        <a href="#jsi-command-box" class="sg-button sg-button-l"
+           st-autoscroll=""
+           st-interview-form-click="st-interview-create"
+           st-collapse-hide-target="jsi-command-box">面接を登録</a>
+        <a href="#jsi-command-box" class="sg-button sg-button-l"
+           st-autoscroll=""
+           st-note-form-click="st-note-create"
+           st-collapse-hide-target="jsi-command-box">コメント</a>
+      </div>
+      <div st-create st-interview-form-collapse="st-interview-create"></div>
+      <div st-create st-docscreening-form-collapse="st-docscreening-create"></div>
+      <div st-create st-note-form-collapse="st-note-create"></div>
+      <div ng-if="!aac.hasRecruiterRole()">
+        <p>書類選考、面接、コメントは人事担当者権限が無いユーザーは登録できません。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</script>
+
+<script type="text/ng-template" id="/internal/controllers/applications/detail-nav">
+
+<ol class="cf sg-controlpanel-controls">
+
+  <li class="sg-controlpanel-control-left"><a href="#basic" st-autoscroll="">基本情報</a></li>
+  <li class="sg-controlpanel-control-left"><a href="#resume" st-autoscroll="">応募書類</a></li>
+
+  <li class="sg-controlpanel-control-right">
+    <a href="javascript://;" onclick="window.open(this.href=document.location, 'ApplicantDetails', 'window.innerWidth, window.innerHeight,menubar=yes, toolbar=yes, scrollbars=yes, resizable=yes')" class="newwindow" 
+    st-link-tooltip="別ウィンドウで開く"></a>
+  </li>
+  <li class="sg-controlpanel-control-right">
+    <a ng-if="anc.isEditableResume()" class="attach"
+    st-link-tooltip="応募書類を添付"
+    ng-click="anc.turnOnFileAttachmentModal()"></a>
+  </li>
+  <li class="sg-controlpanel-control-right" ng-if="anc.isEditableResume()">
+    <a ui-sref="edit({applicationId: anc.applicationPromise.id})" class="edit"
+    st-link-tooltip="応募者の基本情報を編集"></a>
+  </li>
+
+  <li class="sg-controlpanel-control-right" ng-show="anc.hasRecruiterRole()">
+    <button class="pg-detail-status"
+      ng-model="anc.applicationPromise.selectionStage"
+      st-dd-select="stage.code as stage.name for stage in $enums.selectionStageOptions orderBy stage.sortNo"
+      st-dd-select-manual="anc.updateStatus($newValue, $isDiffValue)"
+      st-link-tooltip="この操作を行っても応募者には通知されません。必要に応じて直接応募者へご連絡ください。">
+      現在の選考ステータス
+      <span>{% anc.enums.selectionStage[anc.applicationPromise.selectionStage] %}</span>
+    </button>
+  </li>
+
+</ol>
+
+<div ng-if="anc.isSearchResultsActive()">
+  <a class="sg-navpanel-list" ng-click="anc.backToList()" stb-tooltip="{% anc.activeListName() %} : {% anc.currentItemNumber() %} / {% anc.totalHits() %}"></a>
+  
+  <a class="sg-navpanel-prev" ng-if="anc.existsPrevItem()" ng-click="anc.transitionToPrevItem()" stb-tooltip="前の応募者"></a>
+  <a class="sg-navpanel-next" ng-if="anc.existsNextItem()" ng-click="anc.transitionToNextItem()" stb-tooltip="次の応募者"></a>
+</div>
+</script>
+<script type="text/ng-template" id="/internal/controllers/applications/detail-summary">
+
+<div class="pg-detail-base cf" id="basic">
+  <h2 class="pg-detail-name">{%asc.applicationPromise.profile.fullName%}</h2>
+  <p ng-if="asc.applicationPromise.applicationSource">{% asc.enums.applicationSource[asc.applicationPromise.applicationSource].name %}</p>
+</div>
+
+<div class="pg-detail-last">
+  <div ng-if="asc.applicationPromise.profile.lastOrganization">
+    <p>{%asc.applicationPromise.profile.lastOrganization%}</p>
+    <p ng-if="asc.applicationPromise.profile.lastTitle">{%asc.applicationPromise.profile.lastTitle%}</p>
+  </div>
+</div>
+
+<div class="pg-detail-address" ng-if="asc.hasRecruiterRole()">
+  <p ng-if="!asc.email"><a href="javascript: void(0);" ng-click="asc.fetchEmail()">メールアドレスを表示</a></p>
+  <p ng-if="asc.email" ng-bind="asc.email"></p>
+  <p ng-if="!asc.phone"><a href="javascript: void(0);" ng-click="asc.fetchPhone()">電話番号を表示</a></p>
+  <p ng-if="asc.phone" ng-bind="asc.phone"></p>
+  <p>
+    <span ng-if="asc.applicationPromise.profile.postalCode">〒{% asc.applicationPromise.profile.postalCode %}</span>
+    <span ng-if="asc.applicationPromise.profile.address1">{% asc.applicationPromise.profile.address1 %}</span>
+    <span ng-if="asc.applicationPromise.profile.address2">{% asc.applicationPromise.profile.address2 %}</span>
+  </p>
+  <p ng-if="asc.applicationPromise.profile.birthDate">
+    {% asc.applicationPromise.profile.birthDate | formatYearMonthDay %} ({%asc.applicationPromise.profile.birthDate | calculateAge %} 歳)
+  </p>
+</div>
+
+</script>
+
+<script type="text/ng-template" id="/internal/controllers/applications/detail-timeline">
+<div ng-init="atc.init()">
+
+  
+  <section class="cf"
+    ng-repeat="t in atc.timeline"
+    ng-if="t.content && t.timelineType !== 'message'"
+    ng-class="{'pg-timeline-delegated': (accountName !== t.content.interviewer.name) && (accountName === t.content.updatedBy.name) && t.content.interviewer.name,'pg-timeline-important': (accountName === t.content.interviewer.name) && t.content.interviewer.name  }">
+
+    <time>{% t.content.updatedAt | formatEventTimestamp %}</time>
+    <div class="pg-timeline-status"><span>{% t.content.updatedBy.name | limitTo:1 %}</span></div>
+
+    
+    <div class="pg-timeline-body" ng-if="t.timelineType === 'stage'">
+      <div class="pg-timeline-headgroup cf">
+        <h3>ステータス変更<span>{% t.content.updatedBy.name %}</span></h3>
+      </div>
+      <div>
+        <p>ステータスが<span class="sg-users_role">{% atc.enums.selectionStage[t.content.selectionStage] %}</span>に変更されました。</p>
+      </div>
+    </div>
+
+    
+    <div class="pg-timeline-body" ng-if="t.timelineType === 'note'">
+      <div class="pg-timeline-headgroup cf">
+        <h3>{% t.content.updatedBy.name %} がコメントを書きました</h3>
+        <p class="pg-timeline-edit-link">{% t.content.updatedBy.name %}により{%t.content.updatedAt | date:'M月d日 H:mm'%}に編集済み
+          <a href="#jsi-note-edit-{% $index %}"
+             ng-show="atc.isUpdatableNote(t.content)"
+             st-autoscroll=""
+             st-note-form-click="st-note-edit-{% $index %}">
+             編集
+          </a>
+        </p>
+      </div>
+      <ul>
+        <li ng-show="t.content.isRecOnly" class="pg-timeline-is-rec-only">このコメントは人事担当者以外には非表示に設定されています。</li>
+      </ul>
+      <div class="pg-timeline-comment-preview">
+        <pre ng-show="t.content.isRecOnly && atc.hasRecruiterRole()">{% t.content.note %}</pre>
+        <pre ng-show="!t.content.isRecOnly">{% t.content.note %}</pre>
+      </div>
+      <div id="jsi-note-edit-{% $index %}" class="pg-feedback-form-instigator"
+           st-note-form-collapse="st-note-edit-{% $index %}"
+           st-update ng-model="t.content"></div>
+    </div>
+
+    
+    <div class="pg-timeline-body" ng-if="t.timelineType === 'interview'">
+      <div class="pg-timeline-headgroup cf">
+        <h3>{% t.content.title %}<span>{% t.content.updatedBy.name %}</span></h3>
+        <p class="pg-timeline-edit-link">{% t.content.updatedBy.name %}により{%t.content.updatedAt | date:'M月d日 H:mm'%}に編集済み
+          <a href="#jsi-interview-update-{% $index %}"
+             ng-show="atc.hasRecruiterRole()"
+             st-autoscroll=""
+             st-collapse-hide-target="jsi-interview-action-box-{% $index %}"
+             st-interview-form-click="st-interview-update-{% $index %}">
+             編集
+          </a>
+        </p>
+      </div>
+      <div ng-if="!t.iEditForm.isEditInterview">
+
+        <dl class="pg-timeline-interview-detail">
+          <dt class="date" ng-if="t.content.startAt">日付</dt>
+          <dd ng-if="t.content.startAt">{% t.content.startAt | date:'yyyy年M月d日' %}</dd>
+          <dt class="time" ng-if="t.content.startAt">時間</dt>
+          <dd ng-if="t.content.startAt">{% t.content.startAt | date:'H:mm' %} - {% t.content.endAt | date:'H:mm' %}</dd>
+          <dt class="location" ng-if="t.content.place">場所</dt>
+          <dd ng-if="t.content.place">{% t.content.place %}</dd>
+          <dt class="interviewer" ng-if="t.content.interviewer">面接官</dt>
+          <dd ng-if="t.content.interviewer">{% t.content.interviewer.name %}</dd>
+        </dl>
+
+        <div><pre>{% t.content.note %}</pre></div>
+
+        <div id="jsi-interview-action-box-{% $index %}">
+
+          
+          <a href="#jsi-interview-action-box-{% $index %}" class="sg-button sg-button-l sg-button-primary"
+             ng-show="atc.isEvaluatableInterview(t.content) && (accountName === t.content.interviewer.name)"
+             st-autoscroll=""
+             st-collapse-hide-target="jsi-interview-action-box-{% $index %}"
+             st-feedback-form-click="st-feedback-add-{% $index %}">評価を入力</a>
+
+        </div>
+        <div class="pg-feedback-form-instigator"
+             st-feedback-form-collapse="st-feedback-add-{% $index %}"
+             st-create st-resolve="{interviewId: t.content.id, interviewType: t.content.interviewType, interviewTitle: t.content.title}"></div>
+        <div id="jsi-interview-update-{% $index %}" class="pg-feedback-form-instigator"
+             st-interview-form-collapse="st-interview-update-{% $index %}"
+             st-update ng-model="t.content" ></div>
+      </div>
+    </div>
+
+    
+    <div class="pg-timeline-body" ng-if="t.timelineType === 'docscreening'">
+      <div class="pg-timeline-headgroup cf">
+        <h3>{% t.content.title %}<span>{% t.content.updatedBy.name %}</span></h3>
+        <p class="pg-timeline-edit-link">{% t.content.updatedBy.name %}により{% t.content.updatedAt | date: 'M月d日 H:mm' %}に編集済み
+          <a href="#jsi-docscreening-update-{% $index %}"
+             ng-show="atc.hasRecruiterRole()"
+             st-autoscroll=""
+             st-collapse-hide-target="jsi-docscreening-action-box-{% $index %}"
+             st-docscreening-form-click="st-docscreening-update-{% $index %}">
+             編集
+          </a>
+        </p>
+      </div>
+      <div ng-if="!t.iEditForm.isEditInterview">
+
+        <dl class="pg-timeline-interview-detail">
+          <dt class="interviewer">面接官</dt>
+          <dd>{% t.content.interviewer.name %}</dd>
+        </dl>
+
+        <div><pre>{% t.content.note %}</pre></div>
+
+        <div id="jsi-docscreening-action-box-{% $index %}">
+        
+          
+          <a href="#jsi-docscreening-action-box-{% $index %}" class="sg-button sg-button-l sg-button-primary"
+             ng-show="atc.isEvaluatableInterview(t.content) && (accountName === t.content.interviewer.name)"
+             st-autoscroll=""
+             st-collapse-hide-target="jsi-interview-action-box-{% $index %}"
+             st-feedback-form-click="st-feedback-add-{% $index %}">評価を入力</a>
+
+        </div>
+        <div class="pg-feedback-form-instigator"
+             st-feedback-form-collapse="st-feedback-add-{% $index %}"
+             st-create st-resolve="{interviewId: t.content.id, interviewType: t.content.interviewType, interviewTitle: t.content.title}"></div>
+        <div id="jsi-docscreening-update-{% $index %}" class="pg-feedback-form-instigator"
+             st-docscreening-form-collapse="st-docscreening-update-{% $index %}"
+             st-update ng-model="t.content"></div>
+      </div>
+    </div>
+
+    
+    <div class="pg-timeline-body" ng-if="t.timelineType === 'feedback'">
+      <div class="pg-timeline-result pg-timeline-headgroup cf">
+        <h3>
+          {% t.content.interviewTitle %} - 評価
+
+          <strong class="pg-timeline-grade grade-{% g.value %}"
+                  ng-repeat="g in atc.enums.interviewFeedbackGrade"
+                  ng-if="g.value == t.content.grade">
+                  {% g.shortName %}
+          </strong>
+
+          <span>{% t.content.updatedBy.name %}</span>
+        </h3>
+        <p class="pg-timeline-edit-link">{% t.content.updatedBy.name %}により{% t.content.updatedAt | date:'M月d日 H:mm' %}に編集済み
+          <a href="#jsi-feedback-update-{% $index %}"
+             ng-show="atc.hasRecruiterRole()"
+             st-autoscroll=""
+             st-collapse-hide-target="jsi-interview-action-box-{% $index %}"
+             st-feedback-form-click="st-feedback-update-{% $index %}">
+             編集
+          </a>
+        </p>
+      </div>
+      <pre>{%t.content.summary%}</pre>
+      <div id="jsi-feedback-update-{% $index %}" class="pg-feedback-form-instigator"
+           st-feedback-form-collapse="st-feedback-update-{% $index %}"
+           st-update ng-model="t.content"
+           st-resolve="{interviewType: t.content.interviewType, interviewTitle: t.content.title}"
+           ></div>
+    </div>
+
+  </section>
+</div>
+
+</script>
+
+<script type="text/ng-template" id="/internal/controllers/applications/detail-original">
+
+<div ng-init="aoc.init()" >
+  <section class="cf" ng-if="aoc.applicationPromise">
+    <time>{% aoc.applicationPromise.appliedAt | formatEventTimestamp %}</time>
+    <div class="pg-timeline-status"><span>{% aoc.applicationPromise.profile.fullName | limitTo:1 %}</span></div>
+    <div class="pg-timeline-body">
+      <h3>{% aoc.applicationPromise.profile.fullName %}が応募しました
+        <span class="pg-timeline-stanby-applicant" ng-bind="aoc.enums.applicationSource[aoc.applicationPromise.applicationSource].name"></span>
+      </h3>
+
+      <div class="sg-form-markdown-html" ng-bind-html="aoc.messageHtml" ng-if="aoc.messageHtml"></div>
+      <section id="resume">
+        <h4><span>応募書類</span></h4>
+        <section class="pg-timeline-resume" id="resume-form" ng-if="aoc.resumeHtml">
+          <h5 class="sg-icon resume-form">履歴書（直接応募）</h5>
+          <div class="sg-form-markdown-html" ng-bind-html="aoc.resumeHtml"></div>
+        </section>
+
+        <section class="pg-timeline-resume" id="resume-form" ng-if="aoc.applicationPromise.applicationSource == 'JSE'">
+          <h5 class="sg-icon resume-form">履歴書（スタンバイ経由の応募）</h5>
+          <div class="pg-timeline-resume-child cf">
+            <p class="pg-timeline-resume-child-head">職歴</p>
+            <div class="pg-timeline-resume-child-body">
+              <section ng-repeat="work in aoc.applicationPromise.resume.work">
+                <h6>{% work.company %}</h6>
+                <p>
+                  {% aoc.enums.jobType[work.employmentType].name %}<br/>
+                  {% work.business %} {% work.title %}<br  />
+                  <span class="weak" ng-if="work.startDate">
+                    {% work.startDate.year ? work.startDate.year + '年' : null %}{% work.startDate.month ? work.startDate.month + '月' : null %} ～ 
+                    <span ng-bind="work.endDate ? work.endDate.year + '年' + work.endDate.month + '月' : '現職' "></span>
+                    <span>（{% aoc.getDuration(work) %}）</span>
+                  </span>
+                  <span ng-if="work.salary"><br />
+                    {% aoc.enums.salaryType[work.salaryType].name %} {% work.salary | number %}円
+                  </span>
+                </p>
+                <pre ng-if="work.summary">{% work.summary %}</pre>
+              </section>
+              <section ng-if="!aoc.applicationPromise.resume.work.length"><p>なし</p></section>
+            </div>
+          </div>
+          <div class="pg-timeline-resume-child cf">
+            <p class="pg-timeline-resume-child-head">学歴</p>
+            <div class="pg-timeline-resume-child-body">
+              <section ng-repeat="edu in aoc.applicationPromise.resume.education">
+                <h6>{% edu.schoolName %} {% edu.fieldOfStudy %} <span class="weak" ng-show="edu.status">[{% aoc.enums.educationStatus[edu.status] %}]</span></h6>
+                <p>
+                  {% edu.degreeText %}<br ng-if="edu.degreeText" />
+                  <span class="weak" ng-if="edu.startDate">
+                    {% edu.startDate.year ? edu.startDate.year + '年' : null %} ～ 
+                    <span ng-bind="edu.endDate.year ? edu.endDate.year + '年' : '現在' "></span>
+                    <span>（{% aoc.getDuration(edu) %}）</span>
+                  </span>
+                </p>
+              </section>
+              <section ng-if="!aoc.applicationPromise.resume.education.length"><p>なし</p></section>
+            </div>
+          </div>
+          
+          <div class="pg-timeline-resume-child cf" ng-show="aoc.applicationPromise.resume.certifications.length">
+            <p class="pg-timeline-resume-child-head">資格</p>
+            <div class="pg-timeline-resume-child-body">
+              <section ng-repeat="cert in aoc.applicationPromise.resume.certifications">
+                <h6>{% cert.name %}</h6>
+                <p>
+                  <span class="weak">{% cert.certifiedDate.year %}年{% cert.certifiedDate.month %}月</span>
+                </p>
+              </section>
+            </div>
+          </div>
+        </section>
+
+
+
+        <section class="pg-timeline-resume" ng-repeat="attach in aoc.applicationPromise.attachments track by $index">
+          <h5 class="sg-icon resume-form"><a ng-href="{% aoc.getAttachmentDownloadLink(attach) %}">{% attach.fileName %}</a></h5>
+          <div ng-if="aoc.isPdfFile(attach)">
+            <iframe ng-src="{% aoc.getPdfViewerLink(attach) %}" style="width: 100%; height: 500px;"></iframe>
+          </div>
+        </section>
+
+      </section>
+    </div>
+  </section>
+</div>
+
+</script>
+
+
+
+<script type="text/ng-template" id="/internal/directives/applications/st-interview-form-collapse">
+
+  <div ng-init="c.init()" collapse="isCollapsed">
+
+    <div class="pg-timeline-form">
+      <!-- changed to form for submit events -->
+      <form name="c.interviewForm">
+        <p class="pg-timeline-form-box-name">面接の情報を入力してください</p>
+        <div class="pg-timeline-form-clickedit">
+          <input type="text" ng-model="c.interview.title" placeholder="無題の面接" required>
+        </div>
+        <p ng-show="!c.interview.title" class="sg-error">面接名を入力してください</p>
+
+        <table class="pg-timeline-form-interview-table">
+          <colgroup>
+            <col width="70">
+            <col width="auto">
+          </colgroup>
+          <tbody>
+
+          <tr>
+            <th>面接日時</th>
+            <td class="cf">
+                <span class="sg-input_checkbox">
+                  <input type="checkbox" ng-model="c.noInterviewTime">
+                  <label class="sg-button transparent" ng-click="c.noInterviewTime = !c.noInterviewTime">日時を指定しない</label>
+                </span>
+
+                <div ng-hide="c.noInterviewTime">
+                  <!-- from -->
+                  <div class="sg-bs-datepicker-group">
+                  <input type="button" datepicker-popup="yyyy/MM/dd" ng-model="c.startDate" show-button-bar="false"
+                           is-open="c.startAtOpened" ng-click="c.openStartPicker($event)"
+                           value="{% c.startDate | date: 'yyyy/MM/dd'%} {% c.startDate ? '' : '日付' %}" >
+                  <timepicker ng-model="c.startDate" show-meridian="ismeridian" minute-step="10"></timepicker>
+                  <span>〜</span>
+                  <!-- to -->
+                  <input type="button" datepicker-popup="yyyy/MM/dd" ng-model="c.endDate" show-button-bar="false"
+                         is-open="c.endAtOpened" ng-click="c.openEndPicker($event)"
+                         value="{% c.endDate | date: 'yyyy/MM/dd'%} {% c.endDate ? '' : '日付' %}" >
+                  <timepicker ng-model="c.endDate" show-meridian="ismeridian" minute-step="10"></timepicker>
+                  </div>
+                </div>
+            </td>
+          </tr>
+
+          <tr>
+            <th>面接官</th>
+            <td>
+              <div class="pg-incrementalsearch" ng-outerclick="c.isInterviewersListActive = false">
+                <div class="pg-incrementalsearch-inputwrapper">
+                  <input type="text" placeholder="面接官を選択"
+                         ng-model="c.interview.interviewer.name" ng-change="c.incrementalSearchInterviewers()"
+                         ng-focus="c.isInterviewersListActive = true" ng-keydown="c.selectSuggestedInterviewer($event)">
+                  <input type="hidden" ng-model="c.interview.interviewer.userId">
+                  <ul ng-show="c.isInterviewersListActive">
+                    <li ng-repeat="user in c.interviewers">
+                      <a href="javascript: void(0);" ng-click="c.setInterviewer(user)" ng-hide="user.__NonMatching">
+                        {% user.fullName %} &lt;{% user.email %}&gt;
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                <p ng-show="!c.interview.interviewer.name" class="sg-error">面接官を選択してください</p>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th>場所</th>
+            <td><input type="text" placeholder="例）会議室1004号室" ng-model="c.interview.place"></td>
+          </tr>
+          <tr>
+            <th>説明</th>
+            <td><textarea ng-model="c.interview.note"></textarea></td>
+          </tr>
+          <tr>
+            <th></th>
+            <td>
+              <button type="submit" class="sg-button secondary" ng-disabled="!c.checkFormValidity() || !c.interview.interviewer.name" ng-click="c.submitInterview()">保存</button>
+              <button type="button" class="sg-button transparent" ng-click="c.discardInterview()" >キャンセル</button>
+              <p class="pg-applicant-advice-text light">※この操作を行っても応募者には通知されません。必要に応じて直接応募者へご連絡ください。</p>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </form>
+    </div>
+  </div>
+
+</script>
+
+<script type="text/ng-template" id="/internal/directives/applications/st-docscreening-form-collapse">
+
+  <div ng-init="c.init()" collapse="isCollapsed">
+
+    <div class="pg-timeline-form">
+      <ng-form name="docscreeningForm">
+        <p class="pg-timeline-form-box-name">書類審査の担当者を設定してください</p>
+        <div class="pg-incrementalsearch" ng-outerclick="c.isInterviewersListActive = false">
+          <div class="pg-incrementalsearch-inputwrapper">
+            <input type="text" placeholder="担当者を選択"
+                   ng-model="c.docScreening.interviewer.name" ng-change="c.incrementalSearchInterviewers()"
+                  ng-focus="c.isInterviewersListActive = true" ng-keydown="c.selectSuggestedInterviewer($event)">
+            <input type="hidden" ng-model="c.docScreening.interviewer.userId">
+            <ul ng-show="c.isInterviewersListActive">
+              <li ng-repeat="user in c.interviewers">
+                <a href="javascript: void(0);" ng-click="c.setInterviewer(user)" ng-hide="user.__NonMatching">
+                  {% user.fullName %} &lt;{% user.email %}&gt;
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <button class="sg-button secondary" ng-class="{disabled: '!c.docScreening.interviewer.userId'}" ng-disabled="!c.docScreening.interviewer.userId" ng-click="c.submitDocScreening()">保存</button>
+            <button class="sg-button transparent" ng-click="c.discardDocScreening()" >キャンセル</button>
+            <p class="pg-applicant-advice-text light">※この操作を行っても応募者には通知されません。必要に応じて直接応募者へご連絡ください。</p>
+          </div>
+        </div>
+      </ng-form>
+    </div>
+  </div>
+
+</script>
+
+<script type="text/ng-template" id="/internal/directives/applications/st-feedback-form-collapse">
+
+  <div ng-init="c.init()" collapse="isCollapsed">
+    <div class="pg-timeline-form">
+      <ng-form>
+        <p class="pg-timeline-form-explain" ng-if="c.feedback.interviewType == 'DOC'">書類選考の評価を入力してください</p>
+        <p class="pg-timeline-form-explain" ng-if="c.feedback.interviewType == 'INT'">{% c.feedback.interviewTitle %}の評価を入力してください</p>
+        <div class="pg-timeline-form-box">
+          <p class="pg-timeline-form-box-name">評価</p>
+          <ul class="pg-timeline-form-radios">
+            <li ng-repeat="grade in c.feedbackGrade">
+              <input type="radio" name="grade" ng-model="c.feedback.grade" ng-value="grade.value">
+              <label ng-click="c.feedback.grade = grade.value">{{grade.name}}</label>
+            </li>
+          </ul>
+          <p ng-show="!c.feedback.grade" class="sg-error">評価を選択してください</p>
+        </div>
+        <div class="pg-timeline-form-box">
+          <p class="pg-timeline-form-box-name">コメント</p>
+          <textarea ng-model="c.feedback.summary" placeholder="評価の理由や面接時への申し送り事項を記入してください。選考できない場合は、理由を記入してください。" ></textarea>
+          <p ng-show="!c.feedback.summary" class="sg-error">コメントを入力してください</p>
+        </div>
+        <div class="pg-timeline-form-foot">
+          <button class="sg-button secondary" ng-disabled="!c.feedback.grade || !c.feedback.summary" ng-click="c.submitFeedback()">保存</button>
+          <button class="sg-button transparent" ng-click="c.discard()" >キャンセル</button>
+          <p class="pg-applicant-advice-text light">※この操作を行っても応募者には通知されません。必要に応じて直接応募者へご連絡ください。</p>
+        </div>
+      </ng-form>
+    </div>
+  </div>
+
+</script>
+
+<script type="text/ng-template" id="/internal/directives/applications/st-note-form-collapse">
+
+  <div ng-init="c.init()" collapse="isCollapsed" class="pg-add-note-form">
+    <div class="pg-timeline-form">
+      <ng-form name="addNoteForm">
+        <p class="pg-timeline-form-box-name">コメント</p>
+        <section class="sg-form-element">
+          <textarea class="sg-form_element-xl" st-autoresize-textarea ng-model="c.note.note" required st-allow-pattern="/^(.|\n){0,1000}$/" stb-tooltip="{% $viewLength %}/1,000文字まで"></textarea>
+        </section>
+        <ul>
+          <li>
+            <span class="sg-input_checkbox">
+              <input type="checkbox" ng-model="c.note.isRecOnly" ng-checked="c.isRecOnly() > -1">
+              <label class="sg-button transparent" ng-click="c.note.isRecOnly = !c.note.isRecOnly">人事担当者以外には非表示にする</label>
+            </span>
+          </li>
+        </ul>
+        <button class="sg-button secondary" ng-disabled="addNoteForm.$invalid" ng-click="c.submitNote()">保存</button>
+        <button class="sg-button transparent" ng-click="c.discardNote()" >キャンセル</button>
+        <p class="pg-applicant-advice-text light">※この操作を行っても応募者には通知されません。必要に応じて直接応募者へご連絡ください。</p>
+      </ng-form>
+    </div>
+  </div>
+
+</script>
+
+
+<script type="text/ng-template" id="/internal/parts/applications/file-upload-modal">
+<div class="sg-modal-filter"></div>
+<div class="sg-modal-dropborder" ng-show="isDragging"></div>
+<div class="sg-imagemanager">
+  <p class="sg-imagemanager-head">添付ファイルのアップロード</p>
+  <div class="sg-imagemanager-content">
+    <div class="sg-imagemanager-regist-drop"
+         ui-event="{
+           drop: 'setDropped($event)',
+           dragover: 'setDraggingStyle($event)',
+           dragenter: 'setDraggingStyle($event)',
+           dragleave: 'resetDraggingStyle($event)'
+         }">
+     ここに添付したいファイルをドラッグ
+     <ul>
+       <li>PDF形式のファイルのみアップロードできます</li>
+       <li>ファイルの最大容量は5MBです</li>
+       <li>左下の「ファイルを選択」からもファイルが選択できます</li>
+     </ul>
+     <div class="sg-imagemanager-regist-border" ng-show="isDragging"></div>
+    </div>
+  </div>
+</div>
+
+<div class="sg-imagemanager-buttons-wrapper">
+  <div class="sg-imagemanager-buttons">
+    <div class="sg-imagemanager-regist-input">
+      <button class="sg-button">ファイルを選択</button>
+      <input type="file" accept="pdf" ui-event="{change: 'selectUploadFile($event)'}">
+    </div>
+    <a href="javascript: void(0);" class="sg-button transparent" ng-click="cancel()">キャンセル</a>
+  </div>
+</div>
+</script>
+
+
+<script type="text/ng-template" id="/internal/controllers/applications/edit">
+
+<div class="cm-main_head st-with-button cf">
+  <h1 ng-if="acc.isEdit">応募者情報編集</h1>
+  <h1 ng-if="!acc.isEdit">応募者情報入力</h1>
+</div>
+
+<form name="appForm" ng-init="acc.init()" novalidate st-editchecker>
+  <div class="cm-main_body">
+    <section class="sg-box detail">
+      <h3>基本情報</h3>
+      <div class="sg-form bordered">
+
+        
+        <div class="sg-form_element">
+          <label class="sg-form_required">求人選択</label>
+          <div class="sg-form_element-right">
+            <span class="sg-select"><select class="sg-form_element sg-form_element-xl"
+                    required
+                    name="jobId"
+                    ng-model="acc.jobId"
+                    ng-options="job.id as (job.jobIdAlias + ' - ' +  job.name) for job in acc.jobList | orderBy:'+jobIdAlias'"></select></span>
+            <span ng-class="{'sg-form_valid': appForm.jobId.$valid}"></span>
+            <ul class="sg-error" ng-if="appForm.jobId.$dirty">
+              <li ng-if="appForm.jobId.$error.required">必須項目です</li>
+            </ul>
+          </div>
+        </div>
+
+        
+        <div class="sg-form_element" ng-if="!acc.isEdit">
+          <label class="sg-form_required">選考ステータス</label>
+          <div class="sg-form_element-right">
+            <span class="sg-select"><select class="sg-form_element-s"
+                    required
+                    name="selectionStage"
+                    ng-model="acc.model.selectionStage"
+                    ng-options="su.code as su.name for su in acc.enums.selectionStageOptions | orderBy:'+sortNo'"></select></span>
+            <span ng-class="{'sg-form_valid': appForm.selectionStage.$valid}"></span>
+            <ul class="sg-error" ng-if="appForm.selectionStage.$dirty">
+              <li ng-if="appForm.selectionStage.$error.required">必須項目です</li>
+            </ul>
+          </div>
+        </div>
+
+        
+        <div class="sg-form_element">
+          <label class="sg-form_required">氏名</label>
+          <div class="sg-form_element-right">
+            <input type="text" class="full" required
+                   name="fullName" ng-model="acc.model.profile.fullName"
+                   maxlength="100" stb-tooltip="{% $viewLength %}/100文字まで" placeholder="例）田中　一郎">
+            <span ng-class="{'sg-form_valid': appForm.fullName.$valid}"></span>
+            <ul class="sg-error" ng-if="appForm.fullName.$dirty">
+              <li ng-if="appForm.fullName.$error.required">必須項目です</li>
+            </ul>
+          </div>
+        </div>
+
+        
+        <div class="sg-form_element">
+          <label class="sg-form">氏名(かな)</label>
+          <div class="sg-form_element-right">
+            <input type="text" class="full"
+                   name="fullNameKana" ng-model="acc.model.profile.fullNameKana"
+                   maxlength="100" stb-tooltip="{% $viewLength %}/100文字まで" placeholder="例）たなか　たろう">
+          </div>
+        </div>
+
+        
+        <div class="sg-form_element">
+          <label class="sg-form">生年月日</label>
+          <div class="sg-form_element-right">
+            <span class="sg-select"><select class="sg-form_element-s" name="birthDateYear" ng-model="acc.birthDateYear"
+                    ng-options="years.value as years.name for years in acc.years"></select></span>
+            <span class="sg-select"><select class="sg-form_element-xs" ng-model="acc.birthDateMonth">
+              <option value=""></option>
+              <option value="1">1月</option>
+              <option value="2">2月</option>
+              <option value="3">3月</option>
+              <option value="4">4月</option>
+              <option value="5">5月</option>
+              <option value="6">6月</option>
+              <option value="7">7月</option>
+              <option value="8">8月</option>
+              <option value="9">9月</option>
+              <option value="10">10月</option>
+              <option value="11">11月</option>
+              <option value="12">12月</option>
+            </select></span>
+            <span class="sg-select"><select class="sg-form_element-xs" ng-model="acc.birthDateDay">
+              <option value=""></option>
+              <option value="1">1日</option>
+              <option value="2">2日</option>
+              <option value="3">3日</option>
+              <option value="4">4日</option>
+              <option value="5">5日</option>
+              <option value="6">6日</option>
+              <option value="7">7日</option>
+              <option value="8">8日</option>
+              <option value="9">9日</option>
+              <option value="10">10日</option>
+              <option value="11">11日</option>
+              <option value="12">12日</option>
+              <option value="13">13日</option>
+              <option value="14">14日</option>
+              <option value="15">15日</option>
+              <option value="16">16日</option>
+              <option value="17">17日</option>
+              <option value="18">18日</option>
+              <option value="19">19日</option>
+              <option value="20">20日</option>
+              <option value="21">21日</option>
+              <option value="22">22日</option>
+              <option value="23">23日</option>
+              <option value="24">24日</option>
+              <option value="25">25日</option>
+              <option value="26">26日</option>
+              <option value="27">27日</option>
+              <option value="28">28日</option>
+              <option value="29">29日</option>
+              <option value="30">30日</option>
+              <option value="31">31日</option>
+            </select></span>
+          </div>
+        </div>
+
+        
+        <div class="sg-form_element">
+          <label class="sg-form_required">電話番号</label>
+          <div class="sg-form_element-right">
+            <input type="text"
+                   name="phone" ng-model="acc.model.profile.phone"
+                   st-validate-phone ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0}}"
+                   maxlength="25" stb-tooltip="電話番号かメールアドレスのどちらかを入力してください\n({% $viewLength %}/25文字まで)"
+                   ui-validate="{compare: '$value || acc.model.profile.email'}"
+                   ui-validate-watch="{compare: 'acc.model.profile.email'}" placeholder="例）03-XXXX-XXXX">
+            <span ng-class="{'sg-form_valid': appForm.phone.$valid}"></span>
+            <ul class="sg-error" ng-show="appForm.phone.$dirty">
+              <li ng-show="appForm.phone.$error.compare">電話番号かメールアドレスのどちらかは必須項目です</li>
+              <li ng-show="appForm.phone.$error.phone">電話番号の形式を確認してください</li>
+            </ul>
+          </div>
+        </div>
+
+        
+        <div class="sg-form_element">
+          <label class="sg-form_required">メールアドレス</label>
+          <div class="sg-form_element-right">
+            <input type="text"
+                   name="email" ng-model="acc.model.profile.email"
+                   st-validate-email ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0}}"
+                   maxlength="100" stb-tooltip="電話番号かメールアドレスのどちらかを入力してください\n({% $viewLength %}/100文字まで)"
+                   ui-validate="{compare: '$value || acc.model.profile.phone'}"
+                   ui-validate-watch="{compare: 'acc.model.profile.phone'}" placeholder="例）sample@stanby.com">
+            <span ng-class="{'sg-form_valid': appForm.email.$valid}"></span>
+            <ul class="sg-error" ng-show="appForm.email.$dirty">
+              <li ng-show="appForm.email.$error.compare">電話番号かメールアドレスのどちらかは必須項目です</li>
+              <li ng-show="appForm.email.$error.stEmail">メールアドレスの形式を確認してください</li>
+            </ul>
+          </div>
+        </div>
+
+        
+        <div class="sg-form_element">
+          <label class="sg-form">会社・学校名</label>
+          <div class="sg-form_element-right">
+            <input type="text"
+                   name="lastOrganization" ng-model="acc.model.profile.lastOrganization"
+                   maxlength="50" stb-tooltip="{% $viewLength %}/50文字まで" placeholder="例）株式会社ビズリーチ">
+          </div>
+        </div>
+
+        
+        <div class="sg-form_element">
+          <label class="sg-form">部署・役職・学部</label>
+          <div class="sg-form_element-right">
+            <input type="text"
+                   name="lastTitle" ng-model="acc.model.profile.lastTitle"
+                   maxlength="50" stb-tooltip="{% $viewLength %}/50文字まで" placeholder="例）人事部">
+          </div>
+        </div>
+
+      </div>
+    </section>
+    <section class="sg-box detail">
+      <div class="sg-box-head cf">
+        <h3>自由記入欄</h3>
+        <a href="javascript://;" onclick="window.open('/contents/markdown', 'TextHelp', 'window.innerWidth, window.innerHeight,menubar=yes, toolbar=yes, scrollbars=yes, resizable=yes')" class="sg-button transparent" st-link-tooltip="別ウィンドウで開く">テキスト整形ルール</a>
+      </div>
+      <div class="sg-form-markdown">
+        <div class="sg-form-markdown-html" ng-bind-html="acc.htmlMessage" ng-class="'acc.isEditMessageMD' ? 'sg-form-markdown-html-is-preview' : ''" ng-if="!acc.isEditMessageMD" ng-click="acc.editMarkdown('message')"></div>
+        <textarea name="message"
+                  class="sg-form-markdown-textarea"
+                  ng-model="acc.model.message"
+                  st-autoresize-textarea
+                  maxlength="10000"
+                  ng-if="acc.isEditMessageMD"></textarea>
+        <button type="button" class="sg-button" ng-click="acc.editMarkdown('message')" ng-if="!acc.isEditMessageMD">テキストを編集</button>
+        <button type="button" class="sg-button" ng-click="acc.previewHTML('message')" ng-if="acc.isEditMessageMD" ng-show="acc.model.message.length > 0">テキストのプレビュー</button>
+      </div>
+     </section>
+     <section class="sg-box detail">
+      <div class="sg-box-head cf">
+        <h3>レジュメ</h3>
+        <a href="javascript://;" onclick="window.open('/contents/markdown', 'TextHelp', 'window.innerWidth, window.innerHeight,menubar=yes, toolbar=yes, scrollbars=yes, resizable=yes')" class="sg-button transparent" st-link-tooltip="別ウィンドウで開く">テキスト整形ルール</a>
+      </div>
+      <div class="sg-form-markdown">
+        <div class="sg-form-markdown-html" ng-bind-html="acc.htmlResumeFreeText" ng-class="'acc.isEditResumeFreeTextMD' ? 'sg-form-markdown-html-is-preview' : ''" ng-if="!acc.isEditResumeFreeTextMD" ng-click="acc.editMarkdown('resumeFreeText')"></div>
+        <textarea name="resumeFreeText"
+                  class="sg-form-markdown-textarea"
+                  ng-model="acc.model.resumeFreeText"
+                  maxlength="10000"
+                  ng-if="acc.isEditResumeFreeTextMD"
+                  st-autoresize-textarea></textarea>
+        <button type="button" class="sg-button" ng-click="acc.editMarkdown('resumeFreeText')" ng-if="!acc.isEditResumeFreeTextMD">テキストを編集</button>
+        <button type="button" class="sg-button" ng-click="acc.previewHTML('resumeFreeText')" ng-if="acc.isEditResumeFreeTextMD" ng-show="acc.model.resumeFreeText.length > 0">テキストのプレビュー</button>
+      </div>
+     </section>
+
+      <section class="sg-box detail">
+        <div class="sg-box-head cf">
+          <h3>添付ファイル</h3>
+        </div>
+        <div>
+          
+          <ul ng-repeat="attachment in acc.model.attachments">
+            <li>{% attachment.fileName | ellipsis : 60 %}<a ng-click="acc.unselectAttachment($index)" style="margin-left: 20px;">&#10005;</a></li>
+          </ul>
+          
+          <ul ng-repeat="attachment in acc.newAttachments">
+            <li>{% attachment.fileName | ellipsis : 60 %}<a ng-click="acc.removeNewAttachment($index)" style="margin-left: 20px;">&#10005;</a></li>
+          </ul>
+          <span class="sg-button" ng-click="acc.turnOnFileAttachmentModal()">添付ファイルを追加する</span>
+        </div>
+      </section>
+  </div>
+  <section class="sg-centering">
+    <input type="submit" value="保存する" ng-click="acc.save(appForm)" class="sg-button sg-button-l sg-button-secondary" ng-disabled="!(appForm.$valid && appForm.phone.$valid && appForm.email.$valid)" />
+    <a href="/application#/{%acc.model.id%}" class="sg-button sg-button-l sg-button-gray" ng-if="acc.isEdit">キャンセル</a>
+    <a href="/application#/" class="sg-button sg-button-l sg-button-gray" ng-if="!acc.isEdit">キャンセル</a>
+  </section>
+
+</form>
+
+
+</script>
+
+<script type="text/ng-template" id="/internal/controllers/applications/list">
+
+<div class="cm-main_head switch st-with-button cf" ng-init="c.init()">
+  <h1 ng-show="!c.jobId">応募者</h1>
+  <h1 ng-show="c.jobId && c.applications[0]">{%c.applications[0].job.jobName%}</h1>
+  <h1 ng-show="c.jobId && !c.applications[0]">応募はまだありません</h1>
+  <a ui-sref="add()" class="sg-button sg-button-l sg-button-secondary plus fr">応募者を追加</a>
+</div>
+
+<div class="sg-controlpanel cf" ng-if="c.jobId">
+  <nav class="cm-sub_head-nav">
+    <ul>
+      <li><a href="/jobs#/{%c.jobId%}/edit/">求人情報</a></li>
+    </ul>
+  </nav>
+</div>
+
+<div class="cm-main_nav">
+  <div class="cm-main_nav-bar cf">
+    <p class="cm-main_nav-count">全<span>{%c.getTotalHits()%}</span>件</p>
+    <a onclick="location.reload()" class="sg-reload-icon fr"></a>
+  </div>
+</div>
+
+<div class="cm-main_body">
+  <section class="sg-box pg-candidates-list">
+    <table class="cm-main_table">
+      <thead class="sg-box-header">
+      <tr>
+        <td class="pg-candidates-apply-date">応募日</td>
+        <td class="pg-candidates-update">更新日</td>
+        <td class="pg-candidates-job-title">職種 / 募集ポジション</td>
+        <td class="pg-candidates-applicant">応募者名</td>
+        <td class="pg-candidates-status">選考状況</td>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="app in c.applications track by app.id" ng-click="c.moveToDetail(app.id, $index)">
+        <td class="pg-candidates-apply-date" ng-bind="app.appliedAt | date:'yyyy年M月d日'"></td>
+        <td class="pg-candidates-update" ng-bind="app.updatedAt | date:'yyyy年M月d日'"></td>
+        <td class="pg-candidates-job-title"><span class="breakword" ng-bind="app.job.jobName"></span></td>
+        <td class="pg-candidates-applicant" ng-bind="app.profile.fullName"></td>
+        <td class="pg-candidates-status" ng-bind="c.enums.selectionStage[app.selectionStage]"></td>
+      </tr>
+      </tbody>
+    </table>
+    <section class="sg-box-empty" ng-if="!(c.applications.length > 0)">
+      <p>該当する応募はありません</p>
+    </section>
+  </section>
+  <section class="sg-box">
+    <pagination total-items="c.bsPage.totalItems" items-per-page="c.bsPage.itemsPerPage" ng-model="c.bsPage.currentPage"></pagination>
+  </section>
+</div>
+
+</script>
+
+<script type="text/ng-template" id="/internal/interview/int_list">
+
+<div class="cm-main_head st-with-button cf" ng-init="c.init()">
+  <h1>担当の選考</h1>
+</div>
+
+<div class="sg-navpanel">
+  <ol class="cf">
+    <li>全 <span>{% c.getTotalHits() %}</span> 件</li>
+  </ol>
+
+  <ul class="date-search cf">
+    <li class="sg-bs-datepicker-group">
+      <input type="button"
+             is-open="c.isOpenFromPopup" ng-click="c.showFromPopup($event)"
+             datepicker-popup="yyyy年M月d日" ng-model="c.searchFrom"
+             value="{% c.searchFrom | date: 'yyyy年M月d日'%} {% c.searchFrom ? '' : 'From' %}" >
+      <span>-</span>
+      <input type="button"
+             is-open="c.isOpenToPopup" ng-click="c.showToPopup($event)"
+             datepicker-popup="yyyy年M月d日" ng-model="c.searchTo"
+             value="{% c.searchTo | date: 'yyyy年M月d日'%} {% c.searchTo ? '' : 'To' %}" >
+    </li>
+    <li class="sg-button" ng-click="c.searchWithFromDate()">検索</li>
+  </ul>
+</div>
+<div class="cm-main_body">
+  <section class="sg-box pg-applicants pg-candidates-list">
+    <table class="cm-main_table">
+      <thead class="sg-box-header">
+        <tr>
+          <td class="pg-application-interview-type">選考</td>
+          <td class="pg-application-date">面接日</td>
+          <td class="pg-application-location">場所</td>
+          <td class="pg-application-interviewee">応募者</td>
+          <td class="pg-application-position">職種 / 募集ポジション</td>
+          <td class="pg-application-review">
+            <a class="sg-box-header-arrow-top"
+              ng-model="c.feedback"
+              st-dd-select-nothing="指定なし"
+              st-dd-select="flg.code as flg.name for flg in $enums.feedbackOptions orderBy flg.sortNo"
+              st-dd-select-manual="c.searchWithFeedbackFlg($newValue, $isDiffValue)">
+              評価
+            </a>
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="interview in c.interviews" ng-click="c.moveToDetail(interview.application.applicationId, $index)">
+          <td class="pg-application-interview-type">{% c.enums.interviewType[interview.interviewType].name %}</td>
+          <td class="pg-application-date">
+            <span ng-if="interview.startAt && interview.endAt">
+              {%interview.startAt | date: 'yyyy年M月d日'%}<br>
+              {%interview.startAt | date: 'HH:mm'%} - {%interview.endAt | date: 'HH:mm'%}
+            </span>
+            <span ng-if="!interview.startAt && !interview.endAt" class="sg-column-empty">未設定</span>
+          </td>
+          <td class="pg-application-location">
+            <span ng-if="interview.place">{% interview.place %}</span>
+            <span ng-if="!interview.place" class="sg-column-empty">未設定</span>
+          </td>
+          <td class="pg-application-interviewee">
+              <span>{% interview.application.fullName %}</span>
+              <div class="light ellipsis">
+                <span ng-if="interview.application.lastOrganization">{% interview.application.lastOrganization %}</span>
+                <span ng-if="interview.application.lastTitle">{% interview.application.lastTitle %}</span>
+              </div>
+          </td>
+          <td class="pg-application-position "><span class="breakword">{% interview.job.jobName %}</span></td>
+          <td class="pg-application-review" ng-class="{'unreviewed': !c.existsFeedbackText(interview.feedbacks)}">{% c.existsFeedbackText(interview.feedbacks) ? '済' : '未' %}</td>
+        </tr>
+      </tbody>
+    </table>
+    <section class="sg-box-empty" ng-if="!(c.interviews.length > 0)">
+      <p>該当する面接はありません</p>
+    </section>
+  </section>
+  <section class="sg-box">
+    <pagination total-items="c.bsPage.totalItems" items-per-page="c.bsPage.itemsPerPage" ng-model="c.bsPage.currentPage"></pagination>
+  </section>
+</div>
+
+</script>
+
+<script type="text/ng-template" id="/internal/interview/rec_list">
+
+<div class="cm-main_head st-with-button cf" ng-init="c.init()">
+  <h1>選考（すべての選考）</h1>
+</div>
+
+<div class="sg-navpanel">
+  <ol class="cf">
+    <li>全 <span>{% c.getTotalHits() %}</span> 件</li>
+  </ol>
+
+  <ul class="date-search cf">
+    <li class="sg-bs-datepicker-group">
+      <input type="button"
+             is-open="c.isOpenFromPopup" ng-click="c.showFromPopup($event)"
+             datepicker-popup="yyyy年M月d日" ng-model="c.searchFrom"
+             value="{% c.searchFrom | date: 'yyyy年M月d日'%} {% c.searchFrom ? '' : 'From' %}" >
+      <span>-</span>
+      <input type="button"
+             is-open="c.isOpenToPopup" ng-click="c.showToPopup($event)"
+             datepicker-popup="yyyy年M月d日" ng-model="c.searchTo"
+             value="{% c.searchTo | date: 'yyyy年M月d日'%} {% c.searchTo ? '' : 'To' %}" >
+    </li>
+    <li class="sg-button" ng-click="c.search()">検索</li>
+  </ul>
+</div>
+<div class="cm-main_body">
+  <section class="sg-box pg-applicants pg-candidates-list">
+    <table class="cm-main_table">
+      <thead class="sg-box-header">
+        <tr>
+          <td class="pg-application-interview-type">選考</td>
+          <td class="pg-application-date">面接日</td>
+          <td class="pg-application-location">場所</td>
+          <td class="pg-application-interviewer">面接官</td>
+          <td class="pg-application-interviewee">応募者</td>
+          <td class="pg-application-position">職種 / 募集ポジション</td>
+          <td class="pg-application-review">
+            <a class="sg-box-header-arrow-top"
+              ng-model="c.feedback"
+              st-dd-select-nothing="指定なし"
+              st-dd-select="flg.code as flg.name for flg in $enums.feedbackOptions orderBy flg.sortNo"
+              st-dd-select-manual="c.searchWithFeedbackFlg($newValue, $isDiffValue)">
+              評価
+            </a>
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="interview in c.interviews" ng-click="c.moveToDetail(interview.application.applicationId, $index)">
+          <td class="pg-application-interview-type">{% c.enums.interviewType[interview.interviewType].name %}</td>
+          <td class="pg-application-date">
+            <span ng-if="interview.startAt && interview.endAt">
+              {%interview.startAt | date: 'yyyy年M月d日'%}<br>
+              {%interview.startAt | date: 'HH:mm'%} - {%interview.endAt | date: 'HH:mm'%}
+            </span>
+            <span ng-if="!interview.startAt && !interview.endAt" class="sg-column-empty">未設定</span>
+          </td>
+          <td class="pg-application-location">
+            <span ng-if="interview.place">{% interview.place %}</span>
+            <span ng-if="!interview.place" class="sg-column-empty">未設定</span>
+          </td>
+          <td class="pg-application-interviewer">{% interview.interviewer.name %}</td>
+          <td class="pg-application-interviewee">
+            <span>{% interview.application.fullName %}</span>
+            <span class="light ellipsis">
+              <span ng-if="interview.application.lastOrganization">{% interview.application.lastOrganization %}</span>
+              <span ng-if="interview.application.lastTitle">{% interview.application.lastTitle %}</span>
+            </span>
+          </td>
+          <td class="pg-application-position"><span class="breakword">{% interview.job.jobName %}</span></td>
+          <td class="pg-application-review" ng-class="{'unreviewed': !c.existsFeedbackText(interview.feedbacks)}">{% c.existsFeedbackText(interview.feedbacks) ? '済' : '未' %}</td>
+        </tr>
+      </tbody>
+    </table>
+    <section class="sg-box-empty" ng-if="!(c.interviews.length > 0)">
+      <p>該当する選考はありません</p>
+    </section>
+  </section>
+  <section class="sg-box">
+    <pagination total-items="c.bsPage.totalItems" items-per-page="c.bsPage.itemsPerPage" ng-model="c.bsPage.currentPage"></pagination>
+  </section>
+</div>
+
+</script>
+<!-- -->
+<script type="text/ng-template" id="/internal/interview/print_list">
+<!-- -->
+	<a href="javascript: window.print()" class="sg-button hide-on-print">印刷</a>
+	
+  <div class="cf" ng-init="c.init()">
+    <h1>面接</h1>
+    
+    <dl class="conditions cf">
+        <dt>抽出条件</dt>
+        <dd>面接開始日時：{% interview.startAt %}</dd>
+        
+        <dt>並び順</dt>
+        <dd>面接開始日時の昇順</dd>
+    </dl>
+  </div>
+
+  <div>
+      <ul>
+          <li ng-repeat="interview in c.interviews" class="looper">
+              <ul>
+                  <li class="main-details">
+                      <ul class="cf">
+                          <li>{% interview.startAt | date:'yyyy/MM/dd HH:mm'  %}</li>
+                          <li>-</li>
+                          <li>{% interview.endAt | date:'HH:mm'  %}</li>
+                          <li>{% interview.place %} - </li>
+                          <li class=""><span class="interviewer">{% interview.interviewer.name %}</span></li>
+                      </ul>
+                  </li>
+                  <li>{% interview.title %}</li>
+                  <li class="interviewee-block"><span class="interviewee">{% interview.application.fullName %} ({% interview.application.fullNameKana %})</span></li>
+                  <li>{% intervew.lastOrganization %} {% interview.lastTitle %}</li>
+              </ul>
+          </li>
+      </ul>
+  </div>
+
+</script>
+
+
+      <!--[if lt IE 9]>
+        <div class="alert alert-danger"><span>現在使用中のInternet Explorerのバージョンはサポートされていません。</span></div>
+      <![endif]-->
+    </main>
+  </div>
+</div>
+<nav class="cm-globalnav" ng-controller="menuToggleCtrl" ng-hide="hideNav">
+  <ul>
+
+    <li>
+      <a href="/" class="sg-icon home">
+        <span class="cm-globalnav_title">ダッシュボード</span>
+      </a>
+    </li>
+
+    <li ng-show="isRecruiter">
+      <a href="/jobs#/" class="sg-icon recruit">
+        <span class="cm-globalnav_title">求人</span>
+      </a>
+    </li>
+
+    <li ng-show="isRecruiter">
+      <a href="/application#/" class="sg-icon candidate">
+        <span class="cm-globalnav_title">応募者</span>
+      </a>
+    </li>
+
+    <li ng-show="isRecruiter">
+      <a href="/application#/interviews" class="sg-icon interview">
+        <span class="cm-globalnav_title">選考</span>
+      </a>
+    </li>
+
+    <li ng-show="isInterviewer">
+      <a href="/application#/interviews/mine" class="sg-icon my-interview">
+        <span class="cm-globalnav_title">担当の選考</span>
+      </a>
+    </li>
+
+    <li ng-show="isRecruiter">
+      <a href="/corporate/public#/edit" class="sg-icon company">
+        <span class="cm-globalnav_title cm-globalnav-multirows">公開企業<br>プロフィール</span>
+      </a>
+    </li>
+
+    <li>
+      <a href="/users#/" class="sg-icon account" ng-show="isAdmin">
+        <span class="cm-globalnav_title">アカウント管理</span>
+      </a>
+    </li>
+
+    <li>
+      <a href="javascript://;" onclick="window.open('/documents/Stanby_Recruiting_企業様向け操作マニュアル.pdf', 'TextHelp', 'window.innerWidth, window.innerHeight,menubar=yes, toolbar=yes, scrollbars=yes, resizable=yes')" class="sg-icon manual">
+        <span class="cm-globalnav_title">PDFマニュアル</span>
+      </a>
+    </li>
+
+  </ul>
+</nav>
+
+
+  <footer class="cm-last-footer">
+    <ul>
+      <li><a href="/contents/terms">利用規約</a></li>
+      <li><a href="/contents/privacy">プライバシーポリシー</a></li>
+      <li><a href="/contents/guideline">掲載ガイドライン</a></li>
+      <li><a href="/contact">お問い合わせ</a></li>
+    </ul>
+    <small>Copyright &copy; BizReach, Inc. All Rights Reserved.</small>
+  </footer>
+
+  <div id="jsi-main-spinner" class="cm-spinner-overlay"></div>
+  <toast></toast>
+  <script type="text/ng-template" id="template/timepicker/timepicker.html">
+
+  <div class="sg-bs-timepicker">
+    <input type="text" ng-model="hours" ng-change="updateHours()" ng-readonly="readonlyInput" maxlength="2">
+    <span>:</span>
+    <input type="text" ng-model="minutes" ng-change="updateMinutes()" ng-readonly="readonlyInput" maxlength="2">
+    <span ng-if="invalidHours || invalidMinutes" class="sg-error">無効な時間です</span>
+  </div>
+
+</script>
+
+
+<!-- NOTE(kitaly) 元のテンプレートに独自の　クラスを付与しただけ -->
+<script type="text/ng-template" id="template/datepicker/popup.html">
+
+<ul class="sg-bs-datepicker" ng-style="{display: (isOpen && 'block') || 'none', top: position.top+'px', left: position.left+'px'}" ng-keydown="keydown($event)">
+  <li ng-transclude></li>
+    <li ng-if="showButtonBar" class="sg-bs-datepicker-popup-control">
+      <a class="btn btn-sm btn-info" ng-click="select('today')">{{ getText('current') }}</a>
+      &nbsp;-&nbsp;
+      <a class="btn btn-sm btn-danger" ng-click="select(null)">{{ getText('clear') }}</a>
+      <!--&nbsp;-&nbsp;-->
+      <!--<a class="btn btn-sm btn-success pull-right" ng-click="close()">{{ getText('close') }}</a>-->
+    </li>
+</ul>
+
+</script>
+
+
+<!-- NOTE(kitaly) 元のテンプレートに独自の　クラスを付与しただけ -->
+<script type="text/ng-template" id="template/datepicker/day.html">
+
+<table role="grid" aria-labelledby="{{uniqueId}}-title" aria-activedescendant="{{activeDateId}}">
+  <thead>
+    <tr class="sg-bs-datepicker-head">
+      <th colspan="2" class="sg-bs-datepicker-head-prev" ng-click="move(-1)">
+        <!--<button type="button" class="btn btn-default btn-sm pull-left" ng-click="move(-1)" tabindex="-1">-->
+          <!--<i class="glyphicon glyphicon-chevron-left"></i>-->
+        <!--</button>-->
+      </th>
+      <th colspan="{{5 + showWeeks}}" id="{{uniqueId}}-title">
+        <!--<button id="{{uniqueId}}-title" role="heading" aria-live="assertive" aria-atomic="true" type="button" class="btn btn-default btn-sm" ng-click="toggleMode()" ng-disabled="datepickerMode === maxMode" tabindex="-1" style="width:100%;">-->
+          <strong>{{title}}</strong>
+        <!--</button>-->
+      </th>
+      <th colspan="2" class="sg-bs-datepicker-head-next" ng-click="move(1)">
+        <!--<button type="button" class="btn btn-default btn-sm pull-right" ng-click="move(1)" tabindex="-1">-->
+          <!--<i class="glyphicon glyphicon-chevron-right"></i>-->
+        <!--</button>-->
+      </th>
+    </tr>
+    <tr class="sg-bs-datepicker-weekday">
+      <th></th>
+      <th ng-show="showWeeks" class="text-center"></th>
+      <th ng-repeat="label in labels track by $index" class="text-center"><small aria-label="{{label.full}}">{{label.abbr}}</small></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody class="sg-bs-datepicker-body">
+    <tr ng-repeat="row in rows track by $index">
+      <td></td>
+      <td ng-show="showWeeks" class="text-center h6"><em>{{ weekNumbers[$index] }}</em></td>
+      <td ng-repeat="dt in row track by dt.date" class="text-center" role="gridcell" id="{{dt.uid}}" aria-disabled="{{!!dt.disabled}}"
+          ng-class="{'btn-info': dt.selected, active: isActive(dt), 'selected': dt.selected }" ng-click="select(dt.date)" ng-disabled="dt.disabled">
+        <!--<button type="button" style="width:100%;" class="btn btn-default btn-sm" ng-class="{'btn-info': dt.selected, active: isActive(dt), selected: dt.selected}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1">-->
+          <span ng-class="{'text-muted': dt.secondary, 'text-info': dt.current}">{{dt.label}}</span>
+        <!--</button>-->
+      </td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+
+</script>
+
+
+<script type="text/ng-template" id="template/pagination/pagination.html">
+<div class="sg-pager">
+
+  <span ng-if="directionLinks" class="sg-pager-prev" ng-class="{hidden: noPrevious()}">
+    <a href ng-click="selectPage(page - 1, $event)">{{getText('previous')}}</a>
+  </span>
+
+  <span ng-if="directionLinks" class="sg-pager-next" ng-class="{hidden: noNext()}">
+    <a href ng-click="selectPage(page + 1, $event)">{{getText('next')}}</a>
+  </span>
+
+  <div class="sg-pager-list" ng-class="{alignleft: noPrevious() && !noNext(),alignright: noNext() && !noPrevious()}">
+
+    <ul>
+      <!--<li ng-if="boundaryLinks && !noPrevious()">-->
+        <!--<a href ng-click="selectPage(1, $event)">1</a>-->
+      <!--</li>-->
+
+      <li ng-repeat="page in pages track by $index" ng-class="{active: page.active}">
+        <a href ng-click="selectPage(page.number, $event)" ng-if="!page.active">{{page.text}}</a>
+        <a ng-if="page.active">{{page.text}}</a>
+      </li>
+
+      <!--<li ng-if="boundaryLinks && !noNext()">-->
+        <!--<a href ng-click="selectPage(totalPages, $event)">{{totalPages}}</a>-->
+      <!--</li>-->
+    </ul>
+
+    <p class="sg-pager-guide">
+      <span><strong> {{page}} </strong></span>/ 全 {{totalPages}} ページ
+    </p>
+  </div>
+
+
+</div>
+</script>
+
+  <st-totop></st-totop>
+
+
+  
+  <!--[if lt IE 9]>
+  <script src="/scripts/vendor_js/respond.js"></script>
+  <script src="/scripts/vendor_js/es5-shim.js"></script>
+  <![endif]-->
+  <script src="/scripts/vendor_js/startWithShim.js"></script>
+  <script src="/scripts/vendor_js/lodash.js"></script>
+  <script src="/scripts/vendor_js/jquery.js"></script>
+  <script src="/scripts/vendor_js/jquery.easing.min.js"></script>
+  <script src="/scripts/vendor_js/jquery.imgcentering.min.js"></script>
+  <script src="/scripts/vendor_js/angular.js"></script>
+  <script src="/scripts/vendor_js/angular-animate.js"></script>
+  <script src="/scripts/vendor_js/angular-sanitize.js"></script>
+  <script src="/scripts/vendor_js/angular-locale_ja-jp.js"></script>
+  <script src="/scripts/vendor_js/angular-ui-router.js"></script>
+  <script src="/scripts/vendor_js/ui-utils.js"></script>
+  <script src="/scripts/vendor_js/ui-bootstrap-tpls.js"></script>
+  <script src="/scripts/vendor_js/ngToast.js"></script>
+  <script src="/scripts/stanby-utils.js"></script>
+  <script src="/scripts/stanby-app.js"></script>
+  
+  
+  <script type="text/javascript" src="/scripts/application-page.js"></script>
+
+
+
+
+  <noscript>
+    <iframe src="//www.googletagmanager.com/ns.html?id=GTM-T5GK3V" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+  </noscript>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-T5GK3V');</script>
+</body>
+</html>
+
+
+

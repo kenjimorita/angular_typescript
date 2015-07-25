@@ -1,0 +1,77 @@
+<div id="jsi-wrapper" class="cm-wrapper">
+  <header class="cm-header">
+    <p class="cm-header_logo"><a href="/" class="sg-logo sg-logo-site">Stanby</a></p>
+  </header>
+  <main class="cm-main pg-contact-main">
+    <div class="cm-main_body" ng-controller="ContactCtrl as c">
+
+      <div ng-show="!c.sent" class="pg-contact-form">
+
+        <section class="sg-box">
+          <h2>Stanby Recruiting に問い合わせる</h2>
+          <p>ご意見・ご要望、ご質問などのお問い合わせは、以下のフォームよりご連絡ください。</p>
+          <p>下記に入力いただいたメールアドレスに「noreply@stanby.com」から自動返信メールが届きます。</p>
+          <p>携帯電話やフリーメールのメールアドレスをご利用の場合は、迷惑メールフォルダに届く可能性がございますので、</p>
+          <p>フィルターを外してメールが受信できているかご確認ください。</p>
+          <p>なお、<a href="javascript://;" onclick="window.open('/documents/Stanby_Recruiting_企業様向け操作マニュアル.pdf', 'TextHelp', 'window.innerWidth, window.innerHeight,menubar=yes, toolbar=yes, scrollbars=yes, resizable=yes')">Stanby Recruiting 企業様向け操作マニュアル</a> もご利用いただけます。</p>
+        </section>
+
+        <form role="form" name="form" class="sg-form" novalidate>
+          <div class="sg-form_element">
+            <label name="email" id="email" class="sg-form_required">メールアドレス</label>
+            <div class="sg-form_element-right">
+              <input type="text" name="email"
+                     class="sg-form_element-xl"
+                     placeholder="[例] client-service@stanby.com"
+                     autocomplete="off"
+                     ng-model="c.email"
+                     st-allow-pattern="/^.{0,100}$/"
+                     st-validate-email
+                     stb-tooltip="{% $viewLength %}/100文字まで"
+                     required>
+              <ul class="sg-error" ng-show="form.email.$dirty">
+                <li ng-show="form.email.$error.required">必須項目です</li>
+                <li ng-show="form.email.$error.email || form.email.$error.stEmail">メールアドレスの形式が正しくありません</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="sg-form_element">
+            <label class="sg-form_required">お問い合わせ内容</label>
+            <div class="sg-form_element-right">
+            <textarea name="inquiry" id="inquiry"
+                      class="sg-form_element-xl"
+                      placeholder="お問い合わせ内容を入力してください"
+                      required
+                      ng-model="c.inquiry"
+                      st-autoresize-textarea 
+                      st-allow-pattern="/^(.|\n){0,1000}$/"
+                      stb-tooltip="{% $viewLength %}/1,000文字まで"></textarea>
+              <ul class="sg-error" ng-show="form.inquiry.$dirty">
+                <li ng-show="form.inquiry.$error.required">必須項目です</li>
+              </ul>
+            </div>
+          </div>
+          <div class="sg-form_element sg-centering">
+            <button class="sg-button sg-button-l sg-button-secondary" 
+              ng-click="c.send()" ng-disabled="form.$invalid">
+              送信する</button>
+            <a href="/" class="sg-button sg-button-l sg-button-gray">戻る</a>
+          </div>
+        </form>
+      </div>
+      <div ng-show="c.sent" class="pg-contact-submit">
+        <section class="sg-box">
+          <h2>お問い合わせ完了</h2>
+          <p>お問い合わせいただき、ありがとうございます。</p>
+          <p>いただいたお問い合わせは受付日から3営業日を目処にご返信いたします。<br>18:30を過ぎますと翌日の受付になりますので、ご了承くださいますようお願いいたします。</p>
+          <div class="sg-centering">
+            <a href="/" class="sg-button sg-button-l">トップページへ戻る</a>
+          </div>
+        </section>
+      </div>
+
+    </div>
+
+  </main>
+</div>

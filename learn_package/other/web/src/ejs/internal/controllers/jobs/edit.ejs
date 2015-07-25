@@ -1,0 +1,35 @@
+<script type="text/ng-template" id="/internal/controllers/jobs/edit">
+
+<div class="cm-main_head st-with-button cf">
+  <h1 class="pg-headline-single-job">{%c.model.job.name%}</h1>
+  <a ng-click="c.cloneJob()" class="sg-button sg-button-l fr">この求人をコピー</a>
+</div>
+
+<div class="cm-sub_head has-nav cf">
+  <nav class="cm-sub_head-nav">
+    <ul>
+      <li ng-if="c.applicationId"><a href="/application#/{%c.applicationId%}">応募者</a></li>
+      <li class="active">求人情報</li>
+      <li><a href="/application#/?jobId={%c.model.job.id%}">応募者一覧</a></li>
+    </ul>
+  </nav>
+  <ul class="pg-list-text fl">
+    <li>
+      <a ng-show="c.model.job.indexingStatus == c.enums.indexingStatus.PUB.code" href="{%c.model.job.jseJobPageUrl%}" class="pg-button pg-button-active" target="_blank">{%c.enums.indexingStatus[c.model.job.indexingStatus].label%}</a>
+      <span ng-show="c.model.job.indexingStatus == c.enums.indexingStatus.RJC.code" class="pg-button pg-button-rejected">{%c.enums.indexingStatus[c.model.job.indexingStatus].label%}</span><% //TODO(kunii) should pop up and show the reject reason %>
+      <span ng-show="c.model.job.jobStatus == c.enums.jobStatus.RDY.code && c.model.job.indexingStatus == c.enums.indexingStatus.NVR.code" class="pg-button pg-button-negative">{%c.enums.jobStatus[c.model.job.jobStatus].name%}</span>
+      <span ng-show="c.model.job.jobStatus == c.enums.jobStatus.PUB.code && c.model.job.indexingStatus == c.enums.indexingStatus.NVR.code"  class="pg-button pg-button-negative">{%c.enums.indexingStatus[c.model.job.indexingStatus].label%}</span>
+    </li>
+
+    <li ng-show="c.model.job.jobApplicableStatus === 'OPN'"><span class="pg-job-status-any pg-job-public">応募受付中</span></li>
+    <li ng-show="c.model.job.jobApplicableStatus === 'CLS'"><span class="pg-job-status-any pg-job-closed">応募受付停止</span></li>
+  </ul>
+</div>
+
+<!-- NOTE(kitaly): directive である必要がない気がする -->
+<st-job-form></st-job-form> <!-- st-job-form.html -->
+
+<ui-view></ui-view> <!-- Expects Preview Cloak -->
+
+
+</script>
