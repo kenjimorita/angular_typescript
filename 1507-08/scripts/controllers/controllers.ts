@@ -19,4 +19,33 @@ var myapp = angular.module('myapp',[])
 			{name:'ggg', phone:'090-222-222', age:16},
 			{name:'hhh', phone:'090-111-111', age:62}
 		]
+	}])
+	.directive('hierarcyFast',function(){
+		return {
+			template:
+					'<div class="fafa"><li ng-repeat="(key,val) in datas">{{ key }}{{ val }}</li>'
+					+'<li ng-repeat="data in datas">{{ $index }}</li>'
+					+'<li ng-repeat="data in datas">{{ ($even) ? "○" : "x" }}</li>'
+					+'<li ng-repeat="data in datas">{{ ($middle) ? "o" : "x" }}</li>'
+					+'<li ng-repeat="data in datas">{{ data.age | number}}</li>'
+					+'<li>{{ datas | json}}</li>'
+					+'</div>'
+		}
+	})
+	.directive('apiDirective',function(){
+		return {
+			link : function(){
+				var apiURL = 'ftp://ftp.80452ec58b45dc2b.lolipop.jp/study/data.json'
+				var apiURL = 'ftp://ftp.80452ec58b45dc2b.lolipop.jp/study/data.json'
+			}
+		}
+	});
+	myapp.controller('HelloCtrl',['$scope',function($scope){
+		$scope.name = '';
+		$scope.$watch(function () {
+				console.log('$watch expression is called!');
+				return $scope.name;
+		}, function (newValue, oldValue) {
+				console.log('"name" changed: ' + oldValue + ' => ' + newValue);
+		});
 	}]);
