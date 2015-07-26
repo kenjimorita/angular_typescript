@@ -5,9 +5,8 @@
 		<title></title>
 		<script src="../scripts/vendor_js/jquery.min.js"></script>
 		<script src="../scripts/vendor_js/angular.min.js"></script>
-		<script src="../scripts/vendor_js/angular-sanitize.min.js"></script>
-		<script src="../scripts/vendor_js/angular-ui-router.min.js"></script>
-		<script src="../scripts/controllers/controllers.js"></script>
+<!-- 		// <script src="../scripts/controllers/service/service.js"></script>
+ -->		<script src="../scripts/controllers/controllers.js"></script>
 	</head>
 	<body>
 		<div ng-controller="myController">
@@ -24,6 +23,12 @@
 				</ul>
 			</pre>
 		</div>
+		<div ng-show="show_loading">
+			読み込み中...
+		</div>
+		<li ng-repeat="item in items">
+			{{ item.id }} - {{ item.name }}
+		</li>
 		<div api-directive></div>
 		<conpile-link>
 

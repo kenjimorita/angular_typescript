@@ -1,7 +1,7 @@
 /// <reference path="../../DefinitelyTyped-master/angularjs/angular.d.ts"/>
 /// <reference path="../../DefinitelyTyped-master/jquery/jquery.d.ts"/>
 var myapp = angular.module('myapp', [])
-    .controller('myController', ['$scope', function ($scope) {
+    .controller('myController', ['$scope', 'JsonData', function ($scope, JsonData) {
         $scope.datas = [
             { name: '森田', age: 18, sex: 'male' },
             { name: '本間', age: 20, sex: 'male' },
@@ -18,6 +18,11 @@ var myapp = angular.module('myapp', [])
             { name: 'ggg', phone: '090-222-222', age: 16 },
             { name: 'hhh', phone: '090-111-111', age: 62 }
         ];
+        JsonData.getSampleData().then(function (res) {
+            $scope.items = res.data;
+            $scope.show_loading = false;
+        });
+        $scope.show_loading = true;
     }])
     .directive('hierarcyFast', function () {
     return {
@@ -33,8 +38,20 @@ var myapp = angular.module('myapp', [])
     .directive('apiDirective', function () {
     return {
         link: function () {
-            var apiURL = 'ftp://ftp.80452ec58b45dc2b.lolipop.jp/study/data.json';
-            var apiURL = 'ftp://ftp.80452ec58b45dc2b.lolipop.jp/study/data.json';
+            var apiURL = 'file:///Users/No51/Desktop/Git/angular_typescript/1507-08/data.json';
+        }
+    };
+})
+    .factory('JsonData', function ($http) {
+    return {
+        getSampleData: function () {
+            return $http.get('../data.json')
+                .success(function (data, status, headers, config) {
+                var time = new Date().getTime();
+                while (new Date().getTime() < time + 1000)
+                    ;
+                return data;
+            });
         }
     };
 });
