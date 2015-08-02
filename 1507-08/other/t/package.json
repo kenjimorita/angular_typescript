@@ -1,0 +1,36 @@
+{
+  "name": "typescript-devenv",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/massa142/typescript-devenv.git"
+  },
+  "author": "massa142",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/massa142/typescript-devenv/issues"
+  },
+  "homepage": "https://github.com/massa142/typescript-devenv#readme",
+  "devDependencies": {
+    "browser-sync": "^2.8.1",
+    "browserify": "^10.1.1",
+    "gulp": "^3.8.11",
+    "gulp-jsmin": "^0.1.5",
+    "gulp-rename": "^1.2.2",
+    "gulp-sourcemaps": "^1.5.2",
+    "gulp-tsd": "0.0.4",
+    "gulp-typescript": "^2.6.0",
+    "gulp-util": "^3.0.4",
+    "gulp-watch": "^4.2.4",
+    "path": "^0.11.14",
+    "require-dir": "^0.3.0",
+    "typescript": "^1.5.0-beta",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0"
+  }
+}
