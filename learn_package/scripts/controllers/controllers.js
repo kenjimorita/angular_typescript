@@ -3,4 +3,7 @@
 var myapp = angular.module('myapp', [])
     .controller('myController', ['$scope', function ($scope) {
         $scope.name = 'morita';
+        $scope.getName = function () {
+            return 'yourName is' + $scope.name;
+        };
     }]);
