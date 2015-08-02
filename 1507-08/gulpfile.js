@@ -2,6 +2,7 @@ var gulp = require("gulp");
 var connect = require("gulp-connect");
 var path = require("path");
 var sass = require("gulp-sass");
+var ejs = require("gulp-ejs");
 var gutil = require("gulp-util");
 var ftp = require("gulp-ftp");
 var browserSync = require("browser-sync");
@@ -22,6 +23,14 @@ gulp.task("sass",function(){
 	gulp.src(['./scss/*.scss'])// srcを指定
 	.pipe(sass())              // 指定したファイルをJSにコンパイル
 	.pipe(gulp.dest('./dest')) // dest先に出力する
+});
+
+gulp.task("ejs", function() {
+    gulp.src(
+        ["./ejs/**/*.ejs",'!' + "app/dev/ejs/**/_*.ejs"] //_.ejsは監視しない
+    )
+        .pipe(ejs())
+        .pipe(gulp.dest(app/public))
 });
 
 gulp.task("html",function(){
