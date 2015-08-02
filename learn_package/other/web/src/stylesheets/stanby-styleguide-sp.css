@@ -1,0 +1,61 @@
+@charset 'utf-8';
+
+.sg-tooltip-explain {
+  max-width: 90%;
+  padding: 4px 6px;
+  line-height: 1.25;
+}
+.sg-form_valid:after {
+  display: none;
+}
+
+.sg-popup {
+  min-width: 80%;
+  max-width: 100%;
+  padding: 16px;
+}
+
+/* 問い合わせフォーム */
+.pg-contact-main {
+  padding: 0;
+}
+.pg-contact-form .sg-form_element {
+  border:0;
+}
+.pg-contact-form .sg-form_element > label {
+  width: auto;
+  padding-left: 0;
+}
+.pg-contact-form .sg-form_element > label:before {
+  margin-left: 10px;
+  margin-top: 2px;
+}
+.sg-form_element > .sg-form_element-right {
+  clear: both;
+  margin-left: 0;
+  padding-top: 4px;
+}
+.sg-form_element > .sg-form_element-right > textarea,
+.sg-form_element > .sg-form_element-right > input {
+  width: 100%;
+  max-width: 100%;
+}
+.cm-main .sg-form_element .sg-button-l {
+  display: block;
+  width: 100%;
+  margin: 0;
+}
+.cm-main .sg-form_element .sg-button-l + .sg-button-l {
+  margin-top: 10px;
+}
+
+
+/* プライバシーポリシー、利用規約 */
+.pg-privacy,
+.pg-terms {
+  padding: 0 12px;
+}
+.pg-privacy h1,
+.pg-terms h1 {
+  border-bottom: none;
+}

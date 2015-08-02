@@ -1,0 +1,18 @@
+<% function pageStyles(buf){ %>
+<% }; %>
+
+<% function pageScripts(buf){ %>
+<script src="<%- revAssets('scripts/user-page.js') %>"></script>
+<script id="/templates/users/list" type="text/ng-template">
+    <%include ../../ejs/templates/users/list.html.ejs%>
+</script>
+<script id="/templates/users/edit" type="text/ng-template">
+    <%include ../../ejs/templates/users/edit.html.ejs%>
+</script>
+<% }; %>
+
+<% function pageContents(buf){ %>
+    <ui-view></ui-view>
+<% }; %>
+
+<% include ../layout/signedin/layout.ejs %>

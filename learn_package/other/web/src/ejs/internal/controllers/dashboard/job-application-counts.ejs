@@ -1,0 +1,89 @@
+<script type="text/ng-template" id="/internal/controllers/dashboard/job-application-counts">
+  <div ng-init="jac.init()">
+    <h2 class="pg-section-head">
+      <a href="/jobs#/">応募受付中の求人
+        <span class="pg-section-head-all">全
+          <span>{%jac.jobsRecruiting.length%}</span>
+          件
+        </span>
+      </a>
+    </h2>
+    <div class="pg-section-body" ng-if="jac.jobsRecruiting.length > 0">
+      <table class="cm-main_table pg-section-table">
+        <colgroup>
+          <col width="auto">
+          <col width="72">
+          <col width="72">
+          <col width="86">
+          <col width="58">
+          <col width="58">
+          <col width="72">
+          <col width="58">
+        </colgroup>
+        <thead>
+          <tr>
+            <td>職種 / 募集ポジション</td>
+            <td class="count">応募数</td>
+            <td class="count">未対応</td>
+            <td class="count">書類選考</td>
+            <td class="count">面接</td>
+            <td class="count">内定</td>
+            <td class="count">不合格</td>
+            <td class="count">辞退</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="job in jac.jobsRecruiting" ng-if="$index < 5">
+            <td>
+              <a class="breakword" ng-href="/application#/?jobId={%job.id%}">
+                {%job.name%}
+              </a>
+            </td>
+            <td class="count">
+              <a ng-href="/application#/?jobId={%job.id%}">
+                {%job.countAll %}
+              </a>
+            </td>
+            <td class="attention count">
+              <a ng-href="/application#/?jobId={%job.id%}&statuses=NOA">
+                {%job.byStage.NOA %}
+              </a>
+            </td>
+            <td class="count">
+              <a ng-href="/application#/?jobId={%job.id%}&statuses=SCR">
+                {%job.byStage.SCR %}
+              </a>
+            </td>
+            <td class="count">
+              <a ng-href="/application#/?jobId={%job.id%}&statuses=PRG">
+                {%job.byStage.PRG %}
+              </a>
+            </td>
+            <td class="count">
+              <a ng-href="/application#/?jobId={%job.id%}&statuses=OFR">
+                {%job.byStage.OFR %}
+              </a>
+            </td>
+            <td class="count">
+              <a ng-href="/application#/?jobId={%job.id%}&statuses=RJC">
+                {%job.byStage.RJC %}
+              </a>
+            </td>
+            <td class="count">
+              <a ng-href="/application#/?jobId={%job.id%}&statuses=DEC">
+                {%job.byStage.DEC %}
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <a href="/jobs" class="pg-section-continue sg-button sg-button-l" ng-if="jac.jobsRecruiting.length > 0">すべての求人</a>
+    <div class="pg-section-body" ng-if="jac.jobsRecruiting.length == 0">
+      <p class="pg-section-empty">
+        応募受付中の求人はありません<br>
+        <a href="/jobs#/add">求人を作成して応募受付を開始する</a>
+      </p>
+    </div>
+  </div>
+</script>

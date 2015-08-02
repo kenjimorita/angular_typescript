@@ -1,0 +1,73 @@
+<div class="cm-main_head st-with-button cf">
+  <h1>企業アカウント管理</h1>
+  <a ui-sref="corpEdit()" class="sg-button sg-button-l fr">企業アカウントの編集</a>
+</div>
+<div class="cm-main_nav hasborder">
+  <ul class="cm-main_nav-tab cf">
+    <li><a href="/users#/">ユーザーアカウント管理</a></li>
+    <li class="current"><a href="javascript: void(0);">企業アカウント管理</a></li>
+  </ul>
+</div>
+<div class="cm-main_body" ng-init="c.init()">
+  <section class="sg-box detail">
+    <h3>基本情報</h3>
+    <div class="sg-form bordered">
+      <dl class="sg-form_element">
+        <dt>企業名</dt>
+        <dd>{% c.corpInfo.name %}</dd>
+      </dl>
+      <dl class="sg-form_element">
+        <dt>企業名（よみがな）</dt>
+        <dd>{% c.corpInfo.nameKana %}</dd>
+      </dl>
+      <dl class="sg-form_element">
+        <dt>代表電話番号</dt>
+        <dd>{% c.corpInfo.phone %}</dd>
+      </dl>
+      <dl class="sg-form_element">
+        <dt>郵便番号</dt>
+        <dd>{% c.corpInfo.postalCode %}</dd>
+      </dl>
+      <dl class="sg-form_element">
+        <dt>住所</dt>
+        <dd>{% c.corpInfo.address %}</dd>
+      </dl>
+      <dl class="sg-form_element">
+        <dt>設立年月</dt>
+        <dd>
+          <span ng-show="c.corpInfo.details.establishedAt.year">{% c.corpInfo.details.establishedAt.year %}年</span>
+          <span ng-show="c.corpInfo.details.establishedAt.month">{% c.corpInfo.details.establishedAt.month %}月</span>
+        </dd>
+      </dl>
+      <dl class="sg-form_element">
+        <dt>代表者名</dt>
+        <dd>{% c.corpInfo.details.president %}</dd>
+      </dl>
+      <dl class="sg-form_element">
+        <dt>ウェブサイト URL</dt>
+        <dd>{% c.corpInfo.details.websiteUrl %}</dd>
+      </dl>
+      <dl class="sg-form_element">
+        <dt>Facebook URL</dt>
+        <dd>{% c.corpInfo.details.facebookUrl %}</dd>
+      </dl>
+    </div>
+  </section>
+  <section class="sg-box detail">
+    <h3>担当情報</h3>
+    <div class="sg-form bordered">
+      <dl class="sg-form_element">
+        <dt>担当者名・部署名</dt>
+        <dd>{% c.corpInfo.details.contact.name %}</dd>
+      </dl>
+      <dl class="sg-form_element">
+        <dt>メールアドレス</dt>
+        <dd>{% c.corpInfo.details.contact.email %}</dd>
+      </dl>
+      <dl class="sg-form_element">
+        <dt>電話番号</dt>
+        <dd>{% c.corpInfo.details.contact.phone %}</dd>
+      </dl>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,83 @@
+<script type="text/ng-template" id="/internal/interview/int_list">
+
+<div class="cm-main_head st-with-button cf" ng-init="c.init()">
+  <h1>担当の選考</h1>
+</div>
+
+<div class="sg-navpanel">
+  <ol class="cf">
+    <li>全 <span>{% c.getTotalHits() %}</span> 件</li>
+  </ol>
+
+  <ul class="date-search cf">
+    <li class="sg-bs-datepicker-group">
+      <input type="button"
+             is-open="c.isOpenFromPopup" ng-click="c.showFromPopup($event)"
+             datepicker-popup="yyyy年M月d日" ng-model="c.searchFrom"
+             value="{% c.searchFrom | date: 'yyyy年M月d日'%} {% c.searchFrom ? '' : 'From' %}" >
+      <span>-</span>
+      <input type="button"
+             is-open="c.isOpenToPopup" ng-click="c.showToPopup($event)"
+             datepicker-popup="yyyy年M月d日" ng-model="c.searchTo"
+             value="{% c.searchTo | date: 'yyyy年M月d日'%} {% c.searchTo ? '' : 'To' %}" >
+    </li>
+    <li class="sg-button" ng-click="c.searchWithFromDate()">検索</li>
+  </ul>
+</div>
+<div class="cm-main_body">
+  <section class="sg-box pg-applicants pg-candidates-list">
+    <table class="cm-main_table">
+      <thead class="sg-box-header">
+        <tr>
+          <td class="pg-application-interview-type">選考</td>
+          <td class="pg-application-date">面接日</td>
+          <td class="pg-application-location">場所</td>
+          <td class="pg-application-interviewee">応募者</td>
+          <td class="pg-application-position">職種 / 募集ポジション</td>
+          <td class="pg-application-review">
+            <a class="sg-box-header-arrow-top"
+              ng-model="c.feedback"
+              st-dd-select-nothing="指定なし"
+              st-dd-select="flg.code as flg.name for flg in $enums.feedbackOptions orderBy flg.sortNo"
+              st-dd-select-manual="c.searchWithFeedbackFlg($newValue, $isDiffValue)">
+              評価
+            </a>
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="interview in c.interviews" ng-click="c.moveToDetail(interview.application.applicationId, $index)">
+          <td class="pg-application-interview-type">{% c.enums.interviewType[interview.interviewType].name %}</td>
+          <td class="pg-application-date">
+            <span ng-if="interview.startAt && interview.endAt">
+              {%interview.startAt | date: 'yyyy年M月d日'%}<br>
+              {%interview.startAt | date: 'HH:mm'%} - {%interview.endAt | date: 'HH:mm'%}
+            </span>
+            <span ng-if="!interview.startAt && !interview.endAt" class="sg-column-empty">未設定</span>
+          </td>
+          <td class="pg-application-location">
+            <span ng-if="interview.place">{% interview.place %}</span>
+            <span ng-if="!interview.place" class="sg-column-empty">未設定</span>
+          </td>
+          <td class="pg-application-interviewee">
+              <span>{% interview.application.fullName %}</span>
+              <div class="light ellipsis">
+                <span ng-if="interview.application.lastOrganization">{% interview.application.lastOrganization %}</span>
+                <span ng-if="interview.application.lastTitle">{% interview.application.lastTitle %}</span>
+              </div>
+          </td>
+          <td class="pg-application-position "><span class="breakword">{% interview.job.jobName %}</span></td>
+          <td class="pg-application-review" ng-class="{'unreviewed': !c.existsFeedbackText(interview.feedbacks)}">{% c.existsFeedbackText(interview.feedbacks) ? '済' : '未' %}</td>
+        </tr>
+      </tbody>
+    </table>
+    <section class="sg-box-empty" ng-if="!(c.interviews.length > 0)">
+      <p>該当する面接はありません</p>
+    </section>
+  </section>
+  <section class="sg-box">
+    <pagination total-items="c.bsPage.totalItems" items-per-page="c.bsPage.itemsPerPage" ng-model="c.bsPage.currentPage"></pagination>
+  </section>
+</div>
+
+</script>

@@ -1,0 +1,31 @@
+<script type="text/ng-template" id="/internal/parts/jobs/salary-form">
+
+<ng-form name="salaryForm" novalidate>
+
+  <label class="sg-select">
+    <select ng-required="required"
+            class="sg-form_element-xs" name="salaryUnit" ng-model="ctrl.salaryUnit" st-salary-unit-select
+            ng-options="su.code as su.name for su in ctrl.enums.salaryUnit | orderBy:'+sortNo'"></select>
+  </label>
+
+  <div class="sg-salary-form-detail-element" ng-show="ctrl.isAmountRequired()">
+
+    <input class="sg-form_element-s" type="text" name="salaryFrom" pattern="\d*" placeholder="下限"
+           ng-model="ctrl.amountFrom" st-salary-amount-input>
+    <span>{% ctrl.isManyenUnit() ? '万' : '' %}円</span>
+
+    <span class="sg-formtable-range">〜</span>
+
+    <input class="sg-form_element-s" type="text" name="salaryTo" pattern="\d*" placeholder="上限（任意）"
+           ng-model="ctrl.amountTo" st-salary-amount-input>
+    <span>{% ctrl.isManyenUnit() ? '万' : '' %}円</span>
+  </div>
+
+  <ul ng-switch="salaryForm.$error" class="sg-error" ng-show="salaryForm.$dirty">
+    <li ng-show="salaryForm.$error.fromRequired">給与額の下限は必須項目です</li>
+    <li ng-show="salaryForm.$error.amountReversed">下限額が上限額を超えています</li>
+  </ul>
+
+</ng-form>
+
+</script>

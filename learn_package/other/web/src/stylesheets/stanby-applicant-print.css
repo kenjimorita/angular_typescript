@@ -1,0 +1,152 @@
+@charset "utf-8";
+
+@media print {
+	header, footer, .cm-globalnav, .hide-on-print {
+		display: none;
+	}
+	body,h1 {
+		font-size: 0.714rem;
+	}
+
+	.cm-main_head {
+		height: 50px;
+		padding-right: 0;
+		padding-left: 0;
+	}
+
+	.cm-main_head > h1 {
+		margin:0;
+	}
+
+	.sg-navpanel {
+		margin-left: 0;
+		margin-right: 0;
+		border: 0;
+	}
+
+/* 	Chrome以外でヘッダー・フッターを毎ページ表示 */
+	thead {
+		display: table-header-group;
+	}
+	
+/* 	Chrome以外でヘッダー・フッターを毎ページ表示 */
+	tbody {
+		display: table-row-group;
+	}
+
+/* 	Chrome以外でヘッダー・フッターを毎ページ表示 */
+	tfoot {
+		display: table-footer-group;
+	}
+
+	div.pg-print-main {
+		/* 	各ページで同一の上部余白ができるようにする */
+		padding-top:0;
+		/* 	ついでに左右も目いっぱい利用 */
+		padding-left:0;
+		padding-right:0;
+	}
+
+/*  隠すものは隠す */
+	.pg-print-hide {
+		display: none;
+	}
+
+/* 複数行にまたぐような内容で途中でのページブレイクを防ぐ */
+	.pg-print-nopagebreak {
+		page-break-inside: avoid;
+	}
+
+/* これが必要なのは印刷用だけでないかもしれない */
+	.pg-print-nowrap{
+		white-space: nowrap;
+	}
+
+	td.col-startAt {
+		width: 15%;
+		white-space: nowrap;
+	}
+
+	td.col-jobName {
+		width: 50%;
+	}
+
+	td.col-fullName {
+		witdh: 15%;
+		white-space: nowrap;
+	}
+	
+	td.col-selectionStage {
+		witdh: 10%;
+		white-space: nowrap;
+	}
+	
+	td.col-hasFeedback {
+		witdh: 10%;
+		white-space: nowrap;
+	}
+	
+
+
+/* こんなテクもあるらしい */
+/* 	.cm-main_head:before{
+		position: absolute;
+		left: 0; 
+		top: 0; 
+		content: "Stanby Recruiting"; 
+	} */
+
+}
+/* 印刷ボタン*/
+.hide-on-print {
+	margin: 20px 0;
+}
+
+dl.conditions {
+	width: 100%;
+	margin-bottom:25px;
+}
+.conditions dt { width: 10%; }
+.conditions dd { width: 90%; }
+.conditions dt,.conditions dd {
+  float: left;
+  margin-bottom: 10px;
+}
+.conditions dt,.conditions dd:last-of-type {
+  margin-bottom: 0;
+}
+
+.looper {
+  width: 100%;
+	margin-bottom: 25px;
+	page-break-inside: avoid;
+}
+
+.looper li {
+	width: auto;
+}
+
+.main-details {
+  border-bottom: 1px solid #000;
+	font-size: 0.857rem;
+}
+
+.main-details li {
+  display: inline-block;
+}
+
+.interviewer {
+	font-style: italic;
+}
+
+.interviewee-block {
+	margin-top: 15px;
+}
+
+.interviewee {
+	font-size: 0.857rem;
+	font-weight: bold;
+	overflow: hidden;
+  white-space: nowrap;
+}
+	

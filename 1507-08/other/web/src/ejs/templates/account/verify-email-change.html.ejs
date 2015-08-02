@@ -1,0 +1,17 @@
+<div class="pg-visitor-box">
+  <h1>メールアドレスの変更</h1>
+
+  <!-- Token Valid (Email change verified!) -->
+  <div class="sg-box" ng-if="tokenValid">
+    メールアドレスの変更が完了しました。<br/><br/>
+    <a href="/">トップページへ</a>
+  </div>
+
+  <!-- Token Invalid for Email Change -->
+  <div class="sg-box" ng-if="tokenInvalid">
+    メールアドレス変更が完了できませんでした。<br/>
+    ログインしてからメールを再送してください。<br/><br/>
+    <a href="/">ログインページへ</a>
+  </div>
+      
+</div>

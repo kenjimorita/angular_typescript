@@ -1,12 +1,7 @@
-#slideshow
+# angular_typescript
 
----
+## this repository is person who wont to learn angular with typescript
+if you want to start as soon as possioble it,
+down load my folder which you can see 「learn_package」.
 
-##メンバー
-※森田
-
-## html,css,img,js
-
-##リリース
-
-Password Required# angular_typescript
+It is packing there, 

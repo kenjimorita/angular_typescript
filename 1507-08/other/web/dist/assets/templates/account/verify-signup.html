@@ -1,0 +1,22 @@
+<main class="cm-main pg-signup-thankyou">
+
+  <div class="sg-box" ng-if="tokenValid">
+    <h1>メールアドレス確認完了</h1>
+    <p>メールアドレスの確認を完了しました</p>
+    <section class="pg-verify-box">
+      <p><a href="/" class="sg-button sg-button-l sg-button-secondary">求人を登録する</a></p>
+      <p><a href="/" class="sg-button sg-button-l">ダッシュボードへ移動</a></p>
+    </section>
+    </div>
+  </div>
+
+  <div class="sg-box" ng-if="tokenInvalid">
+    <h1>メールアドレスが確認できません</h1>
+    <p>登録が完了できませんでした。</p>
+    <p>ログインしてからメールを再送してください。</p>
+    <section class="pg-verify-box">
+      <p><a href="/" class="sg-button sg-button-l sg-button-secondary">ログインページへ</a></p>
+    </section>
+  </div>  
+
+</main>

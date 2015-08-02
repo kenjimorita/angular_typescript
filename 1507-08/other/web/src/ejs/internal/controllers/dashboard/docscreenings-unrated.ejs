@@ -1,0 +1,56 @@
+<script type="text/ng-template" id="/internal/controllers/dashboard/docscreenings-unrated">
+  <div ng-init="duc.init()">
+    <h2 class="pg-section-head">
+      <a href="/application#/interviews/mine?limit=20&interviewType=DOC&feedback=N">未評価の書類選考
+        <span class="pg-section-head-all" ng-if="duc.docscreeningsUnratedCount > 5">全
+          <span>{%duc.docscreeningsUnratedCount%}</span>
+          件
+        </span>
+      </a>
+    </h2>
+    <div class="pg-section-body" ng-if="duc.docscreeningsUnrated.length > 0">
+      <table class="cm-main_table pg-section-table">
+        <colgroup>
+          <col width="270">
+          <col width="auto">
+          <col width="180">
+        </colgroup>
+        <thead>
+          <tr>
+            <td>応募者</td>
+            <td>応募職種</td>
+            <td>書類選考依頼日</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="docscreening in duc.docscreeningsUnrated" ng-if="$index < 5">
+            <td>
+              <a href="/application#/{%docscreening.application.applicationId%}">
+                <span>{%docscreening.application.fullName%}</span>
+                <span class="pg-section-table-explain">
+                  <span ng-if="docscreening.application.lastOrganization">{% docscreening.application.lastOrganization %}</span>
+                  <span ng-if="docscreening.application.lastTitle">{%docscreening.application.lastTitle%}</span>
+                </span>
+              </a>
+            </td>
+            <td>
+              <a class="breakword" href="/application#/{%docscreening.application.applicationId%}">
+                {%docscreening.job.jobName%}
+              </a>
+            </td>
+            <td>
+              <a href="/application#/{%docscreening.application.applicationId%}">
+                <% // {%docscreening.updatedAt | date: duc.getFormatByUpdatedAt(docscreening.updatedAt)%} %>
+                {%docscreening.updatedAt | date: "yyyy年M月d日" %}
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <a href="/application#/interviews/mine?limit=20&interviewType=DOC&feedback=N" class="pg-section-continue sg-button sg-button-l" ng-if="duc.docscreenings.length > 0">すべての書類選考</a>
+    <div class="pg-section-body" ng-if="duc.docscreenings.length == 0">
+      <p class="pg-section-empty">未評価の書類選考はありません</p>
+    </div>
+  </div>
+</script>

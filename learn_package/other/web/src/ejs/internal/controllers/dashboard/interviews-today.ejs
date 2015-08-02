@@ -1,0 +1,65 @@
+<script type="text/ng-template" id="/internal/controllers/dashboard/interviews-today">
+  <div ng-init="itc.init()">
+    <h2 class="pg-section-head">
+      <a href="/application#/interviews{%itc.getTodayParams()%}">今日の面接
+        <span class="pg-section-head-all" ng-if="itc.interviewsTodayCount > 5">全
+          <span>{%itc.interviewsTodayCount%}</span>
+          件
+        </span>
+      </a>
+    </h2>
+    <div class="pg-section-body" ng-if="itc.interviewsToday.length > 0">
+      <table class="cm-main_table pg-section-table">
+        <colgroup>
+          <col width="125">
+          <col width="145">
+          <col width="180">
+          <col width="auto">
+        </colgroup>
+        <thead>
+          <tr>
+            <td>時間</td>
+            <td>場所</td>
+            <td>応募者</td>
+            <td>応募職種</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="interview in itc.interviewsToday" ng-if="$index < 5">
+            <td>
+              <a href="/application#/{%interview.application.applicationId%}">
+                <span ng-if="interview.startAt && interview.endAt">
+                  {%interview.startAt | date: 'HH:mm'%} - {%interview.endAt | date: 'HH:mm'%}
+                </span>
+              </a>
+            </td>
+            <td>
+              <a href="/application#/{%interview.application.applicationId%}">
+                <span ng-if="interview.place">{%interview.place%}</span>
+                <span ng-if="!interview.place" class="sg-column-empty">未設定</span>
+              </a>
+            </td>
+            <td>
+              <a href="/application#/{%interview.application.applicationId%}">
+                <span>{%interview.application.fullName%}</span>
+                <span class="pg-section-table-explain">
+                  <span ng-if="interview.application.lastOrganization">{%interview.application.lastOrganization%}</span>
+                  <span ng-if="interview.application.lastTitle">{%interview.application.lastTitle%}</span>
+                </span>
+              </a>
+            </td>
+            <td>
+              <a class="breakword" href="/application#/{%interview.application.applicationId%}">
+                {%interview.job.jobName%}
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <a href="/application#/interviews{%itc.getTodayParams()%}" class="pg-section-continue sg-button sg-button-l" ng-if="itc.interviews.length > 0">すべての面接</a>
+    <div class="pg-section-body" ng-if="itc.interviewsToday.length == 0">
+      <p class="pg-section-empty">今日の面接はありません</p>
+    </div>
+  </div>
+</script>

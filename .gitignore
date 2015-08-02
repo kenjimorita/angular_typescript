@@ -13,3 +13,4 @@ atlassian-ide-plugin.xml
 *.log
 /artifact
 /api
+/other

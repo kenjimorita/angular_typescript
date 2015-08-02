@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 18.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 21 21" enable-background="new 0 0 21 21" xml:space="preserve">
+<g id="base">
+</g>
+<g id="header">
+	<g>
+		<circle fill="#888888" cx="10.5" cy="10.5" r="10.5"/>
+		<text transform="matrix(1 0 0 1 7 16)" fill="#FFFFFF" font-family="'Meiryo'" font-size="14">?</text>
+	</g>
+</g>
+<g id="h1求人詳細用" display="none">
+</g>
+<g id="main">
+</g>
+<g id="headding">
+</g>
+<g id="hover">
+	<g id="h1_1_" display="none">
+	</g>
+	<g>
+	</g>
+	<g id="help">
+		<g>
+			<g>
+				<circle fill="#333333" cx="10.5" cy="10.5" r="10.5"/>
+				<text transform="matrix(1 0 0 1 7 16)" fill="#FFFFFF" font-family="'Meiryo'" font-size="14">?</text>
+			</g>
+		</g>
+	</g>
+</g>
+<g id="レイヤー_3">
+</g>
+<g id="guide">
+</g>
+<g id="header_1_">
+	<g id="hover_1_">
+	</g>
+</g>
+</svg>

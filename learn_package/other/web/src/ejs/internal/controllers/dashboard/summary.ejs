@@ -1,0 +1,51 @@
+<script type="text/ng-template" id="/internal/controllers/dashboard/summary">
+  <div ng-init="smc.init()" class="pg-summary">
+    <a href="/jobs#/add" class="pg-summary-newjob sg-button sg-button-l secondary plus" ng-if="smc.hasRecruiterRole">新しい求人を作成</a>
+    <div class="pg-summary-data cf">
+      <h1 class="pg-summary-company">{%smc.corporate.name%}</h1>
+      <div class="pg-summary-counts cf">
+        <div class="pg-summary-count" ng-if="smc.hasRecruiterRole">
+          <a href="/jobs" class="cf">
+            <span class="pg-summary-count-number">{%smc.numOfNoActionApplications%}</span>
+            <span class="pg-summary-count-text">
+              <span class="pg-summary-count-status">未対応</span>
+              <span>全{%smc.numOfJobsWithNoActionApplications%}求人</span>
+            </span>
+          </a>
+        </div>
+        <div class="pg-summary-count" ng-if="smc.hasRecruiterRole">
+          <a href="/application#/interviews{%smc.getTodayParams()%}" class="cf">
+            <span class="pg-summary-count-number">{%smc.interviewsTodayCount%}</span>
+            <span class="pg-summary-count-text">
+              <span class="pg-summary-count-status">今日の面接</span>
+              <span>{%smc.isoDateNow | date: 'MM/dd'%}（{%smc.getWeekdayByDate(smc.isoDateNow)%}）</span>
+            </span>
+          </a>
+        </div>
+        <div class="pg-summary-count" ng-if="smc.hasInterviewerRole">
+          <a href="/application#/interviews/mine?limit=20&interviewType=INT&feedback=N" class="cf">
+            <span class="pg-summary-count-number">{%smc.interviewsUnratedCount%}</span>
+            <span class="pg-summary-count-text">
+              <span class="pg-summary-count-status">
+                未評価の<br>
+                担当面接
+              </span>
+            </span>
+          </a>
+        </div>
+        <div class="pg-summary-count" ng-if="smc.hasInterviewerRole">
+          <a href="/application#/interviews/mine?limit=20&interviewType=DOC&feedback=N" class="cf">
+            <span class="pg-summary-count-number">{%smc.docscreeningsUnratedCount%}</span>
+            <span class="pg-summary-count-text">
+              <span class="pg-summary-count-status">
+                未評価の<br>
+                書類選考
+              </span>
+            </span>
+          </a>
+        </div>
+        <a href="/boards/{%smc.account.corporateId%}/jobs" class="pg-publishedlist" target="_blank" ng-if="smc.jobsRecruiting.length">公開中の一覧表示</a>
+      </div>
+    </div>
+  </div>
+</script>

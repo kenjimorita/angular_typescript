@@ -1,0 +1,49 @@
+<% function styles (buf) { %>
+  <!--[if lt IE 9]>
+  <link rel="stylesheet" href="<%- revAssets('stylesheets/stanby-ie8.css') %>">
+  <![endif]-->
+  <% categoryStyles(buf) %>
+<% } %>
+<% function scripts (buf) { %>
+  <!--[if lt IE 9]>
+  <script src="<%- revAssets('scripts/vendor_js/respond.js') %>"></script>
+  <script src="<%- revAssets('scripts/vendor_js/es5-shim.js') %>"></script>
+  <![endif]-->
+  <script src="<%- revAssets('scripts/vendor_js/startWithShim.js') %>"></script>
+  <script src="<%- revAssets('scripts/vendor_js/lodash.js') %>"></script>
+  <script src="<%- revAssets('scripts/vendor_js/jquery.js') %>"></script>
+  <script src="<%- revAssets('scripts/vendor_js/jquery.easing.min.js') %>"></script>
+  <script src="<%- revAssets('scripts/vendor_js/jquery.imgcentering.min.js') %>"></script>
+  <script src="<%- revAssets('scripts/vendor_js/angular.js') %>"></script>
+  <script src="<%- revAssets('scripts/vendor_js/angular-animate.js') %>"></script>
+  <script src="<%- revAssets('scripts/vendor_js/angular-sanitize.js') %>"></script>
+  <script src="<%- revAssets('scripts/vendor_js/angular-locale_ja-jp.js') %>"></script>
+  <script src="<%- revAssets('scripts/vendor_js/angular-ui-router.js') %>"></script>
+  <script src="<%- revAssets('scripts/vendor_js/ui-utils.js') %>"></script>
+  <script src="<%- revAssets('scripts/vendor_js/ui-bootstrap-tpls.js') %>"></script>
+  <script src="<%- revAssets('scripts/vendor_js/ngToast.js') %>"></script>
+  <script src="<%- revAssets('scripts/stanby-utils.js') %>"></script>
+  <script src="<%- revAssets('scripts/stanby-app.js') %>"></script>
+  <% categoryScripts(buf) %>
+<% } %>
+
+<% function contents (buf) { %>
+  <% categoryContents(buf) %>
+
+  <footer class="cm-last-footer">
+    <ul>
+      <li><a href="/contents/terms">利用規約</a></li>
+      <li><a href="/contents/privacy">プライバシーポリシー</a></li>
+      <li><a href="/contents/guideline">掲載ガイドライン</a></li>
+      <li><a href="/contact">お問い合わせ</a></li>
+    </ul>
+    <small>Copyright &copy; BizReach, Inc. All Rights Reserved.</small>
+  </footer>
+
+  <div id="jsi-main-spinner" class="cm-spinner-overlay"></div>
+  <toast></toast>
+  <%include ./vendor_overwrites.ejs%>
+  <st-totop></st-totop>
+<% } %>
+
+<% include ./base.ejs %>

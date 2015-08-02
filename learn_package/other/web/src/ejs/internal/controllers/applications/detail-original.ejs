@@ -1,0 +1,89 @@
+<script type="text/ng-template" id="/internal/controllers/applications/detail-original">
+
+<div ng-init="aoc.init()" >
+  <section class="cf" ng-if="aoc.applicationPromise">
+    <time>{% aoc.applicationPromise.appliedAt | formatEventTimestamp %}</time>
+    <div class="pg-timeline-status"><span>{% aoc.applicationPromise.profile.fullName | limitTo:1 %}</span></div>
+    <div class="pg-timeline-body">
+      <h3>{% aoc.applicationPromise.profile.fullName %}が応募しました
+        <span class="pg-timeline-stanby-applicant" ng-bind="aoc.enums.applicationSource[aoc.applicationPromise.applicationSource].name"></span>
+      </h3>
+
+      <div class="sg-form-markdown-html" ng-bind-html="aoc.messageHtml" ng-if="aoc.messageHtml"></div>
+      <section id="resume">
+        <h4><span>応募書類</span></h4>
+        <section class="pg-timeline-resume" id="resume-form" ng-if="aoc.resumeHtml">
+          <h5 class="sg-icon resume-form">履歴書（直接応募）</h5>
+          <div class="sg-form-markdown-html" ng-bind-html="aoc.resumeHtml"></div>
+        </section>
+
+        <section class="pg-timeline-resume" id="resume-form" ng-if="aoc.applicationPromise.applicationSource == 'JSE'">
+          <h5 class="sg-icon resume-form">履歴書（スタンバイ経由の応募）</h5>
+          <div class="pg-timeline-resume-child cf">
+            <p class="pg-timeline-resume-child-head">職歴</p>
+            <div class="pg-timeline-resume-child-body">
+              <section ng-repeat="work in aoc.applicationPromise.resume.work">
+                <h6>{% work.company %}</h6>
+                <p>
+                  {% aoc.enums.jobType[work.employmentType].name %}<br/>
+                  {% work.business %} {% work.title %}<br  />
+                  <span class="weak" ng-if="work.startDate">
+                    {% work.startDate.year ? work.startDate.year + '年' : null %}{% work.startDate.month ? work.startDate.month + '月' : null %} ～ 
+                    <span ng-bind="work.endDate ? work.endDate.year + '年' + work.endDate.month + '月' : '現職' "></span>
+                    <span>（{% aoc.getDuration(work) %}）</span>
+                  </span>
+                  <span ng-if="work.salary"><br />
+                    {% aoc.enums.salaryType[work.salaryType].name %} {% work.salary | number %}円
+                  </span>
+                </p>
+                <pre ng-if="work.summary">{% work.summary %}</pre>
+              </section>
+              <section ng-if="!aoc.applicationPromise.resume.work.length"><p>なし</p></section>
+            </div>
+          </div>
+          <div class="pg-timeline-resume-child cf">
+            <p class="pg-timeline-resume-child-head">学歴</p>
+            <div class="pg-timeline-resume-child-body">
+              <section ng-repeat="edu in aoc.applicationPromise.resume.education">
+                <h6>{% edu.schoolName %} {% edu.fieldOfStudy %} <span class="weak" ng-show="edu.status">[{% aoc.enums.educationStatus[edu.status] %}]</span></h6>
+                <p>
+                  {% edu.degreeText %}<br ng-if="edu.degreeText" />
+                  <span class="weak" ng-if="edu.startDate">
+                    {% edu.startDate.year ? edu.startDate.year + '年' : null %} ～ 
+                    <span ng-bind="edu.endDate.year ? edu.endDate.year + '年' : '現在' "></span>
+                    <span>（{% aoc.getDuration(edu) %}）</span>
+                  </span>
+                </p>
+              </section>
+              <section ng-if="!aoc.applicationPromise.resume.education.length"><p>なし</p></section>
+            </div>
+          </div>
+          <% /** Certifications item has been removed in V21 */ %>
+          <div class="pg-timeline-resume-child cf" ng-show="aoc.applicationPromise.resume.certifications.length">
+            <p class="pg-timeline-resume-child-head">資格</p>
+            <div class="pg-timeline-resume-child-body">
+              <section ng-repeat="cert in aoc.applicationPromise.resume.certifications">
+                <h6>{% cert.name %}</h6>
+                <p>
+                  <span class="weak">{% cert.certifiedDate.year %}年{% cert.certifiedDate.month %}月</span>
+                </p>
+              </section>
+            </div>
+          </div>
+        </section>
+
+
+
+        <section class="pg-timeline-resume" ng-repeat="attach in aoc.applicationPromise.attachments track by $index">
+          <h5 class="sg-icon resume-form"><a ng-href="{% aoc.getAttachmentDownloadLink(attach) %}">{% attach.fileName %}</a></h5>
+          <div ng-if="aoc.isPdfFile(attach)">
+            <iframe ng-src="{% aoc.getPdfViewerLink(attach) %}" style="width: 100%; height: 500px;"></iframe>
+          </div>
+        </section>
+
+      </section>
+    </div>
+  </section>
+</div>
+
+</script>

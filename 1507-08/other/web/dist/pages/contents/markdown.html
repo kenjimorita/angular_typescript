@@ -1,0 +1,213 @@
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ja" ng-app="stanby">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Stanby Recruiting</title>
+  <link rel="stylesheet" href="/stylesheets/stanby-common.css">
+  <link rel="stylesheet" href="/stylesheets/stanby-styleguide.css">
+  
+  <link rel="stylesheet" href="/stylesheets/stanby-visitor.css">
+  <!--[if lt IE 9]>
+  <link rel="stylesheet" href="/stylesheets/stanby-ie8.css">
+  <![endif]-->
+  
+  <link rel="stylesheet" href="/stylesheets/stanby-markdown.css">
+
+
+  <link rel="shortcut icon" href="/favicon.ico">
+  <!--[if lt IE 9]>
+  <script src="/scripts/vendor_js/html5shiv.js"></script>
+  <![endif]-->
+  <script src="/scripts/vendor_js/modernizr.custom.js"></script>
+</head>
+<body>
+
+  
+  
+<header class="pg-markdown-header cf" id="jsi-header">
+  <h1 class="fl">テキスト整形ルール</h1>
+  <a onClick="window.close();return false;" class="sg-button transparent fr">このウィンドウを閉じる</a>
+</header>
+
+<main class="pg-markdown-wrapper">  
+  <nav>
+    <ul>
+      <li><a href="#markdown-detail-text" class="jsc-autoscroller">テキスト効果</a></li>
+      <li><a href="#markdown-detail-headline" class="jsc-autoscroller">見出し</a></li>
+      <li><a href="#markdown-detail-break" class="jsc-autoscroller">改行</a></li>
+      <li><a href="#markdown-detail-link" class="jsc-autoscroller">リンク</a></li>
+      <li><a href="#markdown-detail-list" class="jsc-autoscroller">リスト</a></li>
+      <li><a href="#markdown-detail-quote" class="jsc-autoscroller">引用</a></li>
+      <li><a href="#markdown-detail-hr" class="jsc-autoscroller">水平線</a></li>
+      <li><a href="#markdown-detail-code" class="jsc-autoscroller">コード</a></li>
+    </ul>
+  </nav>
+
+  <div class="pg-markdown-detail">
+    <section id="markdown-detail-text">
+      <h2>テキスト効果</h2>
+      <dl>
+        <dt>入力</dt>
+        <dd>表示・コメント</dd>
+        <dt>_強調_ または *強調*</dt>
+        <dd><span style="font-weight:bold;">強調</span> または <span style="font-weight:bold;">強調</span></dd>
+        <dt>__強い強調__ または **強い強調**</dt>
+        <dd><span style="font-weight:bold;font-style:italic;">強い強調</span> または <span style="font-weight:bold;font-style:italic;">強い強調</span></dd>
+      </dl>
+    </section>
+    <section id="markdown-detail-headline">
+      <h2>見出し</h2>
+      <p>見出しは、テキストの前にいくつかの'#'を置くことで作ることができます。'#'の数が見出しのレベルに対応します。</p>
+      <dl>
+        <dt>入力</dt>
+        <dd>表示・コメント</dd>
+        <dt>#見出し（最大）</dt>
+        <dd><span style="font-size:20px;color:#003971;font-weight:bold;line-height:1;">見出し（最大）</span></dd>
+        <dt>##見出し（大）</dt>
+        <dd><span style="font-size:20px;color:#666666;font-weight:bold;line-height:1;">見出し（大）</span></dd>
+        <dt>###見出し（中）</dt>
+        <dd><span style="font-size:18px;color:#666666;font-weight:bold;line-height:1;">見出し（中）</span></dd>
+        <dt>####見出し（標準）</dt>
+        <dd><span style="font-size:16px;color:#666666;line-height:1;">見出し（標準）</span></dd>
+        <dt>#####見出し（小）</dt>
+        <dd><span style="font-size:14px;line-height:1;">見出し（小）</span></dd>
+        <dt>######見出し（最小）</dt>
+        <dd><span style="font-size:12px;font-weight:bold;line-height:1;">見出し（最小）</span></dd>
+      </dl>
+    </section>
+    <section id="markdown-detail-break">
+      <h2>改行</h2>
+      <dl>
+        <dt>入力</dt>
+        <dd>表示・コメント</dd>
+        <dt>通常の改行<br>通常の改行</dt>
+        <dd><p>通常の改行<br>通常の改行</p></dd>
+        <dt>段落の改行<br><br>段落の改行</dt>
+        <dd>
+          <p style="padding-top:3px;">段落の改行</p>
+          <p style="margin-top: 14px;">段落の改行</p>
+        </dd>
+      </dl>
+    </section>
+    <section id="markdown-detail-link">
+      <h2>リンク</h2>
+      <dl>
+        <dt>入力</dt>
+        <dd>表示・コメント</dd>
+        <dt>[リンクのテキスト](リンクのアドレス)</dt>
+        <dd><a href="javascript:void(0);">リンクのテキスト</a></dd>
+      </dl>
+    </section>
+    <section id="markdown-detail-list">
+      <h2>リスト</h2>
+      <p>リストはそれぞれ、アスタリスク（* ）と番号（1. ）で作ることができます。アスタリスクや番号とテキストの間には、半角スペースが必要になりますのでご注意ください。</p>
+      <dl>
+        <dt>入力</dt>
+        <dd>表示・コメント</dd>
+        <dt>* リストのアイテム<br>* リストのアイテム<br>* リストのアイテム<br>&nbsp;&nbsp;&nbsp;&nbsp;* サブアイテムは4つのスペースでインデント<br>&nbsp;&nbsp;&nbsp;&nbsp;* サブアイテムは4つのスペースでインデント<br>&nbsp;&nbsp;&nbsp;&nbsp;* サブアイテムは4つのスペースでインデント</dt>
+        <dd>
+          <ul>
+            <li style="list-style: disc inside;">リストのアイテム</li>
+            <li style="list-style: disc inside;">リストのアイテム</li>
+            <li style="list-style: disc inside;">リストのアイテム</li>
+            <li>
+              <ul style="text-indent:1em;">
+                <li style="list-style: circle inside;">サブアイテムは4つのスペースでインデント</li>
+                <li style="list-style: circle inside;">サブアイテムは4つのスペースでインデント</li>
+                <li style="list-style: circle inside;">サブアイテムは4つのスペースでインデント</li>
+              </ul>
+            </li>
+          </ul>
+        </dd>
+        <dt>1. 番号付きリストのアイテム<br>1. 番号付きリストのアイテム<br>1. 番号付きリストのアイテム<br>&nbsp;&nbsp;&nbsp;&nbsp;1. サブアイテムは4つのスペースでインデント<br>&nbsp;&nbsp;&nbsp;&nbsp;1. サブアイテムは4つのスペースでインデント<br>&nbsp;&nbsp;&nbsp;&nbsp;1. サブアイテムは4つのスペースでインデント</dt>
+        <dd>
+          <ol>
+            <li style="list-style: decimal inside;">番号付きリストのアイテム</li>
+            <li style="list-style: decimal inside;">番号付きリストのアイテム</li>
+            <li style="list-style: decimal inside;">番号付きリストのアイテム</li>
+            <li>
+              <ol style="text-indent:1em;">
+                <li style="list-style: lower-roman inside;">サブアイテムは4つのスペースでインデント</li>
+                <li style="list-style: lower-roman inside;">サブアイテムは4つのスペースでインデント</li>
+                <li style="list-style: lower-roman inside;">サブアイテムは4つのスペースでインデント</li>
+              </ol>
+            </li>
+          </ol>
+        </dd>
+      </dl>
+    </section>
+    <section id="markdown-detail-quote">
+      <h2>引用</h2>
+      <dl>
+        <dt>入力</dt>
+        <dd>表示・コメント</dd>
+        <dt>&gt; このテキストは引用文です。テキストを好きなように<br>改行することができます。</dt>
+        <dd>
+          <blockquote style="padding-right: 20px;padding-left: 20px;font-style: italic;">このテキストは引用文です。テキストを好きなように<br>改行することができます。</blockquote>
+        </dd>
+      </dl>
+    </section>
+    <section id="markdown-detail-hr">
+      <h2>水平線</h2>
+      <p>1行の中に、3つ以上のハイフンやアスタリスク・アンダースコアだけを並べると水平線が作られます。</p>
+      <dl>
+        <dt>入力</dt>
+        <dd>表示・コメント</dd>
+        <dt>---</dt>
+        <dd><hr style="height: 0;margin: 9px 0;border: 1px solid #888888;"></dd>
+        <dt>***</dt>
+        <dd><hr style="height: 0;margin: 9px 0;border: 1px solid #888888;"></dd>
+        <dt>___</dt>
+        <dd><hr style="height: 0;margin: 9px 0;border: 1px solid #888888;"></dd>
+      </dl>
+    </section>
+    <section id="markdown-detail-code">
+      <h2>コード</h2>
+      <p>コードを含める場合、インラインコードは「``some code``」のようにバッククオート（`）で囲むことになります。複数行にまたがるコードは、4つ以上のスペースを行頭に書きます。</p>
+      <dl>
+        <dt>入力</dt>
+        <dd>表示・コメント</dd>
+        <dt>``これはコードです。``</dt>
+        <dd style="padding: 18px 10px;"><code style="display:inline-block;padding:10px;background:#F2F2F2;border: 1px solid #CCCCCC;">これはコードです。</code></dd>
+        <dt>&nbsp;&nbsp;&nbsp;&nbsp;複数行のコードです。<br>&nbsp;&nbsp;&nbsp;&nbsp;複数行のコードです。<br>&nbsp;&nbsp;&nbsp;&nbsp;複数行のコードです。</dt>
+        <dd style="padding: 18px 10px;"><code style="display:inline-block;padding:10px;background:#F2F2F2;border:1px solid #CCCCCC;">複数行のコードです。<br>複数行のコードです。<br>複数行のコードです。</code></dd>
+      </dl>
+    </section>
+  </div>  
+
+</main> 
+
+  <a href="javascript: void(0);" class="cm-totop" id="jsi-totop"></a>
+
+
+  
+  <!--[if lt IE 9]>
+  <script src="/scripts/vendor_js/respond.js"></script>
+  <script src="/scripts/vendor_js/es5-shim.js"></script>
+  <![endif]-->
+  <script src="/scripts/vendor_js/jquery.min.js"></script>
+  <script src="/scripts/static.js"></script>
+  
+  <script src="/scripts/pg.markdown.js"></script>
+
+
+
+  <noscript>
+    <iframe src="//www.googletagmanager.com/ns.html?id=GTM-T5GK3V" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+  </noscript>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-T5GK3V');</script>
+</body>
+</html>
+
+

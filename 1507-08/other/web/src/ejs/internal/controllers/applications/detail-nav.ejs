@@ -1,0 +1,41 @@
+<script type="text/ng-template" id="/internal/controllers/applications/detail-nav">
+
+<ol class="cf sg-controlpanel-controls">
+
+  <li class="sg-controlpanel-control-left"><a href="#basic" st-autoscroll="">基本情報</a></li>
+  <li class="sg-controlpanel-control-left"><a href="#resume" st-autoscroll="">応募書類</a></li>
+
+  <li class="sg-controlpanel-control-right">
+    <a href="javascript://;" onclick="window.open(this.href=document.location, 'ApplicantDetails', 'window.innerWidth, window.innerHeight,menubar=yes, toolbar=yes, scrollbars=yes, resizable=yes')" class="newwindow" 
+    st-link-tooltip="別ウィンドウで開く"></a>
+  </li>
+  <li class="sg-controlpanel-control-right">
+    <a ng-if="anc.isEditableResume()" class="attach"
+    st-link-tooltip="応募書類を添付"
+    ng-click="anc.turnOnFileAttachmentModal()"></a>
+  </li>
+  <li class="sg-controlpanel-control-right" ng-if="anc.isEditableResume()">
+    <a ui-sref="edit({applicationId: anc.applicationPromise.id})" class="edit"
+    st-link-tooltip="応募者の基本情報を編集"></a>
+  </li>
+
+  <li class="sg-controlpanel-control-right" ng-show="anc.hasRecruiterRole()">
+    <button class="pg-detail-status"
+      ng-model="anc.applicationPromise.selectionStage"
+      st-dd-select="stage.code as stage.name for stage in $enums.selectionStageOptions orderBy stage.sortNo"
+      st-dd-select-manual="anc.updateStatus($newValue, $isDiffValue)"
+      st-link-tooltip="この操作を行っても応募者には通知されません。必要に応じて直接応募者へご連絡ください。">
+      現在の選考ステータス
+      <span>{% anc.enums.selectionStage[anc.applicationPromise.selectionStage] %}</span>
+    </button>
+  </li>
+
+</ol>
+
+<div ng-if="anc.isSearchResultsActive()">
+  <a class="sg-navpanel-list" ng-click="anc.backToList()" stb-tooltip="{% anc.activeListName() %} : {% anc.currentItemNumber() %} / {% anc.totalHits() %}"></a>
+  <%/* NOTE: prev → 応募者リストの上の項目（新しい応募者）へ移動、next → 応募者リストの下の項目（古い応募者）へ移動 */%>
+  <a class="sg-navpanel-prev" ng-if="anc.existsPrevItem()" ng-click="anc.transitionToPrevItem()" stb-tooltip="前の応募者"></a>
+  <a class="sg-navpanel-next" ng-if="anc.existsNextItem()" ng-click="anc.transitionToNextItem()" stb-tooltip="次の応募者"></a>
+</div>
+</script>

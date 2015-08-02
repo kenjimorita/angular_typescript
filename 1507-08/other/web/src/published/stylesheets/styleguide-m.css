@@ -1,0 +1,239 @@
+@charset 'utf-8';
+
+/* Reset styles */
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+abbr, address, cite, code,
+del, dfn, em, img, ins, kbd, q, samp,
+small, strong, sub, sup, var,
+b, i,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, dialog, figure, footer, header, main,
+hgroup, menu, nav, section,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-size: 100%;
+  font-weight: normal;
+  vertical-align: baseline;
+  background: transparent;
+}
+html, body, document {
+  -ms-touch-action: none;
+}
+body {
+  text-size-adjust: 100% !important;
+  -webkit-text-size-adjust: 100% !important;
+}
+article, aside, dialog, figure, figcaption, footer, header,
+hgroup, nav, section, main {
+  display: block;
+}
+ul, ol {
+  list-style: none;
+}
+img {
+  vertical-align: middle;
+}
+blockquote, q {
+  quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none;
+}
+a {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  text-decoration: none;
+  vertical-align: baseline;
+  background: transparent;
+}
+ins {
+  text-decoration: none;
+}
+mark {
+  font-style: italic;
+  font-weight: bold;
+}
+del {
+  text-decoration: line-through;
+}
+abbr[title], dfn[title] {
+  cursor: help;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+hr {
+  display: block;
+  height: 1px;
+  margin: 1em 0;
+  padding: 0;
+  border: 0;
+}
+input, select {
+  vertical-align: middle;
+}
+
+/* Base styles */
+.cf {
+  zoom: 1;
+}
+.cf:after {
+  clear: both;
+  content: '';
+  display: block;
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+}
+body, input {
+  line-height: 1.6;
+  color: #333333;
+  font-family: 'ヒラギノ角ゴ Pro W3','Hiragino Kaku Gothic Pro','メイリオ','Meiryo','ＭＳ Ｐゴシック','MS PGothic','Helvetica','Arial','sans-serif';;
+  font-size: 15px;
+}
+html, body {
+  height: 100%;
+}
+a {
+  color: #0076D3;
+  transition: color 160ms ease-out;
+}
+a:hover {
+  color: #0069CC;
+}
+
+/* Text */
+h1 {
+  font-size: 16px;
+  font-weight: bold;
+}
+h1 + * {
+  margin-top: 6px;
+}
+
+/* Styleguide */
+.sg-wrapper {
+  z-index: 1;
+  position: relative;
+  min-height: 100%;
+  padding-bottom: 69px;
+  box-sizing: border-box;
+}
+.sg-header {
+  padding: 20px 12px 18px;
+  border-bottom: 1px solid #E4E4E4;
+}
+.sg-header + * {
+  margin-top: 10px;
+}
+.sg-header-logo {
+  margin-right: 8em;
+  font-size: 12px;
+}
+.sg-header-back-button {
+  float: right;
+  font-size: 12px;
+}
+
+.sg-footer {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding-right: 12px;
+  padding-left: 12px;
+}
+.sg-footer-copyright {
+  text-align: center;
+  color: #888888;
+  font-size: 10px;
+}
+.sg-footer-copyright.sg-logo {
+  padding-top: 6px;
+  padding-bottom: 12px;
+}
+.sg-tag {
+  height: 12px;
+  line-height: 12px;
+  padding: 0 0.8em;
+  background: #F1F1F1;
+  border-radius: 2px;
+  color: #888888;
+  font-size: 13px;
+}
+.sg-tags > li {
+  float: left;
+  height: 12px; /* for same as tag */
+  line-height: 12px; /* for same as tag */
+  color: #888888;
+  font-size: 8px;
+}
+.sg-tags > li + li {
+  margin-left: 6px;
+}
+
+.sg-button {
+  display: block;
+  padding-top: 13px;
+  padding-bottom: 9px;
+  border: 1px solid #CCCCCC;
+  border-radius: 4px;
+  color: #888888;
+  outline: none;
+  font-size: 13px;
+  font-weight: bold;
+  text-align: center;
+}
+.sg-button:hover {
+  background: #F3F5F6;
+  color: #333333; 
+}
+.sg-button.secondary {
+  background-color: #0076D3;
+  border: 1px solid #003971;
+  color: #FFFFFF;  
+}
+.sg-button.secondary.applied,
+.sg-button.secondary.sg-button-disabled {
+  background: #D4D9D8;
+  border-color: #D4D9D8;
+  color: #AAB3B8;
+}
+.sg-logo.stanby {
+  display: block;
+  width: 180px;
+  height: 14px;
+  margin: 5px auto 10px;
+}
+.sg-logo.stanby > span {
+  display: block;
+  background: url(/published/images/sg.footer.logo.svg) no-repeat;
+  text-indent: -9999px;
+}
+.sg-logo.stanby.white > a {
+  background-image: url(/published/images/sg.footer.logo.white.svg);
+}
+.sg-logo.stanby-search {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.sg-logo.stanby-search > a {
+  color: #AAAAAA;
+  transition: color 160ms ease-out;
+}
+.sg-logo.stanby-search > a:hover {
+  color: #0069CC;
+}
+

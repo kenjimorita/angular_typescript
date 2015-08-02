@@ -1,0 +1,22 @@
+<% function pageStyles(buf){ %>
+<link rel="stylesheet" href="<%- revAssets('stylesheets/stanby-dashboard.css') %>">
+<% }; %>
+
+<% function pageScripts(buf){ %>
+<script type="text/javascript" src="<%- revAssets('scripts/dashboard-page.js') %>"></script>
+<% }; %>
+
+<% function pageContents(buf){ %>
+<ui-view></ui-view>
+
+<%include ../internal/controllers/dashboard/base.ejs%>
+<%include ../internal/controllers/dashboard/summary.ejs%>
+<%include ../internal/controllers/dashboard/interviews-unrated.ejs%>
+<%include ../internal/controllers/dashboard/docscreenings-unrated.ejs%>
+<%include ../internal/controllers/dashboard/job-application-counts.ejs%>
+<%include ../internal/controllers/dashboard/interviews-today.ejs%>
+<%include ../internal/controllers/dashboard/account.ejs%>
+<%include ../internal/controllers/dashboard/side.ejs%>
+<% }; %>
+
+<% include ../layout/signedin/layout.ejs %>

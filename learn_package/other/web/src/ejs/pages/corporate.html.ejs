@@ -1,0 +1,12 @@
+<% function pageStyles(buf){ %>
+<% }; %>
+
+<% function pageScripts(buf){ %>
+<script type="text/javascript" src="<%- revAssets('scripts/corporate-page.js') %>"></script>
+<% }; %>
+
+<% function pageContents(buf){ %>
+  <div ui-view></div>
+<% }; %>
+
+<% include ../layout/signedin/layout.ejs %>

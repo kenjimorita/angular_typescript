@@ -1,0 +1,53 @@
+<div class="sg-modal-filter"></div>
+<div class="sg-modal-dropborder" ng-show="ipi.isDragging"></div>
+<div class="sg-imagemanager">
+  <p class="sg-imagemanager-head">画像の選択</p>
+  <ul class="sg-imagemanager-tab cf">
+    <li><a href="javascript: void(0);" ng-class="{current: ipi.actionMode == 'UPL'}" ng-click="ipi.switchToUploadMode()">新しく画像を登録</a></li>
+    <li><a href="javascript: void(0);" ng-class="{current: ipi.actionMode == 'SEL'}" ng-click="ipi.switchToSelectMode()">登録済み画像から選択</a></li>
+  </ul>
+
+  <div class="sg-imagemanager-content" ng-if="ipi.actionMode == 'UPL'">
+    <div class="sg-imagemanager-regist-drop"
+         ui-event="{
+           dragover: 'ipi.setDraggingStyle($event)',
+           dragenter: 'ipi.setDraggingStyle($event)',
+           dragleave: 'ipi.resetDraggingStyle($event)',
+           drop: 'ipi.dropImages($event)'
+           }">
+     ここに文章用の画像をドラッグ
+     <ul>
+       <li>JPEG、PNG、GIFが登録可能な画像ファイルの形式です</li>
+       <li>画像ファイルの最大容量は5MBです</li>
+       <li>画像ファイルの最小サイズは横幅300px、縦幅200pxです</li>
+       <li>左下の「ファイルを選択」からも画像が選択できます</li>
+     </ul>
+     <div class="sg-imagemanager-regist-border" ng-show="ipi.isDragging"></div>
+    </div>
+  </div>
+  <div class="sg-imagemanager-content sg-imagemanager-select" ng-if="ipi.actionMode == 'SEL'">
+    <p class="sg-imagemanager-select-explain">文章用の画像を選択してください。(複数可能)</p>
+    <ul class="sg-imagemanager-select-list cf">
+      <li ng-repeat="image in ipi.pooledImages" ng-class="{'checked': ipi.isSelectedImage(image.id)}">
+        <label>
+          <img ng-src="{% ipi.getThumbnailImageUrl(image.id, image.prefix) %}" alt="{% image.id %}">
+          <input type="radio" name="logo" ng-click="ipi.clickImage(image, $event)">
+        </label>
+      </li>
+    </ul>
+  </div>
+
+  <div class="sg-imagemanager-buttons-wrapper">
+    <div class="sg-imagemanager-buttons" ng-if="ipi.actionMode == 'UPL'">
+      <div class="sg-imagemanager-regist-input">
+        <button class="sg-button">ファイルを選択</button>
+        <input type="file" accept="jpg,jpeg,png,gif" ui-event="{change: 'ipi.selectUploadFile($event)'}">
+      </div>
+      <a href="javascript: void(0);" class="sg-button transparent" ng-click="ipi.cancel()">キャンセル</a>
+    </div>
+    <div class="sg-imagemanager-buttons" ng-if="ipi.actionMode == 'SEL'">
+      <button class="sg-button secondary" ng-click="ipi.ok()" ng-disabled="!(ipi.selectedImages.length > 0)">画像を挿入する</button>
+      <button class="sg-button transparent" ng-click="ipi.cancel()">キャンセル</a>
+    </div>
+  </div>
+</div>

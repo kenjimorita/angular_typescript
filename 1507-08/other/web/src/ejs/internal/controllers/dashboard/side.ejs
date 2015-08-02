@@ -1,0 +1,34 @@
+<script type="text/ng-template" id="/internal/controllers/dashboard/side">
+  <div ng-init="sdc.init()">
+    <div class="pg-side-beginner" ng-if="sdc.hasRecruiterRole">
+      <p class="pg-side-beginner-head">初めてご利用する方へ</p>
+      <ul>
+        <% /* <li class="done">アカウントを作成</li> */ %>
+        <li><a href="/corporate/public#/edit">公開企業プロフィールを作成</a></li>
+        <li><a href="/corporate/public#/edit">企業ロゴをアップロード</a></li>        
+        <li><a href="/jobs#/add">最初の求人ページを作成</a></li>
+      </ul>
+    </div>
+    <div class="pg-side-section" ng-if="sdc.hasAdminRole">
+      <p class="pg-side-section-head">お問い合わせ</p>
+      <p><a href="/contact">Stanby Recruiting へのお問い合わせ</a></p>
+    </div>
+    <div class="pg-side-section" ng-if="sdc.hasRecruiterRole && sdc.jobsReady.length > 0">
+      <p class="pg-side-section-head">下書き求人（{%sdc.jobsReady.length%}）</p>
+      <ul>
+        <li ng-repeat="job in sdc.jobsReady">
+          <a href="/jobs#/{%job.id%}/edit/">{%job.name%}</a>
+        </li>
+      </ul>
+    </div>
+    <div class="pg-side-section">
+      <p class="pg-side-section-head">採用担当者へのお問い合わせ</p>
+      <ul class="pg-side-contactmembers">
+        <li ng-repeat="user in sdc.usersRecruiter | filter:'INT'">
+          {%user.fullName%}
+          <span>{%user.email%}</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</script>
