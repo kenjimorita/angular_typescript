@@ -10,8 +10,8 @@ var webpackConfig = require('./webpack.config.js');
 
 var path = [
 "./html/**/*.html",
-"./css/**/*.css",
-"./scss/**/*.scss"
+"./stylesheets/css/**/*.css",
+"./stylesheets/scss/**/*.scss"
 ];
 var target = {
 	local : "./html/*.html",
@@ -19,9 +19,9 @@ var target = {
 };
 
 gulp.task("sass",function(){
-	gulp.src(['./scss/*.scss'])// srcを指定
+	gulp.src(['./stylesheets/scss/*.scss'])// srcを指定
 	.pipe(sass())              // 指定したファイルをJSにコンパイル
-	.pipe(gulp.dest('./dest')) // dest先に出力する
+	.pipe(gulp.dest('./stylesheets/dest')) // dest先に出力する
 });
 
 gulp.task("html",function(){
@@ -72,7 +72,7 @@ gulp.task('build', ['copyIndex'], function (cb) {
 gulp.task("reload", function() {
 	gulp.src('./html/*.html')
 	.pipe(connect.reload());
-	gulp.src('./scss/*.html')
+	gulp.src('./stylesheets/css/*.html')
 	.pipe(connect.reload());
 });
 
