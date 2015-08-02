@@ -29,8 +29,8 @@ gulp.task("ejs", function() {
     gulp.src(
         ["./ejs/**/*.ejs",'!' + "app/dev/ejs/**/_*.ejs"] //_.ejsは監視しない
     )
-        .pipe(ejs())
-        .pipe(gulp.dest(app/public))
+    .pipe(ejs())
+    .pipe(gulp.dest(app/public))
 });
 
 gulp.task("html",function(){
@@ -39,8 +39,7 @@ gulp.task("html",function(){
 gulp.task("connect", function() {
 	connect.server({
 		livereload: true,
-		port: 8000,
-		root: '.'
+		port: 8000
 	});
 });
 
