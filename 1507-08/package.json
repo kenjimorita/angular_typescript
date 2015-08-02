@@ -8,6 +8,7 @@
     "casperjs": "^1.1.0-beta3",
     "cheerio": "^0.17.0",
     "coffee-script": "^1.9.2",
+    "connect": "^3.4.0",
     "css-select": "^1.1.0",
     "css-sprite": "^0.9.8",
     "css-what": "^2.0.2",
