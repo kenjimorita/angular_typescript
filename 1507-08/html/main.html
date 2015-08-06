@@ -1,15 +1,20 @@
 <!DOCTYPE html>
-<html ng-app="myapp">
+<html ng-app="myApp">
 	<head>
 		<meta charset="utf-8">
 		<title></title>
 		<script src="../scripts/vendor_js/jquery.min.js"></script>
-		<script src="../scripts/vendor_js/angular.min.js"></script>
-<!-- 		// <script src="../scripts/controllers/service/service.js"></script>
- -->		<script src="../scripts/controllers/controllers.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+ 		<script src="../scripts/controllers/controllers.js"></script>
+		<script src="../scripts/service/service.js"></script>
 	</head>
 	<body>
-		<div ng-controller="myController">
+		<div ng-controller="MyController as main">
+			<div>
+					hoge : <input type="number" ng-model="hoge">
+					fuga : <input type="number" ng-model="fuga">
+					<p>合計: {{sume}}</p>
+			</div>
 			<pre>
 				<ul hierarcy-fast>
 					<li ng-repeat="(key,val) in datas">{{ key }}{{ val }}</li>
