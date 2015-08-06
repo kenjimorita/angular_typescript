@@ -10,9 +10,12 @@ class MyController {
 		public JsonData,
 		public bizdata,
 		public sum
-	){}
-	getdata(){
-		console.log(this.bizdata);
+
+	){
+		console.log(this.sum);
+	}
+	getdata():void {
+		// console.log(this.bizdata);
 	}
 	// this.JsonData.getSampleData().then((res) => {
 	// 	this.items = res.data;
@@ -21,7 +24,32 @@ class MyController {
 	// this.show_loading = true;
 }
 
+class Child{
+	public name: string = 'kokoko';
+	getdata() : void;
+	constructor(
+	){
+		console.log(this.name);
+	}
+	public getdata():void {
+		// console.log(this.bizdata);
+	}
+}
+class Mago{
+	public name: string = 'mago';
+	getdata() : void;
+	constructor(
+	){
+		console.log(this.name);
+	}
+	public getdata():void {
+		// console.log(this.bizdata);
+	}
+}
+
 
 
 var fafa = angular.module('myApp', []);
-fafa.('myApp').controller('MyController', MyController);
+fafa.controller('MyController', MyController);
+fafa.controller('Child',Child);
+fafa.controller('Mago',Mago);
