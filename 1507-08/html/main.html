@@ -7,9 +7,16 @@
 		<script src="../scripts/vendor_js/angular.js"></script>
  		<script src="../scripts/controllers/controllers.js"></script>
 		<script src="../scripts/service/service.js"></script>
+		<script src="../scripts/directive/common.js"></script>
+		<style>
+			.closed{
+				width:10px;
+			}
+		</style>
 	</head>
 	<body>
 		<div ng-controller="MyController as main">
+			<div serchbar-input moritaDAta="{{ main.fafaData }}"><a ng-click="Clickfunc()" class="clickinput" ></a>{{ main.fafaData }}<input type="text" ng-class="closed='true'"></a></div>
 			<div>
 					hoge : <input type="number" ng-model="hoge">
 					fuga : <input type="number" ng-model="fuga">

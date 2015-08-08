@@ -1,21 +1,21 @@
 /// <reference path="../../DefinitelyTyped-master/angularjs/angular.d.ts"/>
 /// <reference path="../../DefinitelyTyped-master/jquery/jquery.d.ts"/>
 
-class MyController {
-	JsonData: any;
-	bizdata: any;
-	sum: any;
-	getdata() : void;
-	constructor(
-		public JsonData,
-		public bizdata,
-		public sum
 
+class MyController {
+	JsonData : any;
+	bizdata : any;
+	fafaData : any;
+	sum : any;
+	constructor(
+		sum
 	){
-		console.log(this.sum);
+		this.sum = sum;
+		this.fafaData= 'fafaDAta'
+		console.log(this.fafaData);
 	}
-	getdata():void {
-		// console.log(this.bizdata);
+	getdata(){
+		console.log(this.bizdata);
 	}
 	// this.JsonData.getSampleData().then((res) => {
 	// 	this.items = res.data;
@@ -25,25 +25,25 @@ class MyController {
 }
 
 class Child{
-	public name: string = 'kokoko';
-	getdata() : void;
+ 	name: string = 'kokoko';
+ 	bizdata : any;
 	constructor(
 	){
 		console.log(this.name);
 	}
-	public getdata():void {
-		// console.log(this.bizdata);
+ 	getdata():void {
+		console.log(this.bizdata);
 	}
 }
 class Mago{
-	public name: string = 'mago';
-	getdata() : void;
+ 	name: string = 'mago';
+ 	bizdata : any;
 	constructor(
 	){
 		console.log(this.name);
 	}
-	public getdata():void {
-		// console.log(this.bizdata);
+ 	getdata():void {
+		console.log(this.bizdata);
 	}
 }
 

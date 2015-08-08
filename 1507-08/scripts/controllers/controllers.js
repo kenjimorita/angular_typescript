@@ -1,13 +1,13 @@
 /// <reference path="../../DefinitelyTyped-master/angularjs/angular.d.ts"/>
 /// <reference path="../../DefinitelyTyped-master/jquery/jquery.d.ts"/>
 var MyController = (function () {
-    function MyController(JsonData, bizdata, sum) {
-        this.JsonData = JsonData;
-        this.bizdata = bizdata;
+    function MyController(sum) {
         this.sum = sum;
-        console.log(this.sum);
+        this.fafaData = 'fafaDAta';
+        console.log(this.fafaData);
     }
     MyController.prototype.getdata = function () {
+        console.log(this.bizdata);
     };
     return MyController;
 })();
@@ -17,6 +17,7 @@ var Child = (function () {
         console.log(this.name);
     }
     Child.prototype.getdata = function () {
+        console.log(this.bizdata);
     };
     return Child;
 })();
@@ -26,6 +27,7 @@ var Mago = (function () {
         console.log(this.name);
     }
     Mago.prototype.getdata = function () {
+        console.log(this.bizdata);
     };
     return Mago;
 })();
