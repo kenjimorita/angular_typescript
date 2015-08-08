@@ -8,4 +8,4 @@ It is packing there,
 
 ## localserver
 
-http://localhost:8000/index.html
+http://localhost:8000/html/main.html
