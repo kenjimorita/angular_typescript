@@ -38,13 +38,13 @@ gulp.task("html",function(){
 });
 gulp.task("connect", function() {
 	connect.server({
-		livereload: true,
+		// livereload: true,
 		port: 8000
 	});
 });
 
 gulp.task("watch", function() {
-	gulp.watch(path, ['sass','html','reload']);
+	gulp.watch(path, ['sass','html']);
 });
 
 // タスクの設定
@@ -77,12 +77,12 @@ gulp.task('build', ['copyIndex'], function (cb) {
   .pipe(gulp.dest(''));
 });
 
-gulp.task("reload", function() {
-	gulp.src('./html/*.html')
-	.pipe(connect.reload());
-	gulp.src('./stylesheets/css/*.html')
-	.pipe(connect.reload());
-});
+// gulp.task("reload", function() {
+// 	gulp.src('./html/*.html')
+// 	.pipe(connect.reload());
+// 	gulp.src('./stylesheets/css/*.html')
+// 	.pipe(connect.reload());
+// });
 
 
 

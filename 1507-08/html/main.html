@@ -1,15 +1,27 @@
 <!DOCTYPE html>
-<html ng-app="myapp">
+<html ng-app="myApp">
 	<head>
 		<meta charset="utf-8">
 		<title></title>
 		<script src="../scripts/vendor_js/jquery.min.js"></script>
-		<script src="../scripts/vendor_js/angular.min.js"></script>
-<!-- 		// <script src="../scripts/controllers/service/service.js"></script>
- -->		<script src="../scripts/controllers/controllers.js"></script>
+		<script src="../scripts/vendor_js/angular.js"></script>
+ 		<script src="../scripts/controllers/controllers.js"></script>
+		<script src="../scripts/service/service.js"></script>
+		<script src="../scripts/directive/common.js"></script>
+		<style>
+			.closed{
+				width:10px;
+			}
+		</style>
 	</head>
 	<body>
-		<div ng-controller="myController">
+		<div ng-controller="MyController as main">
+			<div serchbar-input moritaDAta="{{ main.fafaData }}"><a ng-click="Clickfunc()" class="clickinput" ></a>{{ main.fafaData }}<input type="text" ng-class="closed='true'"></a></div>
+			<div>
+					hoge : <input type="number" ng-model="hoge">
+					fuga : <input type="number" ng-model="fuga">
+					<p>合計: {{sume}}</p>
+			</div>
 			<pre>
 				<ul hierarcy-fast>
 					<li ng-repeat="(key,val) in datas">{{ key }}{{ val }}</li>
@@ -33,11 +45,11 @@
 		<conpile-link>
 
 		</conpile-link>
-		<div ng-controller="HelloCtrl">
+		<div ng-controller="Child">
 	    <label>Name:</label>
 	    <input type="text" ng-model="name" placeholder="Enter a name here" />
 	    <hr/>
-	    <h1>Hello {{name}}!</h1>
+	    <h1>{{name}}</h1>
 		</div>
 </body>
 </html>
