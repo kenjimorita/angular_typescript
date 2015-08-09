@@ -10,14 +10,18 @@
 		<script src="../scripts/service/service.js"></script>
 		<script src="../scripts/directive/common.js"></script>
 		<style>
-			.closed{
-				width:10px;
+			.isOpen{
+				width:100px;
+			}
+			.isClose{
+				width: 10px;
 			}
 		</style>
 	</head>
 	<body>
 		<div ng-controller="MyController as main">
-			<div serchbar-input moritaDAta="{{ main.fafaData }}"><a ng-click="Clickfunc()" class="clickinput" ></a>{{ main.fafaData }}<input type="text" ng-class="closed='true'"></a></div>
+<!-- 			<div serchbar-input moritaDAta="{{ main.fafaData }}"><a ng-click="Clickfunc()" class="clickinput" ></a>{{ main.fafaData }}<input type="text" ng-class="closed='true'"></a></div>
+-->	<div fafa-search></div>
 			<div>
 					hoge : <input type="number" ng-model="hoge">
 					fuga : <input type="number" ng-model="fuga">
