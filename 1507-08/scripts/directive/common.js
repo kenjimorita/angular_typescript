@@ -1,11 +1,11 @@
 /// <reference path="../../DefinitelyTyped-master/angularjs/angular.d.ts"/>
 /// <reference path="../../DefinitelyTyped-master/jquery/jquery.d.ts"/>
 angular.module('myApp')
-    .directive('hierarcyFast', function (JsonData) {
+    .directive('hierarcyFast', function () {
     return {
         compile: function (tElem, tAttrs, tTramsclude) {
             return function () {
-                console.log(JsonData);
+                console.log('eeeee');
             };
         },
         template: '<div class="fafa"><li ng-repeat="(key,val) in datas">{{ key }}{{ val }}</li>'

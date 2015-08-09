@@ -11,7 +11,7 @@
 			sum
 		){
 			this.sum = sum;
-			this.fafaData= fafaData;
+			this.fafaData= 'morita'
 			console.log(this.fafaData);
 		}
 		getdata(){
@@ -41,9 +41,9 @@
 		}
 	}
 	export function initRouting(){
-		angular.module('myApp', [])
-		.controller('MyController', MyController)
-		.controller('Child',Child)
-		.controller('Mago',Mago);
+		var fafa = angular.module('myApp', []);
+		fafa.controller('MyController', MyController);
+		fafa.controller('Child',Child);
+		fafa.controller('Mago',Mago);
 	}
 }
