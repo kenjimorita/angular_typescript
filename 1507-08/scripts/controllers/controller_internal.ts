@@ -18,16 +18,16 @@
 			console.log(this.bizdata);
 		}
 	};
-	export class Child{
-	 	name: string = 'kokoko';
-	 	bizdata : any;
-		constructor(
-		){
-			console.log(this.name);
-		}
-	 	getdata():void {
-			console.log(this.bizdata);
-		}
+  export class Child{
+    name: string = 'kokoko';
+    bizdata : any;
+    constructor(
+    ){
+      console.log(this.name);
+    }
+    getdata():void {
+      console.log(this.bizdata);
+    }
 	};
 	export class Mago{
 	 	name: string = 'mago';

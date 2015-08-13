@@ -47,7 +47,7 @@ angular.module('myApp')
 })
 .directive('fafaSearch',function(){
 	return {
-		template : '<a ng-if="isClose" ng-class="isClose" ng-click="inputClick()"><input type="text" value="{{ message }}" /></a>',
+		template : '<div ng-if="isClose" style="width:400px;background:#000;" ng-class="isClose" ng-click="inputClick()"><input type="text" value="{{ message }}" /></div>',
 		compile : function(){
 			var isClose;
 			console.log("directive");
