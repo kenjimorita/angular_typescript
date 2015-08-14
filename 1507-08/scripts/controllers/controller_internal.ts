@@ -18,16 +18,17 @@
 			console.log(this.bizdata);
 		}
 	};
-	export class Child{
-	 	name: string = 'kokoko';
-	 	bizdata : any;
-		constructor(
-		){
-			console.log(this.name);
-		}
-	 	getdata():void {
-			console.log(this.bizdata);
-		}
+
+  export class Child{
+    name: string = 'kokoko';
+    bizdata : any;
+    constructor(
+    ){
+      console.log(this.name);
+    }
+    getdata():void {
+      console.log(this.bizdata);
+    }
 	};
 	export class Mago{
 	 	name: string = 'mago';
@@ -40,6 +41,7 @@
 			console.log(this.bizdata);
 		}
 	}
+
 	export function initRouting(){
 		var fafa = angular.module('myApp', []);
 		fafa.controller('MyController', MyController);
