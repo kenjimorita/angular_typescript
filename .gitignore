@@ -12,5 +12,6 @@ atlassian-ide-plugin.xml
 **/bower_components/
 *.log
 /artifact
+/biz_data.json
 /api
 /other
