@@ -1,10 +1,13 @@
-/// <reference path="../../DefinitelyTyped-master/angularjs/angular.d.ts"/>
-/// <reference path="../../DefinitelyTyped-master/jquery/jquery.d.ts"/>
-var kenjimorita;
-(function (kenjimorita) {
-    var controllerInternal = moritaController;
-    controllerInternal.initRouting();
-    controllerInternal.MyController;
-    controllerInternal.Child;
-    controllerInternal.Mago;
-})(kenjimorita || (kenjimorita = {}));
+var MyController = (function () {
+    function MyController() {
+        this.fafaData = 'morita';
+        console.log(this.fafaData);
+    }
+    MyController.prototype.getdata = function () {
+        console.log(this.bizdata);
+    };
+    return MyController;
+})();
+;
+var myApp = angular.module('myApp', []);
+myApp.controller('MyController', function () { new MyController(); });

@@ -43,9 +43,9 @@
 	}
 
 	export function initRouting(){
-		var fafa = angular.module('myApp', []);
-		fafa.controller('MyController', MyController);
-		fafa.controller('Child',Child);
-		fafa.controller('Mago',Mago);
+		var myApp = angular.module('myApp', []);
+		myApp.controller('MyController', MyController);
+		// fafa.controller('Child',Child);
+		// fafa.controller('Mago',Mago);
 	}
 }

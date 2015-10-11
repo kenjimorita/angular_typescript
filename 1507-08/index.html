@@ -3,8 +3,25 @@
 	<head>
 		<meta charset="utf-8">
 		<title>fafa</title>
+    <script src="./scripts/vendor_js/bower_components/angular/angular.js"></script>
+    <script src="./scripts/vendor_js/bower_components/angular-ui-validate/dist/validate.js"></script>
+    <script src="./scripts/vendor_js/bower_components/angular-messages/angular-messages.js"></script>
+		<script src="./scripts/controllers/controllers.js"></script>
 	</head>
-	<body>
-		fafaffffifafafafaf
+	<body ng-app="myApp">
+		<div ng-controller="MyController as c">
+			<!-- <div hierarcy-fast></div> -->
+			<div>
+				<form name="form" novalidate>
+					<label for="form.email">email:</label>
+				 <input name="form.email"
+					 ui-validate-asnyc="{duplicate: 'true'}" ng-model="email" type="email" required ng-maxlangth="20"/>
+
+				<ul ng-messages>
+					<li ng-message="duplicate">おかしいですよ</li>
+				</ul>
+				</form>
+			</div>
+		</div>
 	</body>
 </html>

@@ -9,7 +9,7 @@
 /.settings
 node_modules
 atlassian-ide-plugin.xml
-/bower_components
+**/bower_components/
 *.log
 /artifact
 /api

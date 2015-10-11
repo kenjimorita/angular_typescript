@@ -1,5 +1,3 @@
-/// <reference path="../../DefinitelyTyped-master/angularjs/angular.d.ts"/>
-/// <reference path="../../DefinitelyTyped-master/jquery/jquery.d.ts"/>
 var moritaController;
 (function (moritaController) {
     var MyController = (function () {
@@ -39,10 +37,8 @@ var moritaController;
     })();
     moritaController.Mago = Mago;
     function initRouting() {
-        var fafa = angular.module('myApp', []);
-        fafa.controller('MyController', MyController);
-        fafa.controller('Child', Child);
-        fafa.controller('Mago', Mago);
+        var myApp = angular.module('myApp', []);
+        myApp.controller('MyController', MyController);
     }
     moritaController.initRouting = initRouting;
 })(moritaController || (moritaController = {}));

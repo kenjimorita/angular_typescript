@@ -1,0 +1,32 @@
+{
+  "name": "angular-typescript",
+  "version": "0.0.0",
+  "proxy":"http://<host>:<port>",
+   "https-proxy":"http://<host>:<port>",
+  "authors": [
+    "moritakenji"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "scripts/vendor_js/bower_components"
+  ],
+  "dependencies": {
+    "angular": "~1.4.3",
+    "jquery": "~2.1.4",
+    "angular-ui-router": "~0.2.15",
+    "angular-animate": "~1.4.3",
+    "lodash": "~3.10.1",
+    "angular-ui-router-anim-in-out": "~0.0.13",
+    "angular-mocks": "~1.4.4",
+    "core-js": "*",
+    "ngtoast": "~1.5.5",
+    "angular-sanitize": "~1.4.5",
+    "angular-messages": "~1.4.5",
+    "angular-ui-validate": "~1.1.1",
+    "corejs": "~0.0.9",
+    "angular-bootstrap": "~0.13.4",
+    "angular-ui-utils": "0.1.1"
+  }
+}
