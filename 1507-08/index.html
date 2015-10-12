@@ -2,25 +2,142 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>fafa</title>
+		<title>learn form by Angular</title>
     <script src="./scripts/vendor_js/bower_components/angular/angular.js"></script>
     <script src="./scripts/vendor_js/bower_components/angular-ui-validate/dist/validate.js"></script>
     <script src="./scripts/vendor_js/bower_components/angular-messages/angular-messages.js"></script>
 		<script src="./scripts/controllers/controllers.js"></script>
+
+		<style>
+			input.ng-dirty.ng-invalid {background-color: #fee;}
+			input.ng-valid {background-color: #eef;}
+			.back{
+				background: #f00;
+				color:#fff;
+			}
+			.chara{
+				font-size: x-large;
+				font-weight: bold;
+			}
+			.space {
+				margin: 15px;
+				padding:15px;
+			}
+		</style>
 	</head>
 	<body ng-app="myApp">
-		<div ng-controller="MyController as c">
-			<!-- <div hierarcy-fast></div> -->
+			<div ng-controller="MyController">
+			<!-- <form>
+				<label><input type="checkbox" ng-model="bBack" />モデル1</label>
+				<label><input type="checkbox" ng-model="bChara" />モデル2</label>
+				<label><input type="checkbox" ng-model="bSpace" />モデル3</label>
+		</form> -->
+		<!-- <div ng-class="['back', 'chara',{space:bSpace}]"> back charaは固定にする場合 -->
+			<!-- <div ng-class="{back:bBack, chara:bChara, space:bSpace}">
+			　憲法改正を目指し、対米自立を望んだ岸信介元首相は、首相に就任する前から米国の冷戦戦略に取り込まれていた―。
+			そんな認識を示す文書を、日米外交に深く携わった元米国務次官補が残していた。
+			孫の安倍晋三首相の政治姿勢にも強い影響を与えた岸氏だが、背景を探ると、もう一つの顔が浮かび上がった。
+			</div> -->
 			<div>
-				<form name="form" novalidate>
-					<label for="form.email">email:</label>
-				 <input name="form.email"
-					 ui-validate-asnyc="{duplicate: 'true'}" ng-model="email" type="email" required ng-maxlangth="20"/>
 
-				<ul ng-messages>
-					<li ng-message="duplicate">おかしいですよ</li>
-				</ul>
+<!-- /////////////////////////////////////////////////////////////////////////////////////////// -->
+
+				<!-- <form name="myForm" novalidate>
+				  <div>
+				    <label for="email">メールアドレス：</label><br />
+				    <input id="email" name="email" type="text" ng-model="user.email" />
+				  </div>
+				  <div>
+				    <label for="email_confirm">メールアドレス（確認）：</label><br />
+				    <input id="email_confirm" name="email_confirm" type="text"
+				      ng-model="email_confirm"
+				      ui-validate="'$value === user.email'"
+				      ui-validate-watch="'user.email'" />
+				    <span ng-show="myForm.email_confirm.$error.validator">
+				      メールアドレス同士が等しくなければなりません。</span>
+				  </div>
+				  <div>
+				    <label for="memo">備考：</label><br />
+				    <textarea id="memo" name="memo" cols="45" rows="5"
+				      ng-model="user.memo"
+				      ui-validate="'ngword($value)'"></textarea>
+				    <span ng-show="myForm.memo.$error.validator">
+				      備考に禁止ワードが含まれています。</span>
+				  </div>
+				</form> -->
+
+
+
+<!-- /////////////////////////////////////////////////////////////////////////////////////////// -->
+
+				<form name="myForm" novalidate ng-model-options="{updateOn: 'blur',deboundce : 1000}">
+					<span ng-messages="myForm.email.$error" ng-messages-multiple ng-if="myForm.email.$touched">
+						<span ng-message="required">入力が必須です。</span>
+						<span ng-message="email">形式が正しくありません。</span>
+						<span ng-message="minlength, maxlength">入力値が短すぎるか長すぎます</span>
+					</span>
+					<br />
+					<label for="email">メールアドレス</label>
+					<input
+						name="email"
+						type="text"
+						required
+						ng-minlength="10"
+						ng-maxlength="20"
+						ng-model="user.email"
+					/>
+
+					<br />
+					<br />
+					<div>
+						<label for="confirm">メールアドレス(確認)</label>
+						<br />
+						<input
+							type="text"
+							name="confirm"
+							ng-model="user.confirm"
+							ui-validate="'$value === user.email'"
+							ui-validate-watch="'user.email'"
+						/>
+
+						<span ng-messages="myForm.confirm.$error">
+							<span ng-message="required">入力が必須です。</span><br />
+							<span ng-message="validator">メールアドレス同士が等しくなければなりません</span>
+						</span>
+					</div>
 				</form>
+			<!-- <form name="myForm" novalidate ng-model-options="{ debounce: 1000, updateOn:'blur' }">
+				<div>
+					<label id="email" for="email">メールアドレス</label><br />
+					<input id="email" name="email" type="text" ng-model="ctrl.user.email" />
+				</div>
+				<div>
+					<label id="confirm"  for="confirm">メールアドレス確認</label><br />
+					<input id="confirm" name="confirm" type="text" ng-model="ctrl.user.confirm" ui-validate="{'ctrl.$value === ctrl.user.email'}" ui-validate-watch="'ctrl.user.email'" />
+					<span ng-show="myForm.confirm.$error">
+						sfafafaa
+					</span>
+				</div>
+			</form> -->
+					<!-- <label for="password">password:</label>
+					<input type="password"
+					 name="form.password"
+					 required
+					>
+					<ul ng-messages>
+						<li ng-message="required">必須です</li>
+						<li ng-message></li>
+					</ul>
+					<label for="passwordConform">passwordConform:</label>
+					<input type="passwordConform"
+					 name="form.passwordConform"
+					 required
+					>
+					<ul ng-messages>
+						<li ng-message="required">必須です</li>
+						<li ng-message></li>
+					</ul -->
+
 			</div>
 		</div>
 	</body>
