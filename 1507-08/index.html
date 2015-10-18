@@ -26,18 +26,13 @@
 		</style>
 	</head>
 	<body ng-app="myApp">
-			<div ng-controller="MyController">
-			<!-- <form>
-				<label><input type="checkbox" ng-model="bBack" />モデル1</label>
-				<label><input type="checkbox" ng-model="bChara" />モデル2</label>
-				<label><input type="checkbox" ng-model="bSpace" />モデル3</label>
-		</form> -->
-		<!-- <div ng-class="['back', 'chara',{space:bSpace}]"> back charaは固定にする場合 -->
-			<!-- <div ng-class="{back:bBack, chara:bChara, space:bSpace}">
-			　憲法改正を目指し、対米自立を望んだ岸信介元首相は、首相に就任する前から米国の冷戦戦略に取り込まれていた―。
-			そんな認識を示す文書を、日米外交に深く携わった元米国務次官補が残していた。
-			孫の安倍晋三首相の政治姿勢にも強い影響を与えた岸氏だが、背景を探ると、もう一つの顔が浮かび上がった。
-			</div> -->
+			<div ng-controller="MyController as ctrl" >
+				<ul>
+					<li ng-repeat="fa in ctrl.valuefa">{{fa.name}}</li>
+				</ul>
+				<main></main>
+				<main2></main2>
+				<myself></myself>
 			<div>
 
 <!-- /////////////////////////////////////////////////////////////////////////////////////////// -->

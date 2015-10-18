@@ -18,6 +18,7 @@
         "./controller_external.ts",
         "./controller_internal.ts",
         "./controllers.ts",
+        "./eg.ts",
         "./util/strings_external.ts",
         "./util/strings_internal.ts"
     ]
