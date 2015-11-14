@@ -13,10 +13,26 @@
 		</style>
 	</head>
 	<body ng-app="myApp">
-			<div ng-controller="MyController as ctrl" >
-				<ul>
-					fafaf
-				</ul>
-			<div>
+				<div ng-controller="myContr"></div>
+				<div ng-controller="myContr"></div>
+				<scope-isolated my-message="greeeting" my-name="your name" my-action="alert('fee')"></scope-isolated>
 	</body>
+	<script>
+	var myApp = angular.module('myApp', []);
+	myApp.controller('myContr',function(){
+
+	});
+
+	myApp.directive('scopeIsolated', function(){
+		return {
+			restrict: 'E',
+			scope: {
+				message: '=myMessage',
+				name: '@myName',
+				action: '&myAction'
+			},
+			template: '<pre title="{{name}}">{{message}}</pre><button ng-click="faf()">push</button>'
+		}
+	});
+	</script>
 </html>

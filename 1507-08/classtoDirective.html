@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html ng-app="sample05App">
+
+<head lang="ja">
+  <meta charset="UTF-8">
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.1/angular.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.9.3/lodash.js"></script>
+
+  <script src="app.js"></script>
+  <title>Sample05</title>
+
+  <style>
+    .combobox ul {
+      background-color: black;
+      color: white;
+      width: 100px;
+    }
+    .notification {
+      background-color: black;
+      color: white;
+    }
+    .notification a {
+      float: right;
+    }
+    section {
+      margin-bottom: 30px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Sample05 App</h1>
+
+  <!-- Combobox -->
+  <h2>fafafa</h2>
+  <h2>Combo Box</h2>
+  <section>
+    <div ng-init="statuses = ['未所有', '未読', '読中', '読了']; status='初期値'">
+      ConboBox外の"Status": {{status}}
+    </div>
+    ステータス:
+    <combo-box selected-item="status" all-items="statuses"></combo-box>
+  </section>
+
+
+  <!-- Notification -->
+  <h2>Notification</h2>
+  <section>
+    <div ng-controller="notificationController as ctrl">
+
+      <div ng-repeat="item in ctrl.items">
+        <notification timeout="5000" enable="item.enableMessage">
+          <p>{{item.message}} ({{item.time | date:'HH:mm:ss'}})</p>
+        </notification>
+      </div>
+
+      <input type="text" ng-model="ctrl.message">
+      <button ng-click="ctrl.addMessage(ctrl.message)">add</button>
+    </div>
+  </section>
+
+
+  <!-- StarRate -->
+  <h2>StarRate</h2>
+  <section>
+    <input type="number" ng-model="starNum">
+    <rating ng-model="starNum" max="externalScope.hoge" readonly="true"></rating>
+  </section>
+</body>
+
+</html>
