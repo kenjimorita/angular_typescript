@@ -13,11 +13,8 @@ angular.module('myApp')
 	.factory('JsonData',function($http){
 		return {
 			getSampleData : function(){
-				return $http.get('../data.json')
+				return $http.get('../biz_data.json')
 				.success(function(data,status,headers,config){
-					var time = new Date().getTime();
-					while (new Date().getTime() < time + 1000);
-					return data;
 				});
 			}
 		}
@@ -26,4 +23,50 @@ angular.module('myApp')
 		return function(){
 			return{'hoge' : 0,'fuga' : 0,'sum'  : 0}
 		}
-	});
+	})
+	.directive('jsonData',function(JsonData){
+		return {
+			compile : function(tElem, tAttrs, tTramsclude){
+				var jsonD;
+				return function($scope){
+					JsonData.getSampleData().then((data)=>{
+						$scope.jsonD = data.data.jobs;
+						console.log($scope.jsonD);
+					})
+				}
+			},
+			template :
+			'<table class="table">'
+	      +  '<tr ng-repeat="result in $scope.jsonD">'
+	      +      '<td>{{result.name}}</td>'
+	      +      '<td>{{result.$index}}</td>'
+	      +  '</tr>'
+	    +'</table>'
+	}
+	})
+	.directive('apiDirective',function(){
+		return {
+			link : function(){
+				var apiURL = 'data.json'
+			}
+		}
+	})
+	.directive('serchbarInput',function(){
+		return {
+			scope: {
+				stringmorita : '=moritaDAta'
+			},
+			restrict : 'A',
+			compile : function(tElem, tAttr, tTranclude){
+				console.log('haittemasu');
+				var fafa = 'fafa';
+				return function (scope, iElement, iAttrs, controller, iTransclude){
+					scope.fafa = 'scopenainomorita'
+					console.log(scope.fafa);
+
+				}
+			},
+			transclude : true,
+			template : '<div ng-transclude>fafa</div>'
+		}
+	})
